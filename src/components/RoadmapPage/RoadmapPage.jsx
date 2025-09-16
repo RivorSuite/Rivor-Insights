@@ -41,7 +41,6 @@ export const roadmapData = [
 ];
 // --- End of Data ---
 
-
 function RoadmapPage({ onBack, onSelectTopic }) {
     const [completedTopics, setCompletedTopics] = useState(new Set());
     const [isLoading, setIsLoading] = useState(true);
@@ -53,14 +52,11 @@ function RoadmapPage({ onBack, onSelectTopic }) {
             if (user) {
                 const docRef = doc(db, "userProgress", user.uid);
                 const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    setCompletedTopics(new Set(docSnap.data().completed || []));
-                }
+                if (docSnap.exists()) {setCompletedTopics(new Set(docSnap.data().completed || []));}
             }
             setProgress(100);
             setTimeout(() => setIsLoading(false), 400);
         };
-
         fetchAndSimulate();
 
         const timer = setInterval(() => {
@@ -72,7 +68,6 @@ function RoadmapPage({ onBack, onSelectTopic }) {
                 return prev + Math.floor(Math.random() * 10);
             });
         }, 150);
-
         return () => clearInterval(timer);
     }, [user]);
     
@@ -80,14 +75,9 @@ function RoadmapPage({ onBack, onSelectTopic }) {
         if (!user) return;
         
         const newCompletedTopics = new Set(completedTopics);
-        if (newCompletedTopics.has(topicId)) {
-            newCompletedTopics.delete(topicId);
-        } else {
-            newCompletedTopics.add(topicId);
-        }
-        
+        if (newCompletedTopics.has(topicId)) {newCompletedTopics.delete(topicId);}
+        else {newCompletedTopics.add(topicId);}
         setCompletedTopics(newCompletedTopics);
-
         const docRef = doc(db, "userProgress", user.uid);
         await setDoc(docRef, { completed: Array.from(newCompletedTopics) });
     }, [user, completedTopics]);
@@ -96,9 +86,7 @@ function RoadmapPage({ onBack, onSelectTopic }) {
         return (
             <div style={{ width: '100%', maxWidth: '800px', margin: 'auto', padding: '20px', textAlign: 'center', animation: 'fadeIn 0.5s' }}>
                 <h2 style={{color: 'var(--primary-text)', marginBottom: '20px'}}>Loading Your Roadmap...</h2>
-                <div className="progress-bar-container">
-                    <div className="progress-bar-filler" style={{ width: `${progress}%` }}></div>
-                </div>
+                <div className="progress-bar-container"> <div className="progress-bar-filler" style={{ width: `${progress}%` }}></div> </div>
             </div>
         );
     }
@@ -160,5 +148,4 @@ function RoadmapPage({ onBack, onSelectTopic }) {
         </div>
     );
 }
-
 export default RoadmapPage;

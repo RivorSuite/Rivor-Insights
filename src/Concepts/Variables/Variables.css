@@ -14,13 +14,10 @@
     border-radius: 12px;
     padding: 20px;
 }
-.ds-controls-left .ds-input-field {
-    min-width: 120px; /* Gives the inputs more base width */
-}
+.ds-controls-left .ds-input-field {min-width: 120px;}
 
-.ds-controls-left select.ds-input-field {
-    width: 140px; /* Specifically makes the dropdown wider */
-}
+.ds-controls-left select.ds-input-field {width: 140px;}
+
 .code-editor-header {
     font-size: 18px;
     font-weight: 600;

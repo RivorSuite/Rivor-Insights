@@ -20,12 +20,9 @@ const ContentRenderer = ({ item }) => {
 
 function TextPage({ onBack }) {
     const [selectedArticleId, setSelectedArticleId] = useState(null);
-
     const articlesByCategory = Object.entries(textContent).reduce((acc, [id, article]) => {
         const { category } = article;
-        if (!acc[category]) {
-            acc[category] = [];
-        }
+        if (!acc[category]) {acc[category] = [];}
         acc[category].push({ id, ...article });
         return acc;
     }, {});
@@ -70,5 +67,4 @@ function TextPage({ onBack }) {
         </div>
     );
 }
-
 export default TextPage;

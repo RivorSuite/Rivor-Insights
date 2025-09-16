@@ -21,13 +21,12 @@ function ForgotPasswordPage({ onNavigateBack }) {
         try {
             await sendPasswordResetEmail(auth, resetEmail);
             setView('success');
-        } catch (err) {
-            console.error("Password reset error:", err);
-            // For security, we show success even if the email doesn't exist.
-            setView('success');
-        } finally {
-            setIsLoading(false);
         }
+        catch (err) {
+            console.error("Password reset error:", err);       
+            setView('success'); // For security, we show success even if the email doesn't exist.
+        } 
+        finally {setIsLoading(false);}
     };
 
     return (
@@ -50,33 +49,20 @@ function ForgotPasswordPage({ onNavigateBack }) {
                             />
                         </div>
                         {error && <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '14px' }}>{error}</p>}
-                        <button type="submit" className="auth-button" disabled={isLoading}>
-                            {isLoading ? 'Sending...' : 'Send Reset Link'}
-                        </button>
+                        <button type="submit" className="auth-button" disabled={isLoading}> {isLoading ? 'Sending...' : 'Send Reset Link'} </button>
                     </form>
-                    <p style={{ marginTop: '24px', fontSize: '14px' }}>
-                        <span onClick={onNavigateBack} style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: '600' }}>
-                            ← Back to Login
-                        </span>
-                    </p>
+                    <p style={{ marginTop: '24px', fontSize: '14px' }}> <span onClick={onNavigateBack} style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: '600' }}> ← Back to Login </span> </p>
                 </>
             )}
 
             {view === 'success' && (
                  <>
                     <h1 className="auth-title">Check Your Inbox</h1>
-                    <p className="auth-subtitle" style={{ lineHeight: 1.6 }}>
-                        If an account exists for <strong>{resetEmail}</strong>, you will receive an email with instructions on how to reset your password.
-                    </p>
-                     <p style={{ marginTop: '24px', fontSize: '14px' }}>
-                        <span onClick={onNavigateBack} style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: '600' }}>
-                            ← Back to Login
-                        </span>
-                    </p>
+                    <p className="auth-subtitle" style={{ lineHeight: 1.6 }}> If an account exists for <strong>{resetEmail}</strong>, you will receive an email with instructions on how to reset your password. </p>
+                    <p style={{ marginTop: '24px', fontSize: '14px' }}> <span onClick={onNavigateBack} style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: '600' }}> ← Back to Login </span> </p>
                 </>
             )}
         </div>
     );
 }
-
 export default ForgotPasswordPage;

@@ -18,14 +18,11 @@ function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
 
     const forLoopData = ['A', 'B', 'C', 'D'];
     const [forLoopIndex, setForLoopIndex] = useState(-1);
-
     const [whileCount, setWhileCount] = useState(0);
-
     const timerRef = useRef(null);
 
     useEffect(() => {
         if (timerRef.current) clearInterval(timerRef.current);
-
         if (loopType === 'for') {
             setForLoopIndex(-1);
             let i = 0;
@@ -33,7 +30,8 @@ function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
                 setForLoopIndex(i);
                 i = (i + 1) % (forLoopData.length + 1);
             }, 1000);
-        } else {
+        }
+        else {
             setWhileCount(0);
             let count = 0;
             timerRef.current = setInterval(() => {
@@ -44,10 +42,6 @@ function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
 
         return () => clearInterval(timerRef.current);
     }, [loopType]);
-
-    const showToast = (message, type = 'info') => {
-        setToast({ show: true, message, type });
-    };
 
     useEffect(() => {
         const checkCompletion = async () => {
@@ -70,17 +64,18 @@ function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
             if (isCompleted) {
                 await updateDoc(docRef, { completed: arrayRemove(topicId) });
                 setIsCompleted(false);
-            } else {
+            } 
+            else {
                 await updateDoc(docRef, { completed: arrayUnion(topicId) });
                 setIsCompleted(true);
             }
-        } catch (error) {
+        } 
+        catch (error) {
             if (error.code === 'not-found' && !isCompleted) {
                 await setDoc(docRef, { completed: [topicId] });
                 setIsCompleted(true);
-            } else {
-                console.error("Error updating progress:", error);
             }
+            else {console.error("Error updating progress:", error);}
         }
     };
 
@@ -109,19 +104,19 @@ function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
          <>
             <div className="loops-code-panel">
                 <h3 className="code-editor-header">While Loop</h3>
-                 <p className="code-line"><span className="token-variable">count</span> = 0</p>
+                <p className="code-line"><span className="token-variable">count</span> = 0</p>
                 <p className={`code-line ${whileCount < 5 ? 'active' : ''}`}><span className="token-keyword">while</span> count {'<'} 5:</p>
                 <p className={`code-line ${whileCount < 5 ? 'active' : ''}`} style={{ paddingLeft: '20px' }}>print(count)</p>
-                 <p className={`code-line ${whileCount < 5 ? 'active' : ''}`} style={{ paddingLeft: '20px' }}>count += 1</p>
+                <p className={`code-line ${whileCount < 5 ? 'active' : ''}`} style={{ paddingLeft: '20px' }}>count += 1</p>
             </div>
             <div className="loops-visualization-panel">
                 <div className="while-loop-viz">
                     <div className={`flowchart-node condition ${whileCount < 5 ? 'active' : ''}`}><div className="node-text">count {'<'} 5?</div></div>
-                     <div className="counter-box">
+                    <div className="counter-box">
                         <span style={{fontSize: '20px'}}>count:</span>
                         <div className="loop-variable-box"><div className="box-value">{whileCount}</div></div>
-                     </div>
-                     <div className={`flowchart-node ${whileCount < 5 ? 'active' : ''}`}>Execute Block</div>
+                    </div>
+                    <div className={`flowchart-node ${whileCount < 5 ? 'active' : ''}`}>Execute Block</div>
                 </div>
             </div>
         </>
@@ -149,5 +144,4 @@ function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
         </div>
     );
 }
-
 export default LoopsWorkspace;

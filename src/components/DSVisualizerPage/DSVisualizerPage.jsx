@@ -38,7 +38,6 @@ const implementedWorkspaces = new Set([
     'queue',
     'deque',
     'bst',
-    // 'graphs' will be added here soon!
 ]);
 
 
@@ -52,10 +51,7 @@ function DSVisualizerPage({ onBack, selectedDS, onSelectDS }) {
             ? dsData
             : dsData.filter(ds => ds.category === selectedCategory);
 
-        if (!searchQuery) {
-            setFilteredData(categoryFiltered);
-            return;
-        }
+        if (!searchQuery) {setFilteredData(categoryFiltered); return;        }
 
         const fuse = new Fuse(categoryFiltered, { keys: ['title'], includeScore: true, threshold: 0.4 });
         const results = fuse.search(searchQuery);
@@ -63,8 +59,6 @@ function DSVisualizerPage({ onBack, selectedDS, onSelectDS }) {
     }, [searchQuery, selectedCategory]);
 
     if (selectedDS) {
-        // --- SIMPLIFIED LOGIC: Always use the main onBack prop ---
-        // This onBack prop is navigateBack from App.jsx, which correctly uses browser history.
         switch (selectedDS) {
             case 'array': return <ArrayWorkspace onBack={onBack} />;
             case 'singly-linked-list': return <SinglyLinkedListWorkspace onBack={onBack} />;
@@ -74,7 +68,7 @@ function DSVisualizerPage({ onBack, selectedDS, onSelectDS }) {
             case 'queue': return <QueueWorkspace onBack={onBack} />;
             case 'deque': return <DequeWorkspace onBack={onBack} />;
             case 'bst': return <BSTWorkspace onBack={onBack} />;
-            default: onSelectDS(null); return null; // Fallback for safety
+            default: onSelectDS(null); return null;
         }
     }
 
@@ -111,9 +105,7 @@ function DSVisualizerPage({ onBack, selectedDS, onSelectDS }) {
                         <div 
                             key={ds.id} 
                             className="ds-card" 
-                            // --- UPDATE: Only allow clicking on implemented workspaces ---
                             onClick={() => implementedWorkspaces.has(ds.id) && onSelectDS(ds.id)}
-                            // Add a style to indicate which cards are not yet clickable
                             style={{ cursor: implementedWorkspaces.has(ds.id) ? 'pointer' : 'not-allowed', opacity: implementedWorkspaces.has(ds.id) ? 1 : 0.5 }}
                         >
                             <h3 className="ds-card-title">{ds.title}</h3>
@@ -126,5 +118,4 @@ function DSVisualizerPage({ onBack, selectedDS, onSelectDS }) {
         </div>
     );
 }
-
 export default DSVisualizerPage;

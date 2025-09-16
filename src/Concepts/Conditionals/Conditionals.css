@@ -68,9 +68,7 @@
     fill: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
-.active .svg-path-line {
-    stroke: var(--accent);
-}
+.active .svg-path-line {stroke: var(--accent);}
 
 .active .svg-path-label {
     fill: var(--accent);

@@ -62,9 +62,7 @@ function Header({ theme, onToggleTheme, onSetAccent, accent }) {
             zIndex: 100
         }}>
 
-            <h2 style={headerStyle} key={accent}>
-                Rivor
-            </h2>
+            <h2 style={headerStyle} key={accent}> Rivor </h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <AccentColorSwitcher onSetAccent={onSetAccent} />
                 <button onClick={onToggleTheme} className="auth-button" style={{ width: 'auto', padding: '8px 12px' }}>
@@ -74,5 +72,4 @@ function Header({ theme, onToggleTheme, onSetAccent, accent }) {
         </div>
     );
 }
-
 export default Header;

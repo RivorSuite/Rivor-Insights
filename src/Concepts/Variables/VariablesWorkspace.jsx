@@ -19,17 +19,12 @@ const dataTypeInfo = {
 };
 
 const reservedKeywords = new Set([
-    'false', 'none', 'true', 'and', 'as', 'assert', 'async', 'await',
-    'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except',
-    'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is',
-    'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return',
-    'try', 'while', 'with', 'yield'
+    'false', 'none', 'true', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 
+    'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 
+    'return', 'try', 'while', 'with', 'yield'
 ]);
 
-// --- NEW: Define the 32-bit integer limits ---
-const INT32_MAX = 2147483647;
-const INT32_MIN = -2147483648;
-
+const INT32_MAX = 2147483647; const INT32_MIN = -2147483648;
 
 const CodeLine = ({ varName, value, type }) => {
     const renderValue = () => {
@@ -62,9 +57,7 @@ function VariablesWorkspace({ onBack, onPractice }) {
     const [varType, setVarType] = useState('');
     const [varValue, setVarValue] = useState('');
 
-    const showToast = (message, type = 'info') => {
-        setToast({ show: true, message, type });
-    };
+    const showToast = (message, type = 'info') => {setToast({ show: true, message, type });};
 
     useEffect(() => {
         const checkCompletion = async () => {
@@ -72,9 +65,7 @@ function VariablesWorkspace({ onBack, onPractice }) {
             if (!user) return;
             const docRef = doc(db, "userProgress", user.uid);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {
-                setIsCompleted(true);
-            }
+            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {setIsCompleted(true);}
         };
         checkCompletion();
     }, []);
@@ -107,9 +98,7 @@ function VariablesWorkspace({ onBack, onPractice }) {
         let sanitizedValue = rawValue;
 
         if (varType === 'integer') {
-            if (/[^0-9-]/.test(rawValue)) {
-                showToast("Only numbers and '-' are allowed for integers.", "error");
-            }
+            if (/[^0-9-]/.test(rawValue)) {showToast("Only numbers and '-' are allowed for integers.", "error");}
             sanitizedValue = rawValue.replace(/[^0-9-]/g, '');
             if (sanitizedValue.indexOf('-', 1) > 0) {
                 showToast("The '-' sign must be at the beginning.", "error");
@@ -122,16 +111,17 @@ function VariablesWorkspace({ onBack, onPractice }) {
                     if (num > INT32_MAX) {
                         showToast("Value exceeds the 32-bit integer limit.", "error");
                         sanitizedValue = INT32_MAX.toString();
-                    } else if (num < INT32_MIN) {
+                    }
+                    else if (num < INT32_MIN) {
                         showToast("Value is below the 32-bit integer limit.", "error");
                         sanitizedValue = INT32_MIN.toString();
                     }
-                } catch (error) {}
+                }
+                catch (error) {}
             }
-        } else if (varType === 'float') {
-            if (/[^0-9.-]/.test(rawValue)) {
-                showToast("Only numbers, '-', and one '.' are allowed for floats.", "error");
-            }
+        }
+        else if (varType === 'float') {
+            if (/[^0-9.-]/.test(rawValue)) {showToast("Only numbers, '-', and one '.' are allowed for floats.", "error");}
             sanitizedValue = rawValue.replace(/[^0-9.-]/g, '');
             if (sanitizedValue.indexOf('-', 1) > 0) {
                 showToast("The '-' sign must be at the beginning.", "error");
@@ -142,10 +132,9 @@ function VariablesWorkspace({ onBack, onPractice }) {
                 showToast("Only one decimal point is allowed.", "error");
                 sanitizedValue = parts[0] + '.' + parts.slice(1).join('');
             }
-        } else if (varType === 'char') {
-            if (rawValue.length > 1) {
-                showToast("Only a single character is allowed.", "info");
-            }
+        }
+        else if (varType === 'char') {
+            if (rawValue.length > 1) {showToast("Only a single character is allowed.", "info");}
             sanitizedValue = rawValue.slice(0, 1);
         }
         setVarValue(sanitizedValue);
@@ -171,7 +160,6 @@ function VariablesWorkspace({ onBack, onPractice }) {
                 <h1 className="auth-title" style={{ margin: 0 }}>Variables & Data Types</h1>
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back to Select</button>
             </div>
-
             <div className="ds-controls-panel">
                 <div className="ds-controls-left">
                     <div className="ds-control-group">
@@ -213,9 +201,10 @@ function VariablesWorkspace({ onBack, onPractice }) {
                                         <option value="false">False</option>
                                     </select>
                                 );
-                            } else if (varType === 'none') {
-                                return ( <input type="text" className="ds-input-field" value="None" disabled /> );
-                            } else {
+                            }
+                            else if (varType === 'none') {return ( <input type="text" className="ds-input-field" value="None" disabled /> );
+                            }
+                            else {
                                 return ( <input 
                                     type="text" 
                                     className="ds-input-field" 
@@ -228,17 +217,13 @@ function VariablesWorkspace({ onBack, onPractice }) {
                     </div>
                 </div>
                 <div className="ds-controls-right">
-                    <div> 
-                        <button onClick={onPractice} className="auth-button" style={{ maxWidth: '150px', marginRight: '16px' }}>Practice</button>
-                    </div>
+                    <div> <button onClick={onPractice} className="auth-button" style={{ maxWidth: '150px', marginRight: '16px' }}>Practice</button> </div>
                      <div className="stacked-buttons-container">
                         <button className={`ds-action-button complete-button ${isCompleted ? 'completed' : ''}`} onClick={handleCompleteTopic}>
                             <CheckIcon />
                             {isCompleted ? 'Completed' : 'Mark as Complete'}
                         </button>
-                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}>
-                            <BookIcon />
-                        </button>
+                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}> <BookIcon /> </button>
                     </div>
                 </div>
             </div>
@@ -270,5 +255,4 @@ function VariablesWorkspace({ onBack, onPractice }) {
         </div>
     );
 }
-
 export default VariablesWorkspace;

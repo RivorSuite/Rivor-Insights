@@ -9,5 +9,4 @@ function AlgoVisualizerPage({ onBack }) {
         </div>
     );
 }
-
 export default AlgoVisualizerPage;

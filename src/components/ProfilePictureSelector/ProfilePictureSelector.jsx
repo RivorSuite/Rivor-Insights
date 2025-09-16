@@ -18,12 +18,9 @@ function ProfilePictureSelector({ onSelect, onClose, currentAvatarId }) {
                         </div>
                     ))}
                 </div>
-                <button className="auth-button" onClick={onClose} style={{ marginTop: '20px' }}>
-                    Done
-                </button>
+                <button className="auth-button" onClick={onClose} style={{ marginTop: '20px' }}> Done </button>
             </div>
         </div>
     );
 }
-
 export default ProfilePictureSelector;

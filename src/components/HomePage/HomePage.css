@@ -61,27 +61,31 @@
 }
 
 .profile-card { grid-area: profile; }
+
 .continue-card { grid-area: continue; }
+
 .quick-access-container { grid-area: access; }
+
 .ai-card { grid-area: ai; }
+
 .quote-card { 
     grid-area: quote;
     justify-content: center; 
     align-items: center; 
     text-align: center; 
-    gap: 12px; /* Adds space between quote and author */
+    gap: 12px;
 }
 .quote-text {
     font-style: italic;
     color: var(--secondary-text);
-    margin: 0; /* Remove default paragraph margin */
-    font-size: 15px; /* Slightly smaller for better fit */
+    margin: 0;
+    font-size: 15px;
 }
 
 .quote-author {
     font-weight: 600;
     color: var(--primary-text);
-    margin: 0; /* Remove default paragraph margin */
+    margin: 0;
     font-size: 14px;
 }
 
@@ -97,10 +101,13 @@
 
 /* Card Specific Styles */
 .profile-card { align-items: center; text-align: center; gap: 12px; }
+
 .profile-picture-placeholder { width: 80px; height: 80px; border-radius: 50%; background-color: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 600; }
+
 .profile-card h3 { font-size: 16px; margin: 0; word-break: break-all; }
 
 .progress-rank-container { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 12px 0; }
+
 .progress-rank-container:hover {
     opacity: 0.85;
     transform: scale(1.03);
@@ -114,7 +121,7 @@
 
 .quick-access-container { 
     display: grid; 
-    grid-template-columns: 1fr 1fr 1fr; /* This is the key change */
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr; 
     gap: 16px; 
 }
@@ -127,7 +134,7 @@
 .access-card:hover .ds-icon-svg { color: var(--accent); }
 .quote-card { justify-content: center; align-items: center; text-align: center; font-style: italic; color: var(--secondary-text); }
 
-/* --- AI Card Redesign --- */
+/* --- AI Card --- */
 .ai-card { padding: 0; overflow: hidden; }
 .ai-card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid var(--border); }
 .ai-card-header h3 { margin: 0; }
@@ -145,30 +152,29 @@
 .user-message { background: var(--accent); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
 .ai-message p, .user-message p { margin: 0; }
 
-/* --- THIS IS WHERE THE CHANGES ARE --- */
 .ai-input-area {
     display: flex;
     gap: 10px;
-    padding: 12px 20px; /* Reduced overall padding for a shorter bar */
+    padding: 12px 20px;
     border-top: 1px solid var(--border);
     background-color: var(--background);
-    align-items: center; /* Vertically align items */
+    align-items: center;
 }
 .ai-input-area input {
     flex-grow: 1;
     background-color: var(--surface);
     border: 1px solid var(--border);
     color: var(--primary-text);
-    padding: 10px 16px; /* Reduced vertical padding */
+    padding: 10px 16px;
     border-radius: 8px;
-    font-size: 16px; /* Increased font size */
+    font-size: 16px;
 }
 .ai-input-area input:focus { outline: none; border-color: var(--accent); }
 
 .ai-input-area .icon-button {
     flex-shrink: 0;
     width: 65px;
-    height: 42px; /* Set a specific height to match the input */
+    height: 42px;
     padding: 8px;
 }
 .ai-input-area .icon-button .ds-icon-svg { height: 100%; width: 100%; }

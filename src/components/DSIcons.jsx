@@ -7,6 +7,7 @@ export const ArrayIcon = () => (
         ))}
     </svg>
 );
+
 export const SinglyLinkedListIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 40">
         {[0, 1, 2].map(i => (

@@ -50,7 +50,6 @@ const CodeLine = ({ a, b, op, result, type }) => {
     );
 };
 
-
 const operatorsConfig = {
     arithmetic: ['+', '-', '*', '/', '%', '**', '//'],
     assignment: ['=', '+=', '-=', '*=', '/=', '%='],
@@ -64,12 +63,10 @@ function OperatorsWorkspace({ onBack, onPractice }) {
     const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
     const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
     const topicId = 'basics-operators';
-
     const [opCategory, setOpCategory] = useState('arithmetic');
     const [operator, setOperator] = useState('+');
     const [operandA, setOperandA] = useState('');
     const [operandB, setOperandB] = useState('');
-    
     const [assignmentState, setAssignmentState] = useState({ prev: 10, current: 10 });
     const [isAnimating, setIsAnimating] = useState(false);
 
@@ -102,9 +99,7 @@ function OperatorsWorkspace({ onBack, onPractice }) {
             if (!user) return;
             const docRef = doc(db, "userProgress", user.uid);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {
-                setIsCompleted(true);
-            }
+            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {setIsCompleted(true);}
         };
         checkCompletion();
     }, []);
@@ -117,17 +112,18 @@ function OperatorsWorkspace({ onBack, onPractice }) {
             if (isCompleted) {
                 await updateDoc(docRef, { completed: arrayRemove(topicId) });
                 setIsCompleted(false);
-            } else {
+            }
+            else {
                 await updateDoc(docRef, { completed: arrayUnion(topicId) });
                 setIsCompleted(true);
             }
-        } catch (error) {
+        }
+        catch (error) {
             if (error.code === 'not-found' && !isCompleted) {
                 await setDoc(docRef, { completed: [topicId] });
                 setIsCompleted(true);
-            } else {
-                console.error("Error updating progress:", error);
             }
+            else {console.error("Error updating progress:", error);}
         }
     };
 
@@ -135,13 +131,8 @@ function OperatorsWorkspace({ onBack, onPractice }) {
         const newCategory = e.target.value;
         setOpCategory(newCategory);
         setOperator(operatorsConfig[newCategory][0]);
-        if (newCategory === 'logical') {
-            setOperandA('true');
-            setOperandB('false');
-        } else {
-            setOperandA('10');
-            setOperandB('5');
-        }
+        if (newCategory === 'logical') {setOperandA('true');setOperandB('false');}
+        else {setOperandA('10');setOperandB('5');}
     };
 
     const parseOperand = (val) => {
@@ -160,19 +151,10 @@ function OperatorsWorkspace({ onBack, onPractice }) {
             case '+': result = a + b; break;
             case '-': result = a - b; break;
             case '*': result = a * b; break;
-            case '/': 
-                if (b === 0) throw new Error("Division by zero is not allowed.");
-                result = a / b;
-                break;
-            case '%': 
-                if (b === 0) throw new Error("Division by zero is not allowed.");
-                result = a % b;
-                break;
+            case '/': if (b === 0) throw new Error("Division by zero is not allowed."); result = a / b;break;
+            case '%': if (b === 0) throw new Error("Division by zero is not allowed."); result = a % b; break;
             case '**': result = a ** b; break;
-            case '//': 
-                if (b === 0) throw new Error("Division by zero is not allowed.");
-                result = Math.floor(a / b);
-                break;
+            case '//': if (b === 0) throw new Error("Division by zero is not allowed."); result = Math.floor(a / b); break;
             case '&': result = a & b; break;
             case '|': result = a | b; break;
             case '^': result = a ^ b; break;
@@ -187,22 +169,14 @@ function OperatorsWorkspace({ onBack, onPractice }) {
             case 'and': result = a && b; break;
             case 'or': result = a || b; break;
             case 'not': result = !a; break;
-            case '=': case '+=': case '-=': case '*=': case '/=': case '%=':
-                result = assignmentState.current;
-                break;
+            case '=': case '+=': case '-=': case '*=': case '/=': case '%=': result = assignmentState.current; break;
             default: result = 'N/A';
         }
-    } catch (e) {
-        error = e.message;
-        result = 'Error';
     }
-    
+    catch (e) {error = e.message; result = 'Error';}
     const isUnary = operator === 'not';
-
     const renderVisualization = () => {
-        if (error) {
-            return <div className="boolean-result false">{error}</div>;
-        }
+        if (error) {return <div className="boolean-result false">{error}</div>;}
 
         const formatDisplayValue = (val) => {
             if (val === 'true' || val === true) return 'True';
@@ -362,9 +336,7 @@ function OperatorsWorkspace({ onBack, onPractice }) {
                             <CheckIcon />
                             {isCompleted ? 'Completed' : 'Mark as Complete'}
                         </button>
-                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}>
-                            <BookIcon />
-                        </button>
+                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}> <BookIcon /> </button>
                     </div>
                 </div>
             </div>
@@ -374,13 +346,10 @@ function OperatorsWorkspace({ onBack, onPractice }) {
                     <h3 className="code-editor-header">Code</h3>
                     <CodeLine a={operandA} b={operandB} op={operator} result={result} type={opCategory === 'logical' ? 'boolean' : 'number'} />
                 </div>
-                <div className="op-visualization-panel">
-                    {renderVisualization()}
-                </div>
+                <div className="op-visualization-panel"> {renderVisualization()} </div>
             </div>
             {isInfoPanelOpen && <ConceptInfoPanel data={conceptsInfo.operators} onClose={() => setIsInfoPanelOpen(false)} />}
         </div>
     );
 }
-
 export default OperatorsWorkspace;

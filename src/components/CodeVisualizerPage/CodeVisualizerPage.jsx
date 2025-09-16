@@ -5,17 +5,12 @@ import { parseCode } from '../../parser/core.js';
 import './CodeVisualizerPage.css';
 
 const renderValue = (value) => {
-    if (typeof value === 'string') {
-        return `"${value}"`;
-    }
+    if (typeof value === 'string') {return `"${value}"`;}
     if (value === null || value === undefined) return String(value);
-    if (value.type === 'list') {
-        return <ListVisualizer data={value.value} />;
-    } else if (value.type === 'tuple') {
-        return <TupleVisualizer data={value.value} />;
-    } else if (value.type === 'dict') {
-        return <DictionaryVisualizer data={value.value} />;
-    } else {
+    if (value.type === 'list') {return <ListVisualizer data={value.value} />;} 
+    else if (value.type === 'tuple') {return <TupleVisualizer data={value.value} />;}
+    else if (value.type === 'dict') {return <DictionaryVisualizer data={value.value} />;}
+    else {
         return typeof value === 'number' && !Number.isInteger(value)
             ? value.toFixed(4)
             : String(value);
@@ -70,25 +65,21 @@ function CodeVisualizerPage({ onBack, initialCode }) {
     const [steps, setSteps] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
     const [isVisualizing, setIsVisualizing] = useState(false);
-    
     // --- Refs for auto-scrolling ---
     const activeLineRef = useRef(null);
     const codeEditorRef = useRef(null);
     const codeDisplayRef = useRef(null);
     const statePanelRef = useRef(null);
     const outputPanelRef = useRef(null);
-
     // --- Auto-scroll logic ---
     useEffect(() => {
         if (isVisualizing) {
-            // Scroll active line into view
             if (activeLineRef.current) {
                 activeLineRef.current.scrollIntoView({
                     behavior: 'smooth',
                     block: 'nearest',
                 });
             }
-            // Scroll state and output panels to the bottom
             if (statePanelRef.current) {
                 statePanelRef.current.scrollTop = statePanelRef.current.scrollHeight;
             }
@@ -98,7 +89,6 @@ function CodeVisualizerPage({ onBack, initialCode }) {
         }
     }, [currentStep, isVisualizing]);
 
-    // Auto-scroll the code editor textarea as the user types
     useEffect(() => {
         if (!isVisualizing && codeEditorRef.current) {
             codeEditorRef.current.scrollTop = codeEditorRef.current.scrollHeight;
@@ -112,7 +102,8 @@ function CodeVisualizerPage({ onBack, initialCode }) {
             setSteps(executionSteps);
             setCurrentStep(0);
             setIsVisualizing(true);
-        } catch (e) {
+        } 
+        catch (e) {
             console.error("Error during parsing:", e);
             alert("An error occurred while parsing your code. Please check the console for details.");
         }
@@ -231,5 +222,4 @@ function CodeVisualizerPage({ onBack, initialCode }) {
         </div>
     );
 }
-
 export default CodeVisualizerPage;

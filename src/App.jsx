@@ -27,16 +27,12 @@ function App() {
     const [initialCode, setInitialCode] = useState('');
     const [selectedDS, setSelectedDS] = useState(() => {
         const hashParts = window.location.hash.substring(1).split('/');
-        if (hashParts[0] === 'ds-visualizer') {
-            return hashParts[1] || null;
-        }
+        if (hashParts[0] === 'ds-visualizer') {return hashParts[1] || null;}
         return null;
     });
     const [selectedConcept, setSelectedConcept] = useState(() => {
         const hashParts = window.location.hash.substring(1).split('/');
-        if (hashParts[0] === 'code-concepts') {
-            return hashParts[1] || null;
-        }
+        if (hashParts[0] === 'code-concepts') {return hashParts[1] || null;}
         return null;
     });
     const [initialLoopType, setInitialLoopType] = useState('for');
@@ -53,9 +49,7 @@ function App() {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
             setIsLoading(false);
-            if (!currentUser) {
-                setViewStack(['home']);
-            }
+            if (!currentUser) {setViewStack(['home']);}
         });
         return () => unsubscribe();
     }, []);
@@ -66,7 +60,6 @@ function App() {
             const view = hashParts[0] || 'home';
             const ds = hashParts[0] === 'ds-visualizer' ? hashParts[1] : null;
             const concept = hashParts[0] === 'code-concepts' ? hashParts[1] : null;
-            
             setViewStack([view]);
             setSelectedDS(ds);
             setSelectedConcept(concept);
@@ -77,73 +70,34 @@ function App() {
 
     useEffect(() => {
         let newHash = viewStack[viewStack.length - 1] || 'home';
-        if (newHash === 'ds-visualizer' && selectedDS) {
-            newHash += `/${selectedDS}`;
-        }
-        if (newHash === 'code-concepts' && selectedConcept) {
-            newHash += `/${selectedConcept}`;
-        }
-        if (window.location.hash !== `#${newHash}`) {
-            window.location.hash = newHash;
-        }
+        if (newHash === 'ds-visualizer' && selectedDS) {newHash += `/${selectedDS}`;}
+        if (newHash === 'code-concepts' && selectedConcept) {newHash += `/${selectedConcept}`;}
+        if (window.location.hash !== `#${newHash}`) {window.location.hash = newHash;}
     }, [viewStack, selectedDS, selectedConcept]);
     
-    const navigateTo = (view) => {
-        setViewStack(prevStack => [...prevStack, view]);
-    };
+    const navigateTo = (view) => {setViewStack(prevStack => [...prevStack, view]);};
 
-    const navigateBack = () => {
-        window.history.back();
-    };
+    const navigateBack = () => {window.history.back();};
     
     const handleSelectDS = (dsId) => {
         setSelectedDS(dsId);
-        if (dsId && viewStack[viewStack.length - 1] !== 'ds-visualizer') {
-            navigateTo('ds-visualizer');
-        }
+        if (dsId && viewStack[viewStack.length - 1] !== 'ds-visualizer') {navigateTo('ds-visualizer');}
     };
 
     const handleSelectConcept = (conceptId) => {
         setSelectedConcept(conceptId);
-        if (conceptId && viewStack[viewStack.length - 1] !== 'code-concepts') {
-            navigateTo('code-concepts');
-        }
+        if (conceptId && viewStack[viewStack.length - 1] !== 'code-concepts') {navigateTo('code-concepts');}
     };
 
     const handleViewTopic = (topicId) => {
-        if (topicId === 'basics-variables') {
-            handleSelectConcept('variables');
-            return;
-        }
-
-        if (topicId === 'basics-operators') { 
-            handleSelectConcept('operators');
-            return;
-        }
-
-        if (topicId === 'basics-conditionals') {
-            handleSelectConcept('conditionals');
-            return;
-        }
-
-        if (topicId === 'basics-for-loops') {
-            setInitialLoopType('for');
-            handleSelectConcept('loops');
-            return;
-        }
-
-        if (topicId === 'basics-while-loops') {
-            setInitialLoopType('while');
-            handleSelectConcept('loops');
-            return;
-        }
+        if (topicId === 'basics-variables') {handleSelectConcept('variables'); return;}
+        if (topicId === 'basics-operators') { handleSelectConcept('operators'); return;}
+        if (topicId === 'basics-conditionals') {handleSelectConcept('conditionals'); return;}
+        if (topicId === 'basics-for-loops') {setInitialLoopType('for'); handleSelectConcept('loops'); return;}
+        if (topicId === 'basics-while-loops') {setInitialLoopType('while'); handleSelectConcept('loops'); return;}
 
         const codeSnippet = exampleCode[topicId];
-        if (codeSnippet) {
-            setInitialCode(codeSnippet);
-            navigateTo('code-visualizer');
-            return;
-        }
+        if (codeSnippet) {setInitialCode(codeSnippet); navigateTo('code-visualizer'); return;}
         const dsIdMap = {
             'ds-arrays': 'array',
             'ds-singly-linked-list': 'singly-linked-list',
@@ -155,9 +109,7 @@ function App() {
             'ds-binary-search-trees': 'bst',
         };
         const dsPageId = dsIdMap[topicId];
-        if (dsPageId) {
-            handleSelectDS(dsPageId);
-        }
+        if (dsPageId) {handleSelectDS(dsPageId);}
     };
 
     const handlePractice = (topicId) => {
@@ -169,10 +121,7 @@ function App() {
             'basics-while-loops': '# Find the first power of 2 greater than 60\nnum = 1\nwhile num <= 60:\n  num = num * 2\n\nprint("The first power of 2 > 60 is:", num)',
         }; 
         const code = practiceCode[topicId];
-        if (code) {
-            setInitialCode(code);
-            navigateTo('code-visualizer');
-        }
+        if (code) {setInitialCode(code); navigateTo('code-visualizer');}
     };
 
     const handleLogout = async () => { await signOut(auth); };
@@ -181,29 +130,20 @@ function App() {
     if (isLoading) { return <div style={{ color: 'white', textAlign: 'center' }}>Loading...</div>; }
     if (!user) {
         const currentView = viewStack[viewStack.length - 1] || 'home';
-        if (currentView === 'forgot-password') {
-            // If the URL hash is #forgot-password, show the new page
-            return <ForgotPasswordPage onNavigateBack={() => window.location.hash = ''} />;
-        }
+        // If the URL hash is #forgot-password, show the new page
+        if (currentView === 'forgot-password') {return <ForgotPasswordPage onNavigateBack={() => window.location.hash = ''} />;}
         // Otherwise, show the default login page
         return <LoginPage />;
     }
 
     if (!user.emailVerified) {return <VerifyEmailPage onLogout={handleLogout} />;}
     
-
     const renderContent = () => {
         const currentView = viewStack[viewStack.length - 1] || 'home';
         switch (currentView) {
-            case 'roadmap':
-                return <RoadmapPage onBack={navigateBack} onSelectTopic={handleViewTopic} />;
-            
-            case 'text-page':
-                return <TextPage onBack={navigateBack} />;
-            
-            case 'code-visualizer':
-                return <CodeVisualizerPage onBack={navigateBack} initialCode={initialCode} />;
-            
+            case 'roadmap': return <RoadmapPage onBack={navigateBack} onSelectTopic={handleViewTopic} />;
+            case 'text-page': return <TextPage onBack={navigateBack} />;
+            case 'code-visualizer': return <CodeVisualizerPage onBack={navigateBack} initialCode={initialCode} />;
             case 'ds-visualizer':
                 const previousView = viewStack[viewStack.length - 2] || 'home';
                 return <DSVisualizerPage
@@ -212,10 +152,7 @@ function App() {
                     onSelectDS={handleSelectDS}
                     entryPoint={previousView}
                 />;
-
-            case 'algo-visualizer':
-                return <AlgoVisualizerPage onBack={navigateBack} />;
-            
+            case 'algo-visualizer':return <AlgoVisualizerPage onBack={navigateBack} />;
             case 'code-concepts':
                 return <CodeConceptsPage
                     onBack={navigateBack}
@@ -224,13 +161,10 @@ function App() {
                     onPractice={handlePractice}
                     initialType={initialLoopType}
                 />;
-            
-            case 'about-us':
-                return <AboutUsPage onBack={navigateBack} />;
-            
+            case 'about-us':return <AboutUsPage onBack={navigateBack} />;
             default:
                 return <HomePage 
-                    userEmail={user.email} 
+                    userEmail = {user.email} 
                     onLogout={handleLogout} 
                     onViewRoadmap={() => navigateTo('roadmap')} 
                     onViewTextPage={() => navigateTo('text-page')}
@@ -251,5 +185,4 @@ function App() {
         </div>
     );
 }
-
 export default App;

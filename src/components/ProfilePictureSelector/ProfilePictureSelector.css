@@ -52,7 +52,6 @@
     object-fit: cover; /* This is the key for rectangular images */
 }
 
-/* --- This is the key part --- */
 .pfp-option img {
     width: 100%;
     height: 100%;

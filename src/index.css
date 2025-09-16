@@ -99,9 +99,7 @@ body {
     transition: background-color 0.3s;
 }
 
-.auth-button:hover {
-    background-color: var(--accent-hover);
-}
+.auth-button:hover {background-color: var(--accent-hover);}
 
 .home-container {
      animation: fadeIn 0.5s ease-in-out;
@@ -144,7 +142,6 @@ body {
 }
 
 /* --- THEME DEFINITIONS --- */
-
 /* Dark Theme (Default) */
 :root {
   --background: #0a0a0a;
@@ -270,6 +267,7 @@ body.light-theme {
     font-size: 14px;
     color: var(--secondary-text);
 }
+
 /* --- DS Icon Styles --- */
 .ds-icon-svg {
     width: 100%;
@@ -285,12 +283,9 @@ body.light-theme {
 }
 
 .ds-card:hover .ds-icon-box,
-.ds-card:hover .ds-icon-line {
-    stroke: var(--accent);
-}
-.ds-card:hover .ds-icon-text {
-    fill: var(--accent);
-}
+.ds-card:hover .ds-icon-line {stroke: var(--accent);}
+
+.ds-card:hover .ds-icon-text {fill: var(--accent);}
 /* --- DS Workspace Styles --- */
 .ds-workspace {
     width: 100%;
@@ -313,9 +308,8 @@ body.light-theme {
     gap: 16px;
     align-items: center;
 }
-.ds-workspace-header .complete-button {
-    margin-left: auto;
-}
+.ds-workspace-header .complete-button {margin-left: auto;}
+
 .ds-header-actions {
     margin-left: auto;
     display: flex;
@@ -466,9 +460,8 @@ body.light-theme {
     color: var(--secondary-text);
 }
 
-.array-cell {
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-}
+.array-cell {transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;}
+
 .array-cell.highlight {
     border-color: var(--accent);
     box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 30%, transparent);
@@ -477,9 +470,7 @@ body.light-theme {
     transform: translateY(-20px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
-.array-cell.insert {
-    animation: popIn 0.3s ease forwards;
-}
+.array-cell.insert {animation: popIn 0.3s ease forwards;}
 
 @keyframes popIn {
     0% { transform: scale(0.5); opacity: 0; }
@@ -508,9 +499,8 @@ body.light-theme {
     box-shadow: 0 0 0 2px var(--border);
     transition: background-color 0.2s;
 }
-.ds-speed-slider input[type="range"]::-webkit-slider-thumb:hover {
-    background: var(--accent-hover);
-}
+.ds-speed-slider input[type="range"]::-webkit-slider-thumb:hover {background: var(--accent-hover);}
+
 .ds-speed-slider input[type="range"]::-moz-range-thumb {
     width: 18px;
     height: 18px;
@@ -520,13 +510,10 @@ body.light-theme {
     box-shadow: 0 0 0 2px var(--border);
     transition: background-color 0.2s;
 }
-.ds-speed-slider input[type="range"]::-moz-range-thumb:hover {
-    background: var(--accent-hover);
-}
+.ds-speed-slider input[type="range"]::-moz-range-thumb:hover {background: var(--accent-hover);}
 
-.ds-controls-panel {
-    grid-template-columns: auto auto auto auto 1fr;
-}
+.ds-controls-panel {grid-template-columns: auto auto auto auto 1fr;}
+
 .ds-controls-left {
     display: flex;
     align-items: flex-start;
@@ -565,16 +552,14 @@ body.light-theme {
     border: 1px solid var(--accent);
     color: var(--accent);
 }
-.complete-button:hover {
-    background-color: color-mix(in srgb, var(--accent) 10%, transparent);
-}
+
+.complete-button:hover {background-color: color-mix(in srgb, var(--accent) 10%, transparent);}
+
 .complete-button.completed {
     background-color: var(--accent);
     color: white;
 }
-.roadmap-topic-label:hover {
-    background-color: var(--background);
-}
+.roadmap-topic-label:hover {background-color: var(--background);}
 
 .info-panel-overlay {
     position: fixed;
@@ -589,6 +574,7 @@ body.light-theme {
     z-index: 1000;
     backdrop-filter: blur(5px);
 }
+
 .info-panel {
     background-color: var(--surface);
     border: 1px solid var(--border);
@@ -660,9 +646,7 @@ body.light-theme {
 .ll-node.traversed { border-color: var(--accent); }
 .ll-node-pointer.is-tail::after { background-color: var(--null-pointer); }
 
-@media (max-width: 900px) {
-    .ds-workspace .ds-controls-panel .ds-controls-right { width: 100%; justify-content: center; margin-left: 0; }
-}
+@media (max-width: 900px) {.ds-workspace .ds-controls-panel .ds-controls-right { width: 100%; justify-content: center; margin-left: 0; }}
 
 .dll-node-wrapper { display: flex; align-items: center; }
 .dll-node-container { display: flex; align-items: center; position: relative; }

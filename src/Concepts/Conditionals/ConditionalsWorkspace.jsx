@@ -94,12 +94,10 @@ function ConditionalsWorkspace({ onBack, onPractice }) {
     const [activeBlocks, setActiveBlocks] = useState([]);
     const animationId = useRef(0); // This will track the current animation
 
-    // --- *** THIS IS THE ROBUST, CORRECTED LOGIC *** ---
     useEffect(() => {
         // Increment the ref. Any running animation with an older ID will stop.
         animationId.current += 1;
         const currentAnimationId = animationId.current;
-
         const score = parseInt(inputValue, 10);
 
         // Immediately clear if input is invalid or empty
@@ -110,7 +108,6 @@ function ConditionalsWorkspace({ onBack, onPractice }) {
 
         const animateFlow = async () => {
             const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-            
             // This is the key: only update state if the animation hasn't been cancelled
             const setBlocks = (blocks) => {
                 if (animationId.current === currentAnimationId) {
@@ -147,9 +144,7 @@ function ConditionalsWorkspace({ onBack, onPractice }) {
 
             setBlocks(['start', 'if_cond', 'if_false_path', 'elif1_cond', 'elif1_false_path', 'elif2_cond', 'elif2_false_path', 'else_block']);
         };
-        
         animateFlow();
-
     }, [inputValue]);
 
 
@@ -170,7 +165,8 @@ function ConditionalsWorkspace({ onBack, onPractice }) {
         try {
             if (isCompleted) { await updateDoc(docRef, { completed: arrayRemove(topicId) }); setIsCompleted(false); }
             else { await updateDoc(docRef, { completed: arrayUnion(topicId) }); setIsCompleted(true); }
-        } catch (error) {
+        }
+        catch (error) {
             if (error.code === 'not-found' && !isCompleted) { await setDoc(docRef, { completed: [topicId] }); setIsCompleted(true); }
             else console.error("Error updating progress:", error);
         }
@@ -191,7 +187,6 @@ function ConditionalsWorkspace({ onBack, onPractice }) {
                 <h1 className="auth-title" style={{ margin: 0 }}>If/Elif/Else</h1>
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back to Select</button>
             </div>
-
             <div className="ds-controls-panel">
                 <div className="ds-controls-left">
                      <div className="ds-control-group">
@@ -206,56 +201,41 @@ function ConditionalsWorkspace({ onBack, onPractice }) {
                     </div>
                 </div>
                 <div className="ds-controls-right">
-                    <div> 
-                        <button onClick={() => onPractice('conditionals')} className="auth-button" style={{ maxWidth: '150px', marginRight: '16px' }}>Practice</button>
-                    </div>
+                    <div> <button onClick={() => onPractice('conditionals')} className="auth-button" style={{ maxWidth: '150px', marginRight: '16px' }}>Practice</button> </div>
                     <div className="stacked-buttons-container">
                         <button className={`ds-action-button complete-button ${isCompleted ? 'completed' : ''}`} onClick={handleCompleteTopic}>
                             <CheckIcon />
                             {isCompleted ? 'Completed' : 'Mark as Complete'}
                         </button>
-                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}>
-                            <BookIcon />
-                        </button>
+                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}> <BookIcon /> </button>
                     </div>
                 </div>
             </div>
 
             <div className="conditionals-workspace-content">
                 <div className="conditionals-code-panel">
-                     <h3 className="code-editor-header">Code</h3>
-                     <p className={`code-line ${isActive('if_cond') || isActive('if_block') ? 'active' : ''}`}>
+                    <h3 className="code-editor-header">Code</h3>
+                    <p className={`code-line ${isActive('if_cond') || isActive('if_block') ? 'active' : ''}`}>
                         <span className="token-keyword">if</span> score {'>='} 90:
-                     </p>
-                     <p className={`code-line ${isActive('if_block') ? 'active' : ''}`} style={{paddingLeft: '20px'}}>
-                        grade = "A"
-                     </p>
-                      <p className={`code-line ${isActive('elif1_cond') || isActive('elif1_block') ? 'active' : ''}`}>
+                    </p>
+                    <p className={`code-line ${isActive('if_block') ? 'active' : ''}`} style={{paddingLeft: '20px'}}> grade = "A" </p>
+                    <p className={`code-line ${isActive('elif1_cond') || isActive('elif1_block') ? 'active' : ''}`}>
                         <span className="token-keyword">elif</span> score {'>='} 80:
-                     </p>
-                     <p className={`code-line ${isActive('elif1_block') ? 'active' : ''}`} style={{paddingLeft: '20px'}}>
-                        grade = "B"
-                     </p>
-                      <p className={`code-line ${isActive('elif2_cond') || isActive('elif2_block') ? 'active' : ''}`}>
+                    </p>
+                    <p className={`code-line ${isActive('elif1_block') ? 'active' : ''}`} style={{paddingLeft: '20px'}}> grade = "B" </p>
+                    <p className={`code-line ${isActive('elif2_cond') || isActive('elif2_block') ? 'active' : ''}`}>
                         <span className="token-keyword">elif</span> score {'>='} 70:
-                     </p>
-                     <p className={`code-line ${isActive('elif2_block') ? 'active' : ''}`} style={{paddingLeft: '20px'}}>
-                        grade = "C"
-                     </p>
-                     <p className={`code-line ${isActive('else_block') ? 'active' : ''}`}>
+                    </p>
+                    <p className={`code-line ${isActive('elif2_block') ? 'active' : ''}`} style={{paddingLeft: '20px'}}> grade = "C" </p>
+                    <p className={`code-line ${isActive('else_block') ? 'active' : ''}`}>
                         <span className="token-keyword">else</span>:
-                     </p>
-                     <p className={`code-line ${isActive('else_block') ? 'active' : ''}`} style={{paddingLeft: '20px'}}>
-                        grade = "D"
-                     </p>
+                    </p>
+                    <p className={`code-line ${isActive('else_block') ? 'active' : ''}`} style={{paddingLeft: '20px'}}> grade = "D" </p>
                 </div>
-                <div className="conditionals-visualization-panel">
-                    <FlowchartSVG activeBlocks={activeBlocks} />
-                </div>
+                <div className="conditionals-visualization-panel"> <FlowchartSVG activeBlocks={activeBlocks} /> </div>
             </div>
             {isInfoPanelOpen && <ConceptInfoPanel data={conceptsInfo.conditionals} onClose={() => setIsInfoPanelOpen(false)} />}
         </div>
     );
 }
-
 export default ConditionalsWorkspace;

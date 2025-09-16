@@ -37,14 +37,11 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
     const [showEmail, setShowEmail] = useState(false);
     const [showPfpSelector, setShowPfpSelector] = useState(false);
     const userInitial = userData ? userData.username.charAt(0).toUpperCase() : '?';
-    
     // State Management for AI Chat & Quotes
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
-    
     const [isAiLoading, setIsAiLoading] = useState(false);
     const [chatSession, setChatSession] = useState(null);
-
     const [quote, setQuote] = useState({ text: '', author: '' });
 
     const quotes = [
@@ -69,10 +66,9 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
         `;
     
         const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-pro-latest",
+            model: "gemini-2.5-pro",
             systemInstruction: systemInstruction,
         });
-    
         setChatSession(model.startChat()); 
     }, []);
     
@@ -89,13 +85,11 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
         const fetchData = async () => {
             const user = auth.currentUser;
             if (!user) return;
-
             // Fetch User Data (username, email, avatarId)
             const userDocRef = doc(db, "users", user.uid);
             const userDocSnap = await getDoc(userDocRef);
-            if (userDocSnap.exists()) {
-                setUserData(userDocSnap.data());
-            } else {
+            if (userDocSnap.exists()) {setUserData(userDocSnap.data());}
+            else {
                 setUserData({
                     username: user.email.split('@')[0],
                     email: user.email,
@@ -103,37 +97,30 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
                 });
             }
 
-            // Fetch Progress Data
             const progressDocRef = doc(db, "userProgress", user.uid);
             const progressDocSnap = await getDoc(progressDocRef);
             const completed = progressDocSnap.exists() ? new Set(progressDocSnap.data().completed || []) : new Set();
             let nextTopic = null;
             const allTopics = roadmapData.flatMap(stage => stage.topics);
-            for (const topic of allTopics) {
-                if (!completed.has(topic.id)) { nextTopic = topic; break; }
-            }
+            for (const topic of allTopics) {if (!completed.has(topic.id)) { nextTopic = topic; break; }}
             setProgress({ completed, nextTopic });
         };
-
         fetchData();
     }, []);
     
     const handleAvatarSelect = async (avatarId) => {
         const user = auth.currentUser;
         if (!user || !userData) return;
-
         const userDocRef = doc(db, "users", user.uid);
         try {
             await updateDoc(userDocRef, { avatarId: avatarId });
             setUserData({ ...userData, avatarId: avatarId });
-        } catch (error) {
-            console.error("Error updating avatar:", error);
         }
+        catch (error) {console.error("Error updating avatar:", error);}
     };
 
     const handleSendMessage = async () => {
         if (!chatSession || userInput.trim() === '' || isAiLoading) return;
-    
         const newUserMessage = { sender: 'user', text: userInput };
         setMessages(prev => [...prev, newUserMessage]);
         const currentInput = userInput;
@@ -147,13 +134,13 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
     
             const aiResponse = { sender: 'ai', text: text };
             setMessages(prev => [...prev, aiResponse]);
-        } catch (error) {
+        }
+        catch (error) {
             console.error("Error sending message:", error);
             const errorResponse = { sender: 'ai', text: "Something went wrong. Please try again." };
             setMessages(prev => [...prev, errorResponse]);
-        } finally {
-            setIsAiLoading(false);
         }
+        finally {setIsAiLoading(false);}
     };
 
     const totalTopics = roadmapData.flatMap(stage => stage.topics).length;
@@ -187,24 +174,12 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
                 )}
             </div>
             <div className="quick-access-container">
-                <div className="dashboard-card access-card" onClick={onViewDSVisualizer}>
-                    <DSBranchIcon /><h3>Data Structures</h3>
-                </div>
-                <div className="dashboard-card access-card" onClick={onViewAlgoVisualizer}>
-                    <AlgoIcon /><h3>Algorithms</h3>
-                </div>
-                <div className="dashboard-card access-card" onClick={onViewCodeVisualizer}>
-                    <CodeIcon /><h3>Code Playground</h3>
-                </div>
-                <div className="dashboard-card access-card" onClick={onViewCodeConcepts}>
-                    <CodeConceptsIcon /><h3>Code Concepts</h3>
-                </div>
-                <div className="dashboard-card access-card" onClick={onViewTextPage}>
-                    <ArticleIcon /><h3>Articles</h3>
-                </div>
-                <div className="dashboard-card access-card" onClick={onViewAboutUs}>
-                    <AboutUsIcon /><h3>About Us</h3>
-                </div>
+                <div className="dashboard-card access-card" onClick={onViewDSVisualizer}> <DSBranchIcon /><h3>Data Structures</h3> </div>
+                <div className="dashboard-card access-card" onClick={onViewAlgoVisualizer}> <AlgoIcon /><h3>Algorithms</h3> </div>
+                <div className="dashboard-card access-card" onClick={onViewCodeVisualizer}> <CodeIcon /><h3>Code Playground</h3> </div>
+                <div className="dashboard-card access-card" onClick={onViewCodeConcepts}> <CodeConceptsIcon /><h3>Code Concepts</h3> </div>
+                <div className="dashboard-card access-card" onClick={onViewTextPage}> <ArticleIcon /><h3>Articles</h3> </div>
+                <div className="dashboard-card access-card" onClick={onViewAboutUs}> <AboutUsIcon /><h3>About Us</h3> </div>
             </div>
             <div className="dashboard-card ai-card">
                 <div className="ai-card-header"><h3>Ask Rivor AI</h3><span className="ai-status">Online</span></div>
@@ -215,9 +190,7 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
                     </div>
                 ) : (
                     messages.map((msg, index) => (
-                        <div key={index} className={msg.sender === 'user' ? 'user-message' : 'ai-message'}>
-                            <p>{msg.text}</p>
-                        </div>
+                        <div key={index} className={msg.sender === 'user' ? 'user-message' : 'ai-message'}> <p>{msg.text}</p> </div>
                     ))
                 )}
                 {isAiLoading && (
@@ -262,17 +235,12 @@ const AIWelcomeView = ({ onEnter }) => {
 
 function HomePage(props) {
     const [showWelcome, setShowWelcome] = useState(() => !sessionStorage.getItem('welcomeSeen'));
-
     const handleEnter = () => {
         sessionStorage.setItem('welcomeSeen', 'true');
         setShowWelcome(false);
     };
-
     return (
-        <div className="homepage-wrapper">
-            {showWelcome ? <AIWelcomeView onEnter={handleEnter} /> : <DashboardView {...props} />}
-        </div>
+        <div className="homepage-wrapper"> {showWelcome ? <AIWelcomeView onEnter={handleEnter} /> : <DashboardView {...props} />} </div>
     );
 }
-
 export default HomePage;

@@ -23,9 +23,7 @@
     color: var(--secondary-text);
 }
 
-.about-us-section {
-    margin-bottom: 40px;
-}
+.about-us-section {margin-bottom: 40px;}
 
 .about-us-section:last-child {
     margin-bottom: 0;
@@ -39,9 +37,7 @@
     margin-bottom: 16px;
 }
 
-.donate-section {
-    text-align: center;
-}
+.donate-section {text-align: center;}
 
 .qr-code-container {
     margin-top: 24px;

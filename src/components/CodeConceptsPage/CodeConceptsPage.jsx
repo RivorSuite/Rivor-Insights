@@ -46,10 +46,7 @@ function CodeConceptsPage({ onBack, selectedConcept, onSelectConcept, onPractice
             ? conceptsData
             : conceptsData.filter(c => c.category === selectedCategory);
 
-        if (!searchQuery) {
-            setFilteredData(categoryFiltered);
-            return;
-        }
+        if (!searchQuery) {setFilteredData(categoryFiltered); return;}
 
         const fuse = new Fuse(categoryFiltered, { keys: ['title'], includeScore: true, threshold: 0.4 });
         const results = fuse.search(searchQuery);
@@ -83,9 +80,7 @@ function CodeConceptsPage({ onBack, selectedConcept, onSelectConcept, onPractice
                     initialType={initialType}
                 />;
             
-            default:
-                onSelectConcept(null);
-                return null;
+            default: onSelectConcept(null); return null;
         }
     }
 
@@ -135,5 +130,4 @@ function CodeConceptsPage({ onBack, selectedConcept, onSelectConcept, onPractice
         </div>
     );
 }
-
 export default CodeConceptsPage;

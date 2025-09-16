@@ -29,18 +29,13 @@ function LoginPage() {
         setIsLoading(true);
 
         if (!isLoginView) {
-            // --- Validation for Sign Up ---
-            const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+            const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;  // --- Validation for Sign Up ---
             if (!passwordRegex.test(password)) {
                 setError("Password must be 8+ characters with an uppercase letter, a number, and a special symbol.");
                 setIsLoading(false);
                 return;
             }
-            if (!username) {
-                setError("Please enter a username.");
-                setIsLoading(false);
-                return;
-            }
+            if (!username) {setError("Please enter a username."); setIsLoading(false); return;}
 
             // --- Check for unique username ---
             const usersRef = collection(db, "users");
@@ -48,11 +43,7 @@ function LoginPage() {
             
             try {
                 const querySnapshot = await getDocs(q);
-                if (!querySnapshot.empty) {
-                    setError("This username is already taken. Please choose another.");
-                    setIsLoading(false);
-                    return;
-                }
+                if (!querySnapshot.empty) {setError("This username is already taken. Please choose another."); setIsLoading(false); return;}
             } 
             catch (err) {
                 console.error("Error checking username:", err);
@@ -63,19 +54,16 @@ function LoginPage() {
         }
 
         try {
-            if (isLoginView) {
-                await signInWithEmailAndPassword(auth, email, password);
-            } else {
+            if (isLoginView) {await signInWithEmailAndPassword(auth, email, password);}
+            else {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                
                 // Save username and email to Firestore
                 await setDoc(doc(db, "users", user.uid), {
                     username: username,
                     email: user.email,
                     avatarId: 0
                 });
-                
                 // Send email verification
                 await sendEmailVerification(user);
             }
@@ -95,17 +83,15 @@ function LoginPage() {
                     setError('An error occurred. Please try again.');
                     break;
             }
-        } finally {
-            setIsLoading(false);
         }
+        finally {setIsLoading(false);}
     };
 
     const handleGoogleSignIn = async () => {
         setError('');
         const provider = new GoogleAuthProvider();
-        try {
-            await signInWithPopup(auth, provider);
-        } catch (err) {
+        try {await signInWithPopup(auth, provider);}
+        catch (err) {
             console.error("Google Sign-In failed:", err);
             setError("Could not sign in with Google. Please try again.");
         }
@@ -121,10 +107,7 @@ function LoginPage() {
     };
 
     const handleSendOtp = async () => {
-        if (!phone) {
-            setError("Please enter a phone number.");
-            return;
-        }
+        if (!phone) {setError("Please enter a phone number."); return;}
         setupRecaptcha();
         const appVerifier = window.recaptchaVerifier;
         try {
@@ -132,17 +115,16 @@ function LoginPage() {
             window.confirmationResult = confirmationResult;
             setIsOtpSent(true);
             setError('');
-        } catch (err) {
-            console.error("OTP error:", err);
-            setError("Failed to send OTP. Please try again.");
         }
+        catch (err) {console.error("OTP error:", err); setError("Failed to send OTP. Please try again.");}
     };
 
     const handleVerifyOtp = async () => {
         try {
             await window.confirmationResult.confirm(otp);
             setError('');
-        } catch (err) {
+        }
+        catch (err) {
             console.error("OTP verification failed:", err);
             setError("Invalid OTP. Please try again.");
         }
@@ -201,10 +183,7 @@ function LoginPage() {
                     </div>
                     {isLoginView && (
                         <p style={{ textAlign: 'right', marginTop: '-10px', marginBottom: '20px', fontSize: '14px' }}>
-                            <a 
-                                href="#forgot-password" 
-                                style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: '600' }}
-                            >
+                            <a href="#forgot-password" style={{ color: 'var(--accent)', textDecoration: 'none', fontWeight: '600' }}>
                                 Forgot Password?
                             </a>
                         </p>
@@ -213,10 +192,8 @@ function LoginPage() {
                     <button type="submit" className="auth-button" disabled={isLoading}>{isLoading ? 'Processing...' : (isLoginView ? 'Sign In' : 'Sign Up')}</button>
                 </form>
             )}
-            
             <p style={{ marginTop: '24px', fontSize: '14px', color: 'var(--secondary-text)' }}>{isLoginView ? "Don't have an account? " : "Already have an account? "}<span onClick={() => { setIsLoginView(!isLoginView); setError(''); }} style={{ color: 'var(--accent)', fontWeight: '600', cursor: 'pointer' }}>{isLoginView ? 'Sign Up' : 'Sign In'}</span></p>
         </div>
     );
 }
-
 export default LoginPage;

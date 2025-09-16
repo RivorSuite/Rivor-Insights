@@ -1,4 +1,3 @@
-// src/components/TextPage/content/stage-0/future-programming.js
 export const futureProgramming = {
     title: "The Future of Programming",
     category: "Stage 0: The Pioneers",

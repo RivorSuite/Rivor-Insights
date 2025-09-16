@@ -16,10 +16,7 @@
     font-weight: 500;
 }
 
-.ds-category-item:hover {
-    background-color: var(--background);
-    color: var(--primary-text);
-}
+.ds-category-item:hover {background-color: var(--background);color: var(--primary-text);}
 
 .ds-category-item.active {
     background-color: var(--accent);
