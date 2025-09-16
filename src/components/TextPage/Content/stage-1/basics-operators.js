@@ -1,0 +1,46 @@
+export const basicsOperators = {
+    title: "Operators & Expressions",
+    category: "Stage 1: Foundational Concepts",
+    content: [
+        { type: 'h2', text: 'Operators: The Verbs of Programming' },
+        { type: 'p', text: 'Operators are special symbols or keywords that perform an operation on one or more values (called operands). An <strong>expression</strong> is any valid combination of values, variables, and operators that resolves to a single value. Mastering operators is fundamental to writing expressive and effective code.' },
+
+        { type: 'h2', text: 'Arithmetic Operators' },
+        { type: 'p', text: 'These are used for performing standard mathematical calculations.' },
+        { type: 'code', text: 'a = 15\nb = 4\n\nprint(a + b)  # Addition: 19\nprint(a - b)  # Subtraction: 11\nprint(a * b)  # Multiplication: 60\nprint(a / b)  # True Division: 3.75\nprint(a // b) # Floor Division (discards remainder): 3\nprint(a % b)  # Modulus (returns remainder): 3\nprint(a ** b) # Exponentiation: 50625' },
+
+        { type: 'h2', text: 'Assignment Operators' },
+        { type: 'p', text: 'While the basic assignment operator is `=`, most languages provide compound operators for shorthand. They perform an operation and an assignment in one step.' },
+        { type: 'code', text: 'x = 10\nx += 5  # Equivalent to: x = x + 5. (x is now 15)\nx -= 2  # Equivalent to: x = x - 2. (x is now 13)\nx *= 3  # Equivalent to: x = x * 3. (x is now 39)' },
+
+        { type: 'h2', text: 'Comparison Operators' },
+        { type: 'p', text: 'These operators compare two values and always evaluate to a Boolean result (`True` or `False`). They are the foundation of all conditional logic.' },
+        { type: 'code', text: 'x = 10\ny = 5\n\nprint(x > y)   # Greater than: True\nprint(x < y)   # Less than: False\nprint(x == 10) # Equal to: True\nprint(x != y)  # Not equal to: True\nprint(y >= 5)  # Greater than or equal to: True' },
+
+        { type: 'h2', text: 'Logical Operators' },
+        { type: 'p', text: 'Logical operators (`and`, `or`, `not`) are used to combine or invert Boolean expressions.' },
+        { type: 'code', text: 'age = 22\nis_student = True\n\n# `and`: True only if both operands are true\nif age > 18 and is_student:\n    print("Eligible for student discount.")\n\n# `or`: True if at least one operand is true\nif age < 18 or age > 65:\n    print("Eligible for concession fare.")\n\n# `not`: Inverts the boolean value\nif not is_student:\n    print("This person is not a student.")' },
+        
+        { type: 'h2', text: 'Membership & Identity Operators' },
+        { type: 'p', text: 'These operators are used for more advanced comparisons:' },
+        { type: 'li', text: '<strong>Membership (`in`, `not in`):</strong> Checks if a value exists within a sequence (like a list or string).' },
+        { type: 'li', text: '<strong>Identity (`is`, `is not`):</strong> Checks if two variables refer to the exact same object in memory. This is different from `==`, which only checks if the values are equal.' },
+        { type: 'code', text: '# Membership\nmy_list = [1, 2, 3]\nprint(2 in my_list)      # True\nprint("a" in "banana")   # True\n\n# Identity\na = [1, 2]\nb = [1, 2]\nc = a\nprint(a == b) # True, values are the same\nprint(a is b) # False, they are different objects in memory\nprint(a is c) # True, c is a reference to the same object as a' },
+
+        { type: 'h2', text: 'Operator Precedence' },
+        { type: 'p', text: 'When an expression contains multiple operators, the language follows a strict order of operations, similar to PEMDAS in mathematics. Parentheses `()` can be used to explicitly control the order of evaluation.' },
+        { type: 'li', text: '1. `()` (Parentheses)'},
+        { type: 'li', text: '2. `**` (Exponentiation)'},
+        { type: 'li', text: '3. `*`, `/`, `//`, `%` (Multiplication, Division, Modulo)'},
+        { type: 'li', text: '4. `+`, `-` (Addition, Subtraction)'},
+        { type: 'li', text: '5. Comparison, Membership, Identity Operators'},
+        { type: 'li', text: '6. `not`, `and`, `or` (Logical Operators)'},
+        { type: 'code', text: '# Without parentheses, multiplication happens first\nresult = 5 + 3 * 2  # 5 + 6 = 11\n\n# With parentheses, addition happens first\nresult_paren = (5 + 3) * 2 # 8 * 2 = 16' },
+    
+        { type: 'h2', text: 'Operator Associativity' },
+        { type: 'p', text: 'Associativity is the rule that a language uses when operators have the same precedence. It acts as a tie-breaker, determining whether to evaluate from left-to-right or right-to-left.' },
+        { type: 'li', text: '<strong>Left-Associative:</strong> Most operators are left-associative. In an expression like `100 - 10 - 5`, the operations are grouped from the left: `(100 - 10) - 5`, which evaluates to `85`.' },
+        { type: 'li', text: '<strong>Right-Associative:</strong> The exponentiation (`**`) and assignment (`=`) operators are typically right-associative. In `2 ** 3 ** 2`, the operations are grouped from the right: `2 ** (3 ** 2)`, which evaluates to `512`. Similarly, `a = b = 5` is evaluated as `a = (b = 5)`.' },
+        { type: 'code', text: '# Left-associativity demo\n# Evaluates as (100 / 10) / 2 = 5.0\nprint(100 / 10 / 2)\n\n# Right-associativity demo\n# Evaluates as 2 ** (3 ** 2) = 512\nprint(2 ** 3 ** 2)' },
+    ]
+};

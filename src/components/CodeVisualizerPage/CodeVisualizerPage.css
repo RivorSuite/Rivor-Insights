@@ -1,0 +1,192 @@
+/* src/components/CodeVisualizerPage/CodeVisualizerPage.css */
+
+.code-visualizer-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px;
+    box-sizing: border-box;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.visualizer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.visualizer-main-content {
+    display: flex;
+    gap: 20px;
+    flex-grow: 1;
+    height: 0;
+}
+
+.visualizer-panel {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.code-panel {
+    flex: 1;
+}
+
+.state-panel {
+    flex: 1;
+}
+
+.output-panel {
+    min-height: 150px;
+    max-height: 25%;
+    flex-shrink: 0;
+}
+
+/* Default styles for panel content (used by State and Output) */
+.panel-content {
+    flex-grow: 1;
+    height: 0;
+    background-color: var(--background);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-family: 'Courier New', Courier, monospace;
+    overflow: auto;
+    padding: 16px;
+}
+
+/* Override for the Code panel to let its children scroll */
+.code-panel .panel-content {
+    padding: 0;
+    overflow: hidden;
+}
+
+.code-display-area {
+    height: 100%;
+    overflow: auto; /* This element will scroll */
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.code-editor-textarea {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    color: inherit;
+    resize: none;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 1.5;
+    outline: none;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow: auto; /* This element will scroll */
+}
+
+
+.panel-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.code-line {
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
+}
+
+.code-line.active {
+    background-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 8px;
+    background-color: var(--background);
+    border-radius: 6px;
+    min-height: 20px;
+    border: 1px solid var(--border);
+}
+.list-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 50px;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    border-radius: 4px;
+    padding: 0 8px;
+}
+.list-index {
+    font-size: 10px;
+    color: var(--secondary-text);
+}
+.list-value {
+    font-size: 14px;
+    font-weight: 600;
+}
+.tuple-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+  background-color: var(--background);
+  border-radius: 12px;
+  min-height: 20px;
+  border: 1px solid var(--border);
+}
+.tuple-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 50px;
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 0 8px;
+}
+.tuple-index {
+  font-size: 10px;
+  color: var(--secondary-text);
+}
+.tuple-value {
+  font-size: 14px;
+  font-weight: 600;
+}
+.dict-container {
+    padding: 8px;
+    background-color: var(--background);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+.dict-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.dict-table th, .dict-table td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+}
+.dict-table tr:last-child td {
+    border-bottom: none;
+}
+.dict-key {
+    color: var(--secondary-text);
+}

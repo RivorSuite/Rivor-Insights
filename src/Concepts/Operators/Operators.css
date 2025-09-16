@@ -1,0 +1,183 @@
+.operators-workspace-content {
+    display: flex;
+    flex-grow: 1;
+    gap: 24px;
+    width: 100%;
+    height: calc(100% - 200px);
+}
+
+.op-code-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.op-visualization-panel {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column; /* Changed to column */
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    gap: 24px; /* Added gap for spacing */
+}
+
+.expression-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.operand-box, .result-box {
+    min-width: 120px;
+    padding: 16px 24px;
+    border: 3px solid var(--secondary-text);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    transition: all 0.3s ease;
+}
+
+.operator-symbol {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--accent);
+    width: 60px;
+    text-align: center;
+}
+
+.result-box {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.box-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-text);
+}
+
+.box-label {
+    font-size: 14px;
+    color: var(--secondary-text);
+    margin-top: 4px;
+    background-color: var(--background);
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.boolean-visualization {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.boolean-result {
+    font-size: 28px;
+    font-weight: 700;
+    padding: 16px 32px;
+    border-radius: 12px;
+    background-color: var(--surface);
+    border: 3px solid var(--accent);
+}
+
+.boolean-result.true {
+    color: #22c55e; /* Green */
+    border-color: #22c55e;
+}
+
+.boolean-result.false {
+    color: #ef4444; /* Red */
+    border-color: #ef4444;
+}
+
+.binary-visualization {
+    display: grid;
+    /* Define 3 columns: Operator | Decimal | Binary String */
+    grid-template-columns: 40px 60px auto;
+    gap: 16px;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.binary-decimal {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: right;
+    justify-self: end; /* Align content to the right of the grid cell */
+}
+
+.binary-string {
+    font-size: 20px;
+    letter-spacing: 2px;
+    padding: 8px 12px;
+    background-color: var(--background);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.binary-operator {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent);
+    justify-self: end; /* Align content to the right of the grid cell */
+}
+
+.binary-result-line {
+    /* Make the line span across the last two columns */
+    grid-column: 2 / span 2;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent);
+}
+
+.assignment-visualization {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.assignment-box {
+    min-width: 120px;
+    padding: 16px 24px;
+    border: 3px solid var(--secondary-text);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    position: relative;
+}
+
+.assignment-box .box-value {
+    transition: all 0.4s ease-in-out;
+}
+
+.assignment-box.updated {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.fade-out {
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.fade-in {
+    opacity: 1;
+    transform: scale(1);
+}

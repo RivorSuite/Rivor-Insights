@@ -1,0 +1,107 @@
+.variables-workspace-content {
+    display: flex;
+    flex-grow: 1;
+    gap: 24px;
+    width: 100%;
+    height: calc(100% - 200px); /* Adjust based on header/footer height */
+}
+
+.code-editor-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface);
+    border-radius: 12px;
+    padding: 20px;
+}
+.ds-controls-left .ds-input-field {
+    min-width: 120px; /* Gives the inputs more base width */
+}
+
+.ds-controls-left select.ds-input-field {
+    width: 140px; /* Specifically makes the dropdown wider */
+}
+.code-editor-header {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-text);
+    margin: 0 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.code-line {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    white-space: pre;
+    color: var(--secondary-text);
+}
+
+.code-line .token-keyword { color: #c778dd; font-weight: 600; }
+.code-line .token-variable { color: #61afef; }
+.code-line .token-operator { color: #56b6c2; }
+.code-line .token-string { color: #98c379; }
+.code-line .token-number { color: #d19a66; }
+.code-line .token-boolean { color: #d19a66; }
+
+
+.visualization-panel {
+    flex: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.memory-representation {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.variable-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.memory-box {
+    min-width: 150px;    /* Change width to min-width */
+    max-width: 400px;    /* Add a max-width to prevent it from getting too big */
+    min-height: 90px;    /* Change height to min-height */
+    padding: 16px 24px;  /* Add padding for better spacing */
+    border: 3px solid var(--accent);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent);
+    transition: min-width 0.3s ease; /* Add a smooth transition */
+}
+
+.memory-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary-text);
+    word-break: break-all;
+    padding: 0 8px;
+    text-align: center;
+}
+
+.memory-type {
+    font-size: 14px;
+    color: var(--secondary-text);
+    margin-top: 4px;
+    background-color: var(--background);
+    padding: 2px 8px;
+    border-radius: 6px;
+}

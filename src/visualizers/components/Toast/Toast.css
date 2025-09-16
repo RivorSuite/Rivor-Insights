@@ -1,0 +1,55 @@
+.toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 2000;
+    animation: slideInDown 0.3s ease-out;
+    color: white;
+}
+
+.toast-container.info {
+    background-color: var(--accent); /* Blue */
+}
+.toast-container.success {
+    background-color: var(--accent); /* Green (or current accent) */
+}
+.toast-container.error {
+    background-color: #ef4444; /* Red */
+}
+
+.toast-message {
+    font-weight: 500;
+}
+
+.toast-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.7;
+    padding: 0;
+}
+
+.toast-close-btn:hover {
+    opacity: 1;
+}
+
+@keyframes slideInDown {
+    from {
+        top: -100px;
+        opacity: 0;
+    }
+    to {
+        top: 20px;
+        opacity: 1;
+    }
+}

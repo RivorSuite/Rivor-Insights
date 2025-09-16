@@ -1,0 +1,85 @@
+/* src/visualizers/components/Queue/Queue.css */
+
+.queue-canvas {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the container */
+    width: 100%;
+    overflow-x: auto;
+    padding: 20px;
+    position: relative;
+}
+
+.queue-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-top: 3px solid var(--secondary-text);
+    border-bottom: 3px solid var(--secondary-text);
+    padding: 8px 16px;
+    min-height: 150px;
+    gap: 8px;
+}
+
+.queue-cell-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.queue-cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 600;
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+}
+
+.queue-index {
+    color: var(--secondary-text);
+}
+
+/* --- Animation Styles --- */
+.queue-cell.highlight {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.queue-cell.lifted-dequeue {
+    transform: translateX(-150px) scale(0.8);
+    opacity: 0;
+}
+
+.queue-pre-enqueue-container {
+    position: absolute;
+    right: 50px; /* Appear from the far right */
+    display: flex;
+}
+
+.queue-cell.pre-enqueue {
+    animation: popIn 0.3s ease forwards;
+    border-color: var(--accent);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.5) translateX(50px); opacity: 0; }
+    to { transform: scale(1) translateX(0); opacity: 1; }
+}
+
+.queue-container.no-transition .queue-cell {
+    transition: none;
+}
+
+.queue-cell.lifted {
+    transform: translateY(-20px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}

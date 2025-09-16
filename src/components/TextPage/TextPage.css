@@ -1,0 +1,102 @@
+.text-page-container {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.text-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.text-page-content {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--secondary-text);
+}
+
+.text-page-content p, 
+.text-page-content li {
+    margin-bottom: 16px;
+}
+
+.text-page-content strong {
+    color: var(--primary-text);
+}
+
+.article-h2 {
+    font-size: 24px;
+    color: var(--primary-text);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+.text-page-content > *:first-child {
+    margin-top: 0;
+}
+
+.article-code {
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 24px 0;
+    white-space: pre-wrap;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Styles for the article list view */
+.article-category-section {
+    margin-bottom: 40px;
+}
+
+.article-category-title {
+    font-size: 22px;
+    color: var(--secondary-text);
+    margin-bottom: 16px;
+}
+
+.article-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.article-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.article-list-item:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+}
+
+.article-list-item h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--primary-text);
+}
+
+.article-list-item span {
+    font-weight: 600;
+    color: var(--accent);
+}

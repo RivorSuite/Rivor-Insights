@@ -1,0 +1,86 @@
+.deque-canvas {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+    padding: 20px;
+    position: relative;
+}
+
+.deque-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-top: 3px solid var(--secondary-text);
+    border-bottom: 3px solid var(--secondary-text);
+    padding: 8px 16px;
+    min-height: 150px;
+    gap: 8px;
+}
+
+.deque-cell-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.deque-cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 600;
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+}
+
+.deque-index {
+    color: var(--secondary-text);
+}
+
+/* --- Animation Styles --- */
+.deque-cell.highlight {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.deque-cell.lifted-front {
+    transform: translateX(-150px) scale(0.8);
+    opacity: 0;
+}
+
+.deque-cell.lifted-back {
+    transform: translateX(150px) scale(0.8);
+    opacity: 0;
+}
+
+.deque-pre-add-container {
+    position: absolute;
+    display: flex;
+}
+
+.deque-pre-add-container.front {
+    left: 50px;
+}
+
+.deque-pre-add-container.back {
+    right: 50px;
+}
+
+.deque-cell.pre-add {
+    animation: popIn 0.3s ease forwards;
+    border-color: var(--accent);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

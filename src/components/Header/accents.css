@@ -1,0 +1,31 @@
+/* --- ACCENT COLOR PALETTES --- */
+[data-accent='indigo'] {
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --null-pointer: #e59e46; /* Opposite: Orange */
+}
+
+[data-accent='green'] {
+  --accent: #16a34a;
+  --accent-hover: #15803d;
+  --null-pointer: #e546a3; /* Opposite: Pink/Magenta */
+}
+
+[data-accent='pink'] {
+  --accent: #db2777;
+  --accent-hover: #be185d;
+  --null-pointer: #46e577; /* Opposite: Green */
+}
+
+[data-accent='orange'] {
+  --accent: #ea580c;
+  --accent-hover: #c2410c;
+  --null-pointer: #4688e5; /* Opposite: Blue */
+}
+
+[data-accent='cyan'] {
+    --accent: #06b6d4;
+    --accent-hover: #0891b2;
+    --null-pointer: #e54646; /* Opposite: Red */
+  }
+  

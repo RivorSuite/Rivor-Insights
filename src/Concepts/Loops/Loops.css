@@ -1,0 +1,118 @@
+.loops-workspace-content {
+    display: flex;
+    flex-grow: 1;
+    gap: 24px;
+    width: 100%;
+    height: calc(100% - 200px);
+}
+
+.loops-code-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.loops-visualization-panel {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    gap: 16px;
+}
+
+.loop-type-switcher {
+    display: flex;
+    border-radius: 8px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.loop-type-button {
+    flex: 1;
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    color: var(--secondary-text);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.loop-type-button.active {
+    background-color: var(--accent);
+    color: white;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.for-loop-viz {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.collection-box {
+    display: flex;
+    border: 2px solid var(--secondary-text);
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.collection-item {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    border-radius: 4px;
+    margin: 4px;
+    transition: all 0.3s ease;
+}
+
+.loop-variable-box {
+    width: 80px;
+    height: 80px;
+    border: 3px solid var(--accent);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+}
+
+.loop-arrow {
+    font-size: 40px;
+    color: var(--accent);
+}
+
+.collection-item.active {
+    border-color: var(--accent);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.while-loop-viz {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.counter-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}

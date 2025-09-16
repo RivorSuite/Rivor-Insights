@@ -1,0 +1,82 @@
+/* --- Horizontal Stack Visualization Styles --- */
+.stack-canvas {
+    flex-grow: 1;
+    display: flex;
+    align-items: center; 
+    justify-content: flex-start; 
+    width: 100%;
+    overflow-x: auto;
+    padding: 20px;
+    position: relative;
+}
+
+.stack-container {
+    display: flex;
+    flex-direction: row; 
+    border: 3px solid var(--secondary-text);
+    border-right: none; 
+    border-radius: 12px 0 0 12px;
+    padding: 8px;
+    min-height: 150px;
+    align-items: flex-end;
+}
+
+.stack-cell-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-left: 8px;
+}
+
+.stack-cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-weight: 600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.stack-index {
+    color: var(--secondary-text);
+}
+
+/* --- Animation Styles --- */
+.stack-cell.highlight {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.stack-cell.lifted {
+    transform: translateX(150px) scale(0.8);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    opacity: 0;
+}
+
+.stack-pre-insert-container {
+    position: absolute;
+    right: 50px; 
+    display: flex;
+}
+
+.stack-cell.pre-insert {
+    animation: popIn 0.3s ease forwards;
+    border-color: var(--accent);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.ds-controls-section .utilities-group {
+    display: grid;
+    /* This creates two columns of equal width */
+    grid-template-columns: 1fr 1fr;
+    width: 100%; /* Ensures the grid expands to the full width of the section */
+}

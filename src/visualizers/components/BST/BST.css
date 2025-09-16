@@ -1,0 +1,73 @@
+.bst-canvas {
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+    overflow: auto;
+    background-color: var(--background);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+}
+
+.bst-node {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 3px solid var(--secondary-text);
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-text);
+    transition: all 0.4s ease-in-out;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Bring nodes to the front */
+}
+
+.bst-node.highlight {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.bst-node.highlight {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+
+.bst-node.highlight-found {
+    border-color: #22c55e; /* A distinct green color */
+    background-color: color-mix(in srgb, #22c55e 20%, transparent);
+    box-shadow: 0 0 20px color-mix(in srgb, #22c55e 50%, transparent);
+}
+
+.bst-edge {
+    position: absolute;
+    height: 3px;
+    background-color: var(--secondary-text);
+    transform-origin: 0 0;
+    z-index: 0; /* Place edges behind nodes but in front of the canvas */
+}
+
+.ds-traversal-output {
+    background-color: transparent; /* Removed background */
+    text-align: left; /* Aligned text to the left */
+}
+
+.ds-traversal-output strong {
+    color: var(--secondary-text);
+    font-size: 14px;
+}
+
+.output-box {
+    margin-top: 3px;
+    padding: 6px;
+    background-color: var(--background);
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--primary-text);
+    letter-spacing: 1px;
+}
