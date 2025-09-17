@@ -10,10 +10,12 @@ import AlgoVisualizerPage from './components/AlgoVisualizerPage/AlgoVisualizerPa
 import Header from './components/Header/Header';
 import { auth } from './firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { db } from './firebase';
 import { exampleCode } from './examples';
 import TextPage from './components/TextPage/TextPage';
 import CodeConceptsPage from './components/CodeConceptsPage/CodeConceptsPage';
 import AboutUsPage from './components/AboutUsPage/AboutUsPage';
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 function App() {
     const [user, setUser] = useState(null);
@@ -45,10 +47,16 @@ function App() {
     }, [theme, accent]);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => { 
             setUser(currentUser);
+            if (currentUser) { 
+                const userDocRef = doc(db, "users", currentUser.uid);
+                const userDocSnap = await getDoc(userDocRef);
+                if (userDocSnap.exists() && userDocSnap.data().accent) {setAccent(userDocSnap.data().accent);}
+                else {setAccent('green');}
+            } 
+            else {setAccent('green'); }
             setIsLoading(false);
-            if (!currentUser) {setViewStack(['home']);}
         });
         return () => unsubscribe();
     }, []);
@@ -121,7 +129,7 @@ function App() {
         if (code) {setInitialCode(code); navigateTo('code-visualizer');}
     };
 
-    const handleLogout = async () => { await signOut(auth); };
+    const handleLogout = async () => { await signOut(auth); setAccent('green');}; // reset the accent on logout
     const toggleTheme = () => { setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark')); };
 
     if (isLoading) { return <div style={{ color: 'white', textAlign: 'center' }}>Loading...</div>; }
@@ -173,9 +181,20 @@ function App() {
                 />;
         }
     };
+
+    const handleSetAccent = async (newAccent) => {
+        setAccent(newAccent); // Update state immediately for responsiveness
+        if (user) {
+            const userDocRef = doc(db, "users", user.uid);
+            try {await updateDoc(userDocRef, { accent: newAccent });} 
+            catch (error) {console.error("Error updating accent color:", error);}
+        }
+    };
+
+
     return (
         <div style={{ width: '100%', height: '100%', paddingTop: '70px', boxSizing: 'border-box' }}>
-            <Header theme={theme} onToggleTheme={toggleTheme} onSetAccent={setAccent} accent={accent}/>
+            <Header theme={theme} onToggleTheme={toggleTheme} onSetAccent={handleSetAccent} accent={accent}/>
             {renderContent()}
         </div>
     );

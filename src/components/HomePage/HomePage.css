@@ -29,7 +29,7 @@
     animation: fadeIn 0.5s ease-in-out;
 }
 
-/* --- 1. AI Welcome Screen Styles --- */
+/* 1. AI Welcome Screen Styles */
 .welcome-container {
     text-align: center;
     max-width: 650px;
@@ -136,10 +136,6 @@
 
 /* --- AI Card --- */
 .ai-card { padding: 0; overflow: hidden; }
-.ai-card-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid var(--border); }
-.ai-card-header h3 { margin: 0; }
-.ai-status { display: flex; align-items: center; gap: 8px; color: var(--accent); font-size: 14px; font-weight: 500; }
-.ai-status::before { content: ''; display: block; width: 8px; height: 8px; background-color: var(--accent); border-radius: 50%; }
 
 .ai-chat-box {
     flex-grow: 1; padding: 24px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto;
@@ -173,11 +169,96 @@
 
 .ai-input-area .icon-button {
     flex-shrink: 0;
-    width: 65px;
+    width: 42px;
     height: 42px;
     padding: 8px;
 }
 .ai-input-area .icon-button .ds-icon-svg { height: 100%; width: 100%; }
+
+/* --- AI Chat Formatting & Clear Button --- */
+.ai-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px; 
+    border-bottom: 1px solid var(--border);
+}
+
+.ai-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ai-status { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    color: var(--accent); 
+    font-size: 14px; 
+    font-weight: 500; 
+}
+.ai-status::before { 
+    content: ''; 
+    display: block; 
+    width: 8px; 
+    height: 8px; 
+    background-color: var(--accent); 
+    border-radius: 50%; 
+}
+
+.clear-chat-button {
+    width: 32px !important;
+    height: 32px !important;
+    padding: 4px !important;
+    flex-shrink: 0;
+    background-color: transparent;
+    border: 1px solid var(--border);
+}
+
+.clear-chat-button:hover {
+    background-color: var(--background);
+    border-color: var(--accent);
+}
+
+.clear-chat-button .ds-icon-svg {
+    height: 100%;
+    width: 100%;
+}
+
+.ai-message p {
+    margin: 0 0 10px 0;
+}
+.ai-message p:last-child {
+    margin-bottom: 0;
+}
+
+.ai-message ul, .ai-message ol {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.ai-message pre {
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+    white-space: pre-wrap;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.ai-message code {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.ai-message pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
 
 /* --- Universal Dashboard Button Styles --- */
 .dashboard-button { width: 100%; padding: 10px 16px; border: 1px solid var(--border); background-color: var(--surface); border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--primary-text); transition: all 0.2s ease-in-out; display: flex; align-items: center; justify-content: center; }

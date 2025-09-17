@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { auth, db } from '../../firebase';
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { roadmapData } from '../RoadmapPage/RoadmapPage';
 import { CodeIcon, DSBranchIcon, AlgoIcon, SendIcon, ArticleIcon, CodeConceptsIcon, AboutUsIcon } from '../DSIcons';
+import { ClearIcon } from '../../common/Icons';
 import genAI from '../../gemini';
 import { avatarPaths } from '../ProfilePictureSelector/AvatarIcons';
 import ProfilePictureSelector from '../ProfilePictureSelector/ProfilePictureSelector';
-
 import './HomePage.css';
 
 const CircularProgressBar = ({ percentage, onClick }) => {
@@ -42,6 +43,13 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
     const [isAiLoading, setIsAiLoading] = useState(false);
     const [chatSession, setChatSession] = useState(null);
     const [quote, setQuote] = useState({ text: '', author: '' });
+    const chatBoxRef = useRef(null);
+
+    useEffect(() => {
+        if (chatBoxRef.current) {
+            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }
+    }, [messages, isAiLoading]);
 
     const quotes = [
         { text: "Talk is cheap. Show me the code.", author: "Linus Torvalds" },
@@ -56,7 +64,7 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
         { text: "Walking on water and developing software from a specification are easy if both are frozen.", author: "Edward V. Berard" }
     ];
 
-    useEffect(() => {
+    const startNewChat = () => {
         const systemInstruction = `
             You are Rivor AI, an expert and friendly programming tutor integrated into the Rivor Insights web application.
             Your sole purpose is to help users learn about data structures, algorithms, and fundamental programming concepts.
@@ -67,7 +75,12 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
             model: "gemini-2.5-pro",
             systemInstruction: systemInstruction,
         });
-        setChatSession(model.startChat()); 
+        setChatSession(model.startChat());
+        setMessages([]); // This clears the messages from the screen
+    };
+    
+    useEffect(() => {
+        startNewChat(); 
     }, []);
     
     useEffect(() => {
@@ -83,14 +96,14 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
         const fetchData = async () => {
             const user = auth.currentUser;
             if (!user) return;
-            const userDocRef = doc(db, "users", user.uid); // Fetch User Data (username, email, avatarId)
+            const userDocRef = doc(db, "users", user.uid);
             const userDocSnap = await getDoc(userDocRef);
-            if (userDocSnap.exists()) {setUserData(userDocSnap.data());}
+            if (userDocSnap.exists()) { setUserData(userDocSnap.data()); }
             else {
                 setUserData({
                     username: user.email.split('@')[0],
                     email: user.email,
-                    avatarId: 0 // Default for old users
+                    avatarId: 0
                 });
             }
 
@@ -99,7 +112,7 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
             const completed = progressDocSnap.exists() ? new Set(progressDocSnap.data().completed || []) : new Set();
             let nextTopic = null;
             const allTopics = roadmapData.flatMap(stage => stage.topics);
-            for (const topic of allTopics) {if (!completed.has(topic.id)) { nextTopic = topic; break; }}
+            for (const topic of allTopics) { if (!completed.has(topic.id)) { nextTopic = topic; break; } }
             setProgress({ completed, nextTopic });
         };
         fetchData();
@@ -113,7 +126,7 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
             await updateDoc(userDocRef, { avatarId: avatarId });
             setUserData({ ...userData, avatarId: avatarId });
         }
-        catch (error) {console.error("Error updating avatar:", error);}
+        catch (error) { console.error("Error updating avatar:", error); }
     };
 
     const handleSendMessage = async () => {
@@ -135,7 +148,11 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
             const errorResponse = { sender: 'ai', text: "Something went wrong. Please try again." };
             setMessages(prev => [...prev, errorResponse]);
         }
-        finally {setIsAiLoading(false);}
+        finally { setIsAiLoading(false); }
+    };
+
+    const handleClearChat = () => {
+        startNewChat();
     };
 
     const totalTopics = roadmapData.flatMap(stage => stage.topics).length;
@@ -151,11 +168,7 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
                         <div className="profile-picture-placeholder">{userInitial}</div>
                     )}
                 </div>
-                <h3 
-                    onClick={() => setShowEmail(!showEmail)} 
-                    title="Click to toggle email"
-                    style={{ cursor: 'pointer' }}
-                >
+                <h3 onClick={() => setShowEmail(!showEmail)} title="Click to toggle email" style={{ cursor: 'pointer' }}>
                     {userData ? (showEmail ? userData.email : userData.username) : 'Loading...'}
                 </h3>
                 <CircularProgressBar percentage={progressPercent} onClick={onViewRoadmap}/>
@@ -169,22 +182,34 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
                 )}
             </div>
             <div className="quick-access-container">
-                <div className="dashboard-card access-card" onClick={onViewDSVisualizer}> <DSBranchIcon /><h3>Data Structures</h3> </div>
-                <div className="dashboard-card access-card" onClick={onViewAlgoVisualizer}> <AlgoIcon /><h3>Algorithms</h3> </div>
-                <div className="dashboard-card access-card" onClick={onViewCodeVisualizer}> <CodeIcon /><h3>Code Playground</h3> </div>
-                <div className="dashboard-card access-card" onClick={onViewCodeConcepts}> <CodeConceptsIcon /><h3>Code Concepts</h3> </div>
-                <div className="dashboard-card access-card" onClick={onViewTextPage}> <ArticleIcon /><h3>Articles</h3> </div>
-                <div className="dashboard-card access-card" onClick={onViewAboutUs}> <AboutUsIcon /><h3>About Us</h3> </div>
+                <div className="dashboard-card access-card" onClick={onViewDSVisualizer}><DSBranchIcon /><h3>Data Structures</h3></div>
+                <div className="dashboard-card access-card" onClick={onViewAlgoVisualizer}><AlgoIcon /><h3>Algorithms</h3></div>
+                <div className="dashboard-card access-card" onClick={onViewCodeVisualizer}><CodeIcon /><h3>Code Playground</h3></div>
+                <div className="dashboard-card access-card" onClick={onViewCodeConcepts}><CodeConceptsIcon /><h3>Code Concepts</h3></div>
+                <div className="dashboard-card access-card" onClick={onViewTextPage}><ArticleIcon /><h3>Articles</h3></div>
+                <div className="dashboard-card access-card" onClick={onViewAboutUs}><AboutUsIcon /><h3>About Us</h3></div>
             </div>
             <div className="dashboard-card ai-card">
-                <div className="ai-card-header"><h3>Ask Rivor AI</h3><span className="ai-status">Online</span></div>
-                <div className="ai-chat-box">
+            <div className="ai-card-header">
+    <h3>Ask Rivor AI</h3>
+    <div className="ai-header-right">
+        <span className="ai-status">Online</span>
+        <button className="dashboard-button clear-chat-button" onClick={handleClearChat} title="Clear Chat">
+            <ClearIcon />
+        </button>
+    </div>
+</div>
+                <div className="ai-chat-box" ref={chatBoxRef}>
                     {messages.length === 0 ? (
                     <div className="empty-chat-placeholder">
                         <p>Ask me anything about DSA!</p>
                     </div>
                 ) : (
-                    messages.map((msg, index) => (<div key={index} className={msg.sender === 'user' ? 'user-message' : 'ai-message'}> <p>{msg.text}</p> </div>))
+                    messages.map((msg, index) => (
+                        <div key={index} className={msg.sender === 'user' ? 'user-message' : 'ai-message'}>
+                            <ReactMarkdown>{msg.text}</ReactMarkdown>
+                        </div>
+                    ))
                 )}
                 {isAiLoading && (<div className="ai-message"><p><i>typing...</i></p></div>)}
                 </div>

@@ -58,7 +58,8 @@ function LoginPage() {
                 await setDoc(doc(db, "users", user.uid), { // Save username and email to Firestore
                     username: username,
                     email: user.email,
-                    avatarId: 0
+                    avatarId: 0,
+                    accent: 'green'
                 });
                 await sendEmailVerification(user); // Send email verification
             }
@@ -85,7 +86,20 @@ function LoginPage() {
     const handleGoogleSignIn = async () => {
         setError('');
         const provider = new GoogleAuthProvider();
-        try {await signInWithPopup(auth, provider);}
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            const userDocRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(userDocRef);
+            if (!docSnap.exists()) {// If the document does not exist, create it
+                await setDoc(userDocRef, {
+                    username: user.displayName || user.email.split('@')[0],
+                    email: user.email,
+                    avatarId: 0,
+                    accent: 'green' // Default accent color
+                });
+            }
+        } 
         catch (err) {
             console.error("Google Sign-In failed:", err);
             setError("Could not sign in with Google. Please try again.");
