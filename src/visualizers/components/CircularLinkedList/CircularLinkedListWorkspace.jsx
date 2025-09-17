@@ -1,25 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { DS_CircularLinkedList } from '../../datastructures/DS_CircularLinkedList';
+import React, { useRef, useEffect } from 'react';
+import { DS_CircularLinkedList } from './DS_CircularLinkedList';
 import { InfoPanel } from '../InfoPanel';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { dsInfo } from '../../data/ds-info';
 import { Toast } from '../Toast/Toast';
+import { CheckIcon, BookIcon } from '../../../common/Icons';
+import { useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
 
 const CircularLinkedListNode = ({ value, isHead, isTail, highlight, traversed, isNew, isDetached, lifted }) => {
     const nodeClasses = `ll-node ${highlight ? 'highlight' : ''} ${lifted ? 'lifted' : ''} ${traversed ? 'traversed' : ''}`;
     const pointerClasses = `ll-node-pointer ${isTail ? 'is-tail' : ''}`;
-
-    if (value === null) {
-        return (
-            <div className="ll-node-wrapper">
-                <div className="ll-node-container">
-                    <div className="ll-node null-node"></div>
-                </div>
-            </div>
-        );
-    }
-
+    if (value === null) {return (<div className="ll-node-wrapper"><div className="ll-node-container"><div className="ll-node null-node"></div></div></div>);}
     return (
         <div className="ll-node-wrapper">
             <div className="ll-node-container">
@@ -33,40 +25,14 @@ const CircularLinkedListNode = ({ value, isHead, isTail, highlight, traversed, i
     );
 };
 
-const CheckIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-    </svg>
-);
-const BookIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-    </svg>
-);
-
-
 function CircularLinkedListWorkspace({ onBack }) {
-    const [value, setValue] = useState('');
-    const [index, setIndex] = useState('');
-    const [removeIndex, setRemoveIndex] = useState('');
-    const [sliderValue, setSliderValue] = useState(50);
-    const [animationSpeed, setAnimationSpeed] = useState(1050 - (50 * 10));
-    
-    const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
-    const [listState, setListState] = useState([]);    
-    const [animationHistory, setAnimationHistory] = useState([]);
-    const [currentStep, setCurrentStep] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    
-    const [isCompleted, setIsCompleted] = useState(false);
-    const topicId = 'ds-circular-linked-list'; // The ID from your roadmapData
-
+    const topicId = 'ds-circular-linked-list';const {
+        isInfoPanelOpen, setIsInfoPanelOpen, animationHistory, setAnimationHistory, currentStep, setCurrentStep, isPlaying, setIsPlaying,
+        isCompleted, setIsCompleted, animationSpeed, setAnimationSpeed, sliderValue, setSliderValue, listState, setListState,
+        value, setValue, index, setIndex, removeIndex, setRemoveIndex, toast, setToast
+    } = useWorkspaceLogic();
     const dsCircularList = useRef(new DS_CircularLinkedList());
-    const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
-    const showToast = (message, type = 'info') => {
-        setToast({ show: true, message, type });
-    };
+    const showToast = (message, type = 'info') => {setToast({ show: true, message, type });};
 
     useEffect(() => {
         const checkCompletion = async () => {
@@ -74,46 +40,35 @@ function CircularLinkedListWorkspace({ onBack }) {
             if (!user) return;
             const docRef = doc(db, "userProgress", user.uid);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {
-                setIsCompleted(true);
-            }
+            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {setIsCompleted(true);}
         };
         checkCompletion();
     }, []);
 
     useEffect(() => {
         if (isPlaying && currentStep < animationHistory.length - 1) {
-            const timer = setTimeout(() => {
-                setCurrentStep(currentStep + 1);
-            }, animationSpeed);
+            const timer = setTimeout(() => {setCurrentStep(currentStep + 1);}, animationSpeed);
             return () => clearTimeout(timer);
         } 
-        else {
-            setIsPlaying(false);
-        }
+        else {setIsPlaying(false);}
     }, [isPlaying, currentStep, animationHistory, animationSpeed]);
 
     const handleCompleteTopic = async () => {
         const user = auth.currentUser;
         if (!user) return;
-
         const docRef = doc(db, "userProgress", user.uid);
-
         try {
             if (isCompleted) {
-                // If already completed, REMOVE the topicId
-                await updateDoc(docRef, { completed: arrayRemove(topicId) });
+                await updateDoc(docRef, { completed: arrayRemove(topicId) }); // If already completed, REMOVE the topicId
                 setIsCompleted(false);
             } 
             else {
-                // If not completed, ADD the topicId
-                await updateDoc(docRef, { completed: arrayUnion(topicId) });
+                await updateDoc(docRef, { completed: arrayUnion(topicId) });// If not completed, Add the topicId
                 setIsCompleted(true);
             }
         } 
         catch (error) {
-            // This handles the case where the user has no progress doc yet
-            if (error.code === 'not-found' && !isCompleted) {
+            if (error.code === 'not-found' && !isCompleted) { // This handles the case where the user has no progress doc yet
                 await setDoc(docRef, { completed: [topicId] });
                 setIsCompleted(true);
             } 
@@ -140,38 +95,27 @@ function CircularLinkedListWorkspace({ onBack }) {
         if (!isPlaying && currentStep === animationHistory.length - 1) {
             setCurrentStep(0);
             setIsPlaying(true);
-        } else {
-            setIsPlaying(!isPlaying);
         }
+        else {setIsPlaying(!isPlaying);}
     };
 
     const handleStepBack = () => {
         setIsPlaying(false);
-        if (currentStep > 0) {
-            setCurrentStep(currentStep - 1);
-        }
+        if (currentStep > 0) {setCurrentStep(currentStep - 1);}
     };
 
     const handleStepForward = () => {
         setIsPlaying(false);
-        if (currentStep < animationHistory.length - 1) {
-            setCurrentStep(currentStep + 1);
-        }
+        if (currentStep < animationHistory.length - 1) {setCurrentStep(currentStep + 1);}
     };
     
     const handleOperation = (operation) => {
-        // 1. Run the specific DS function (e.g., addToHead) to get the animation steps
-        const history = operation(dsCircularList.current);
-    
+        const history = operation(dsCircularList.current); // 1. Run the specific DS function (e.g., addToHead) to get the animation steps
         if (history) {
-            // 2. Set the state to start the animation
-            setAnimationHistory(history);
+            setAnimationHistory(history); // 2. Set the state to start the animation
             setCurrentStep(0);
             setIsPlaying(true);
-
-            // 3. IMPORTANT: After the animation is over, update the real list state
-            // This prevents bugs if the user pauses or steps back and forth
-            const animationDuration = (history.length - 1) * animationSpeed;
+            const animationDuration = (history.length - 1) * animationSpeed; // 3. After the animation is over, update the real list state
             setTimeout(() => {
                 const finalState = dsCircularList.current.getListState();
                 setListState(finalState);
@@ -206,7 +150,6 @@ function CircularLinkedListWorkspace({ onBack }) {
             showToast("Please enter a valid value and index.", "info");
             return;
         }
-    
         const history = dsCircularList.current.addAtIndex(idx, val);
         if (typeof history === 'string') {showToast(history, 'error');}
         else if (history) {
@@ -236,7 +179,6 @@ function CircularLinkedListWorkspace({ onBack }) {
             showToast("Please enter a valid index.", "info");
             return;
         }
-    
         const history = dsCircularList.current.removeAtIndex(idx);
         if (typeof history === 'string') {showToast(history, 'error');}
         else if (history) {
@@ -253,7 +195,6 @@ function CircularLinkedListWorkspace({ onBack }) {
             setAnimationHistory(history);
             setCurrentStep(0);
             setIsPlaying(true);
-            // ADD THIS LINE to reset the stable state
             setListState([]); 
         }
     };
@@ -271,16 +212,13 @@ function CircularLinkedListWorkspace({ onBack }) {
 
     const displayList = animationHistory[currentStep]?.listState || listState;
     const currentFrame = animationHistory[currentStep] || {};
-
     return (
         <div className="ds-workspace">
             {toast.show && <Toast message={toast.message} type={toast.type} onClose={() => setToast({ ...toast, show: false })} />}
             <div className="ds-workspace-header">
-                <h1 className="auth-title" style={{ margin: 0 }}>Circular Linked List</h1>
-                
+                <h1 className="auth-title" style={{ margin: 0 }}>Circular Linked List</h1>       
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back to Select</button>
             </div>
-            
             <div className="ds-controls-panel">
                 <div className="ds-controls-left">
                     <div className="ds-controls-section">
@@ -300,7 +238,7 @@ function CircularLinkedListWorkspace({ onBack }) {
                     <div className="ds-controls-section">
                         <h3 className="ds-controls-title">Remove</h3>
                         <div className="ds-control-group">
-                             <span>from</span>
+                            <span>from</span>
                             <input type="number" placeholder="index" className="ds-input-field" value={removeIndex} onChange={(e) => setRemoveIndex(e.target.value)}/>
                             <button className="ds-action-button" onClick={handleRemoveAtIndex}>Remove from Index</button>
                         </div>
@@ -318,23 +256,16 @@ function CircularLinkedListWorkspace({ onBack }) {
                         </div>  
                     </div>
                 </div>
-
                 <div className="ds-controls-right">
                     <div className="stacked-buttons-container">
-                        <button
-                            className={`ds-action-button complete-button ${isCompleted ? 'completed' : ''}`}
-                            onClick={handleCompleteTopic}
-                        >
+                        <button className={`ds-action-button complete-button ${isCompleted ? 'completed' : ''}`} onClick={handleCompleteTopic}>
                             <CheckIcon />
                             {isCompleted ? 'Completed' : 'Mark as Complete'}
                         </button>
-                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}>
-                            <BookIcon />
-                        </button>
+                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}> <BookIcon /> </button>
                     </div>
                 </div>
             </div>
-
             <div className="ds-canvas" style={{'--list-size': displayList.length}}>
                 <div className="cll-wrapper">
                     {displayList.length === 0
@@ -351,7 +282,6 @@ function CircularLinkedListWorkspace({ onBack }) {
                             const isHighlighted = currentFrame.highlightIndices?.includes(i);
                             const isLifted = currentFrame.fromIndex === i;
                             const isTraversed = currentFrame.traversedIndex === i;
-        
                             return (
                                 <CircularLinkedListNode
                                     key={i}
@@ -368,18 +298,11 @@ function CircularLinkedListWorkspace({ onBack }) {
                     {displayList.length > 0 && <div className="cll-loop-connector"></div>}
                 </div>
             </div>
-
             <div className="ds-animation-controls">
                 <div className="ds-playback-buttons">
-                    <button className="ds-playback-button" onClick={handleStepBack} disabled={!animationHistory.length || currentStep === 0}>
-                        ‹ Step Back
-                    </button>
-                    <button className="ds-playback-button play" onClick={handlePlayPause} disabled={!animationHistory.length}>
-                        {isPlaying ? 'Pause' : 'Play'}
-                    </button>
-                    <button className="ds-playback-button" onClick={handleStepForward} disabled={!animationHistory.length || currentStep >= animationHistory.length - 1}>
-                        Step Forward ›
-                    </button>
+                    <button className="ds-playback-button" onClick={handleStepBack} disabled={!animationHistory.length || currentStep === 0}> ‹ Step Back </button>
+                    <button className="ds-playback-button play" onClick={handlePlayPause} disabled={!animationHistory.length}> {isPlaying ? 'Pause' : 'Play'} </button>
+                    <button className="ds-playback-button" onClick={handleStepForward} disabled={!animationHistory.length || currentStep >= animationHistory.length - 1}> Step Forward › </button>
                 </div>
                 <div className="ds-speed-slider">
                     <span>Animation Speed</span>
@@ -390,5 +313,4 @@ function CircularLinkedListWorkspace({ onBack }) {
         </div>        
     );
 }
-
 export default CircularLinkedListWorkspace;

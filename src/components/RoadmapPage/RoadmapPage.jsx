@@ -39,7 +39,6 @@ export const roadmapData = [
         ]
     },
 ];
-// --- End of Data ---
 
 function RoadmapPage({ onBack, onSelectTopic }) {
     const [completedTopics, setCompletedTopics] = useState(new Set());
@@ -73,7 +72,6 @@ function RoadmapPage({ onBack, onSelectTopic }) {
     
     const handleToggleComplete = useCallback(async (topicId) => {
         if (!user) return;
-        
         const newCompletedTopics = new Set(completedTopics);
         if (newCompletedTopics.has(topicId)) {newCompletedTopics.delete(topicId);}
         else {newCompletedTopics.add(topicId);}
@@ -135,9 +133,7 @@ function RoadmapPage({ onBack, onSelectTopic }) {
                                         onChange={() => handleToggleComplete(topic.id)}
                                         style={{width: '20px', height: '20px', accentColor: 'var(--accent)', cursor: 'pointer'}}
                                     />
-                                    <span style={{flexGrow: 1, fontSize: '18px', textDecoration: completedTopics.has(topic.id) ? 'line-through' : 'none', color: completedTopics.has(topic.id) ? 'var(--secondary-text)' : 'var(--primary-text)'}}>
-                                        {topic.title}
-                                    </span>
+                        {/*Title*/} <span style={{flexGrow: 1, fontSize: '18px', textDecoration: completedTopics.has(topic.id) ? 'line-through' : 'none', color: completedTopics.has(topic.id) ? 'var(--secondary-text)' : 'var(--primary-text)'}}>{topic.title}</span>
                                     <span style={{color: 'var(--accent)', fontWeight: 'bold'}}>›</span>
                                 </div>
                             ))}

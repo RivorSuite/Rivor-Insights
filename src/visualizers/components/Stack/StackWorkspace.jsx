@@ -1,45 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Stack.css';
-import { DS_Stack } from '../../datastructures/DS_Stack';
+import { DS_Stack } from './DS_Stack';
 import { InfoPanel } from '../InfoPanel';
 import { Toast } from '../Toast/Toast';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { dsInfo } from '../../data/ds-info';
+import { CheckIcon, BookIcon } from '../../../common/Icons';
+import { useWorkspaceLogic } from '../../../hooks/useWorkspaceLogic';
 
 const StackCell = ({ value, index, highlight, lifted, isPreInsert }) => {
     const cellClasses = `stack-cell ${highlight ? 'highlight' : ''} ${lifted ? 'lifted' : ''} ${isPreInsert ? 'pre-insert' : ''}`;
-    return (
-        <div className="stack-cell-container">
-            <div className={cellClasses}>{value}</div>
-            <div className="stack-index">{index !== undefined ? index : ''}</div>
-        </div>
-    );
+    return (<div className="stack-cell-container"><div className={cellClasses}>{value}</div><div className="stack-index">{index !== undefined ? index : ''}</div></div>);
 };
 
-const CheckIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> );
-const BookIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> );
-
 function StackWorkspace({ onBack }) {
-    const [value, setValue] = useState('');
-    const [sliderValue, setSliderValue] = useState(50);
-    const [animationSpeed, setAnimationSpeed] = useState(1050 - (50 * 10));
-    const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
-    const [stackState, setStackState] = useState([]);
-    const [animationHistory, setAnimationHistory] = useState([]);
-    const [currentStep, setCurrentStep] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isCompleted, setIsCompleted] = useState(false);
     const topicId = 'ds-stacks';
+    const {
+        isInfoPanelOpen, setIsInfoPanelOpen, animationHistory, setAnimationHistory, currentStep, setCurrentStep, isPlaying, setIsPlaying,
+        isCompleted, setIsCompleted, animationSpeed, setAnimationSpeed, sliderValue, setSliderValue, stackState, setStackState,
+        value, setValue, toast, setToast
+    } = useWorkspaceLogic();
     const dsStack = useRef(new DS_Stack(false, 10));
     const [isFixedSize, setIsFixedSize] = useState(false);
     const [capacity, setCapacity] = useState('');
     const [preInsertValue, setPreInsertValue] = useState(null);
-    const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
-
-    const showToast = (message, type = 'info') => {
-        setToast({ show: true, message, type });
-    };
+    const showToast = (message, type = 'info') => {setToast({ show: true, message, type });};
 
     useEffect(() => {
         const checkCompletion = async () => {
@@ -47,31 +33,23 @@ function StackWorkspace({ onBack }) {
             if (!user) return;
             const docRef = doc(db, "userProgress", user.uid);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {
-                setIsCompleted(true);
-            }
+            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {setIsCompleted(true);}
         };
         checkCompletion();
     }, []);
 
     useEffect(() => {
         if (isPlaying && currentStep < animationHistory.length - 1) {
-            const timer = setTimeout(() => {
-                setCurrentStep(currentStep + 1);
-            }, animationSpeed);
+            const timer = setTimeout(() => {setCurrentStep(currentStep + 1);}, animationSpeed);
             return () => clearTimeout(timer);
-        } else {
-            setIsPlaying(false);
         }
+        else {setIsPlaying(false);}
     }, [isPlaying, currentStep, animationHistory, animationSpeed]);
     
     useEffect(() => {
         const currentFrame = animationHistory[currentStep];
-        if (currentFrame && currentFrame.type === 'pre-insert') {
-            setPreInsertValue(currentFrame.preInsertValue);
-        } else {
-            setPreInsertValue(null);
-        }
+        if (currentFrame && currentFrame.type === 'pre-insert') {setPreInsertValue(currentFrame.preInsertValue);}
+        else {setPreInsertValue(null);}
     }, [currentStep, animationHistory]);
     
     const handleCompleteTopic = async () => {
@@ -82,7 +60,8 @@ function StackWorkspace({ onBack }) {
             if (isCompleted) {
                 await updateDoc(docRef, { completed: arrayRemove(topicId) });
                 setIsCompleted(false);
-            } else {
+            }
+            else {
                 await updateDoc(docRef, { completed: arrayUnion(topicId) });
                 setIsCompleted(true);
             }
@@ -90,9 +69,8 @@ function StackWorkspace({ onBack }) {
             if (error.code === 'not-found' && !isCompleted) {
                 await setDoc(docRef, { completed: [topicId] });
                 setIsCompleted(true);
-            } else {
-                console.error("Error updating progress:", error);
-            }
+            } 
+            else {console.error("Error updating progress:", error);}
         }
     };
 
@@ -108,9 +86,7 @@ function StackWorkspace({ onBack }) {
             setCurrentStep(0);
             setIsPlaying(true);
             const animationDuration = (history.length - 1) * animationSpeed;
-            setTimeout(() => {
-                setStackState([...dsStack.current.stack]);
-            }, animationDuration);
+            setTimeout(() => {setStackState([...dsStack.current.stack]);}, animationDuration);
         }
     };
     
@@ -172,11 +148,8 @@ function StackWorkspace({ onBack }) {
             return;
         }
         const isEmpty = dsStack.current.stack.length === 0;
-        if (isEmpty) {
-            showToast("Stack is empty.", "info");
-        } else {
-            showToast("Stack is not empty.", "success");
-        }
+        if (isEmpty) {showToast("Stack is empty.", "info");}
+        else {showToast("Stack is not empty.", "success");}
     };
     
     const handleIsFull = () => {
@@ -189,18 +162,13 @@ function StackWorkspace({ onBack }) {
             showToast("This check only applies to fixed-size stacks.", "info");
             return;
         }
-    
         const isFull = ds.stack.length >= ds.capacity;
-        if (isFull) {
-            showToast("Stack is full.", "info");
-        } else {
-            showToast("Stack is not full.", "success");
-        }
+        if (isFull) {showToast("Stack is full.", "info");}
+        else {showToast("Stack is not full.", "success");}
     };
     
-    const handleValueChange = (e) => { 
-        const numericValue = e.target.value.replace(/[^0-9]/g, ''); setValue(numericValue.slice(0, 6)); 
-    };
+    const handleValueChange = (e) => { const numericValue = e.target.value.replace(/[^0-9]/g, ''); setValue(numericValue.slice(0, 6)); };
+
     const handleSpeedChange = (e) => { 
         const newSliderValue = parseInt(e.target.value, 10); 
         setSliderValue(newSliderValue); 
@@ -208,9 +176,7 @@ function StackWorkspace({ onBack }) {
     };
 
     const handlePlayPause = () => { 
-        if (!isPlaying && currentStep === animationHistory.length - 1) { 
-            setCurrentStep(0); 
-        } 
+        if (!isPlaying && currentStep === animationHistory.length - 1) { setCurrentStep(0);} 
         setIsPlaying(!isPlaying); 
     };
 
@@ -227,11 +193,9 @@ function StackWorkspace({ onBack }) {
     const handleToggleFixedSize = () => {
         const newIsFixedSize = !isFixedSize;
         setIsFixedSize(newIsFixedSize);
-        // Reset capacity input when toggling
         setCapacity('');
-        // Pass the new type and a default/cleared capacity to the backend
         dsStack.current.setType(newIsFixedSize);
-        dsStack.current.setCapacity(newIsFixedSize ? 0 : 10); // Use 0 to indicate no size set yet
+        dsStack.current.setCapacity(newIsFixedSize ? 0 : 10);
         setStackState([]);
         setAnimationHistory([]);
         setCurrentStep(0);
@@ -245,14 +209,11 @@ function StackWorkspace({ onBack }) {
             setStackState([]);
             return;
         }
-    
         let newCapacity = parseInt(rawValue, 10);
-        // Enforce a max capacity of 10
         if (newCapacity > 10) {
             newCapacity = 10;
             showToast("Maximum capacity is 10.", "info");
         }
-    
         setCapacity(newCapacity);
         handleOperation('setCapacity', newCapacity);
         setStackState([]);
@@ -268,7 +229,6 @@ function StackWorkspace({ onBack }) {
                 <h1 className="auth-title" style={{ margin: 0 }}>Stack</h1>
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back to Select</button>
             </div>
-            
             <div className="ds-controls-panel">
                 <div className="ds-controls-left">
                     <div className="ds-controls-section">
@@ -290,9 +250,7 @@ function StackWorkspace({ onBack }) {
                                 <input type="checkbox" checked={isFixedSize} onChange={handleToggleFixedSize} style={{width: '20px', height: '20px'}}/>
                                 Fixed Size
                             </label>
-                            {isFixedSize && (
-                                <input type="number" className="ds-input-field" value={capacity} onChange={handleCapacityChange} style={{width: '60px'}}/>
-                            )}
+                            {isFixedSize && (<input type="number" className="ds-input-field" value={capacity} onChange={handleCapacityChange} style={{width: '60px'}}/>)}
                         </div>
                     </div>
                     <div className="ds-separator"></div>
@@ -314,30 +272,20 @@ function StackWorkspace({ onBack }) {
                             <CheckIcon />
                             {isCompleted ? 'Completed' : 'Mark as Complete'}
                         </button>
-                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}>
-                            <BookIcon />
-                        </button>
+                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}> <BookIcon /> </button>
                     </div>
                 </div>
             </div>
-
             <div className="stack-canvas">
                 <div className="stack-container">
                     {displayStack.map((value, i) => {
                         const isHighlighted = currentFrame.highlightIndices?.includes(i);
                         const isLifted = currentFrame.fromIndex === i;
-                        return (
-                            <StackCell key={i} value={value} index={i} highlight={isHighlighted} lifted={isLifted} />
-                        );
+                        return (<StackCell key={i} value={value} index={i} highlight={isHighlighted} lifted={isLifted} />);
                     })}
                 </div>
-                {preInsertValue !== null && (
-                    <div className="stack-pre-insert-container">
-                        <StackCell value={preInsertValue} isPreInsert={true} />
-                    </div>
-                )}
+                {preInsertValue !== null && (<div className="stack-pre-insert-container"><StackCell value={preInsertValue} isPreInsert={true} /></div>)}
             </div>
-
             <div className="ds-animation-controls">
                 <div className="ds-playback-buttons">
                     <button className="ds-playback-button" onClick={handleStepBack} disabled={!animationHistory.length || currentStep === 0}>‹ Step Back</button>
@@ -353,5 +301,4 @@ function StackWorkspace({ onBack }) {
         </div>        
     );
 }
-
 export default StackWorkspace;

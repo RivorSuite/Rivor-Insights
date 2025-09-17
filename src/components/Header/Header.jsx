@@ -1,5 +1,3 @@
-import React from 'react';
-
 const AccentColorSwitcher = ({ onSetAccent }) => {
     const colors = ['indigo', 'green', 'pink', 'orange', 'cyan'];
     return (
@@ -25,15 +23,13 @@ const AccentColorSwitcher = ({ onSetAccent }) => {
     );
 };
 
-
 function Header({ theme, onToggleTheme, onSetAccent, accent }) {
-    // Gradient map for each accent color
-    const accentGradients = {
+    const accentGradients = { // Gradient map for each accent color
         indigo: 'linear-gradient(45deg, #4f46e5, #c084fc)', // Indigo to a bright Lavender
         green: 'linear-gradient(45deg, #16a34a, #bef264)',  // Green to a bright Lime
         pink: 'linear-gradient(45deg, #db2777, #fda4af)',   // Pink to a light Rose
         orange: 'linear-gradient(45deg, #ea580c, #fde047)', // Orange to a bright Saffron Yellow
-        cyan: 'linear-gradient(45deg, #0891b2, #67e8f9)',   // Cyan to a bright Sky Blue
+        cyan: 'linear-gradient(45deg, #0891b2, #16E5E5)',   // Cyan to a bright Sky Blue
     };
 
     const headerStyle = {
@@ -61,8 +57,7 @@ function Header({ theme, onToggleTheme, onSetAccent, accent }) {
             borderBottom: '1px solid var(--border)',
             zIndex: 100
         }}>
-
-            <h2 style={headerStyle} key={accent}> Rivor </h2>
+            <h2 style={headerStyle} key={accent}> Rivor Insights </h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <AccentColorSwitcher onSetAccent={onSetAccent} />
                 <button onClick={onToggleTheme} className="auth-button" style={{ width: 'auto', padding: '8px 12px' }}>

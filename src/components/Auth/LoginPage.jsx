@@ -36,11 +36,8 @@ function LoginPage() {
                 return;
             }
             if (!username) {setError("Please enter a username."); setIsLoading(false); return;}
-
-            // --- Check for unique username ---
-            const usersRef = collection(db, "users");
+            const usersRef = collection(db, "users"); //Check for unique username
             const q = query(usersRef, where("username", "==", username));
-            
             try {
                 const querySnapshot = await getDocs(q);
                 if (!querySnapshot.empty) {setError("This username is already taken. Please choose another."); setIsLoading(false); return;}
@@ -58,14 +55,12 @@ function LoginPage() {
             else {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-                // Save username and email to Firestore
-                await setDoc(doc(db, "users", user.uid), {
+                await setDoc(doc(db, "users", user.uid), { // Save username and email to Firestore
                     username: username,
                     email: user.email,
                     avatarId: 0
                 });
-                // Send email verification
-                await sendEmailVerification(user);
+                await sendEmailVerification(user); // Send email verification
             }
         } 
         catch (err) {
@@ -134,16 +129,13 @@ function LoginPage() {
         <div className="auth-container">
             <h1 className="auth-title">{isLoginView ? 'Welcome Back' : 'Create an Account'}</h1>
             <p className="auth-subtitle">{isLoginView ? 'Sign in to continue your journey' : 'Get started with Rivor Insights'}</p>
-            
             <button onClick={handleGoogleSignIn} className="auth-button" style={{ backgroundColor: '#fff', color: '#333', border: '1px solid var(--border)', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" style={{ width: '18px', height: '18px' }} />
                 Sign in with Google
             </button>
-            
             <p style={{ fontSize: '14px', marginBottom: '12px', textAlign: 'center' }}>
                 {isPhoneView ? (<>Want to use email instead? <span style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: '600' }} onClick={() => { setIsPhoneView(false); setError(''); }}>Use Email</span></>) : (<>Want to use phone number instead? <span style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: '600' }} onClick={() => { setIsPhoneView(true); setError(''); }}>Use Phone</span></>)}
             </p>
-
             {isPhoneView && (
                 <>
                     <div className="input-group">
@@ -162,9 +154,7 @@ function LoginPage() {
                     ) : (<button onClick={handleSendOtp} className="auth-button" style={{ marginBottom: '16px' }}>Sign in with Phone</button>)}
                 </>
             )}
-
             {!isPhoneView && (<div style={{ display: 'flex', alignItems: 'center', gap: '16px', margin: '16px 0' }}><hr style={{ flex: '1', borderColor: 'var(--border)' }} /><span style={{ color: 'var(--secondary-text)', fontSize: '12px' }}>OR</span><hr style={{ flex: '1', borderColor: 'var(--border)' }} /></div>)}
-            
             {!isPhoneView && (
                 <form onSubmit={handleEmailPasswordSubmit}>
                     {!isLoginView && (

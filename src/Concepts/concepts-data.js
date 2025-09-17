@@ -1,13 +1,9 @@
-// src/visualizers/data/concepts-data.js
-
 export const conceptsInfo = {
-  // Each concept is now a key in this object
     'variables': {
         title: 'Variables',
         category: 'Foundations',
         description: 'Learn to store and manage data.',
         icon: 'VariableIcon',
-        // --- Data for the InfoPanel will go here, just like in ds-info.js ---
         about: {
             title: "About Variables & Data Types",
             description: "A variable is a symbolic name that refers to a location in computer memory. It's a container for storing data values. Understanding how to declare, assign, and use variables is the most fundamental skill in programming.",
@@ -72,42 +68,5 @@ export const conceptsInfo = {
                 { title: "Break & Continue", complexity: "Control", note: "'break' immediately exits the loop. 'continue' skips to the next iteration." },
             ]
         }
-    },
-    
-    'lists': {
-        title: 'Lists',
-        category: 'Collections',
-        description: 'Ordered, mutable collections.',
-        icon: 'ListIcon'
-    },
-    'tuples': {
-        title: 'Tuples',
-        category: 'Collections',
-        description: 'Ordered, immutable collections.',
-        icon: 'TupleIcon'
-    },
-    'dictionaries': {
-        title: 'Dictionaries',
-        category: 'Collections',
-        description: 'Key-value pair collections.',
-        icon: 'DictionaryIcon'
-    },
-    'functions': {
-        title: 'Functions',
-        category: 'Abstraction',
-        description: 'Reusable blocks of code.',
-        icon: 'FunctionIcon'
-    },
-    'fibonacci': {
-        title: 'Fibonacci',
-        category: 'Algorithms',
-        description: 'Sequence of sums.',
-        icon: 'FibonacciIcon'
-    },
-    'factorial': {
-        title: 'Factorial',
-        category: 'Algorithms',
-        description: 'Product of integers.',
-        icon: 'FactorialIcon'
     },
 };

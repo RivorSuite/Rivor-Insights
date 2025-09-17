@@ -1,10 +1,8 @@
-/* src/visualizers/components/Queue/Queue.css */
-
 .queue-canvas {
     flex-grow: 1;
     display: flex;
     align-items: center;
-    justify-content: center; /* Center the container */
+    justify-content: center;
     width: 100%;
     overflow-x: auto;
     padding: 20px;
@@ -44,9 +42,7 @@
     flex-shrink: 0;
 }
 
-.queue-index {
-    color: var(--secondary-text);
-}
+.queue-index {color: var(--secondary-text);}
 
 /* --- Animation Styles --- */
 .queue-cell.highlight {
@@ -75,9 +71,7 @@
     to { transform: scale(1) translateX(0); opacity: 1; }
 }
 
-.queue-container.no-transition .queue-cell {
-    transition: none;
-}
+.queue-container.no-transition .queue-cell {transition: none;}
 
 .queue-cell.lifted {
     transform: translateY(-20px) scale(1.05);

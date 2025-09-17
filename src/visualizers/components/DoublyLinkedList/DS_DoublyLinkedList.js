@@ -1,17 +1,10 @@
 class Node {
-    constructor(value, next = null, prev = null) {
-        this.value = value;
-        this.next = next;
-        this.prev = prev;
+    constructor(value, next = null, prev = null) {this.value = value; this.next = next; this.prev = prev;
     }
 }
 
 export class DS_DoublyLinkedList {
-    constructor() {
-        this.head = null;
-        this.tail = null;
-        this.size = 0;
-    }
+    constructor() {this.head = null; this.tail = null; this.size = 0;}
 
     getListState() {
         const values = [];
@@ -26,13 +19,9 @@ export class DS_DoublyLinkedList {
     addToHead(value) {
         const history = [];
         let animState = this.getListState();
-        const recordHistory = (type, description, details = {}) => {
-            history.push({ type, description, listState: [...animState], ...details });
-        };
-
+        const recordHistory = (type, description, details = {}) => {history.push({ type, description, listState: [...animState], ...details });};
         recordHistory('start', `Adding ${value} to the head.`);
         if (this.size > 0) recordHistory('highlight', `Highlighting the head.`, { highlightIndices: [0] });
-
         if (this.size > 0) {
             animState.push(null);
             recordHistory('expand', `Making space.`);
@@ -46,7 +35,6 @@ export class DS_DoublyLinkedList {
         }
         animState[0] = value;
         recordHistory('insert', `Inserting ${value}.`, { insertIndex: 0 });
-
         const newNode = new Node(value, this.head);
         if (this.head) this.head.prev = newNode; else this.tail = newNode;
         this.head = newNode;
@@ -58,63 +46,50 @@ export class DS_DoublyLinkedList {
     addToTail(value) {
         const history = [];
         let animState = this.getListState();
-        const recordHistory = (type, description, details = {}) => {
-            history.push({ type, description, listState: [...animState], ...details });
-        };
-        
+        const recordHistory = (type, description, details = {}) => {history.push({ type, description, listState: [...animState], ...details });};
         recordHistory('start', `Adding ${value} to the tail.`);
         if (!this.head) {
             animState.push(value);
             recordHistory('insert', `List is empty. Inserting ${value}.`, { insertIndex: 0 });
-        } else {
+        }
+        else {
             recordHistory('highlight', `Highlighting the tail node (O(1) operation).`, { highlightIndices: [this.size - 1] });
             animState.push(value);
             recordHistory('insert', `Inserting ${value} at the tail.`, { insertIndex: this.size });
         }
-        
         const newNode = new Node(value);
         if (this.tail) {
             newNode.prev = this.tail;
             this.tail.next = newNode;
             this.tail = newNode;
-        } else {
-            this.head = this.tail = newNode;
         }
+        else {this.head = this.tail = newNode;}
         this.size++;
         recordHistory('end', `Addition of ${value} to tail is complete.`);
         return history;
     }
 
     addAtIndex(index, value) {
-        if (index < 0 || index > this.size) {
-            return `Index out of bounds. Next valid index is ${this.size}.`;
-        }
+        if (index < 0 || index > this.size) {return `Index out of bounds. Next valid index is ${this.size}.`;}
         if (index === 0) return this.addToHead(value);
         if (index === this.size) return this.addToTail(value);
-        
         const history = [];
         let animState = this.getListState();
-        const recordHistory = (type, description, details = {}) => {
-            history.push({ type, description, listState: [...animState], ...details });
-        };
-        
+        const recordHistory = (type, description, details = {}) => {history.push({ type, description, listState: [...animState], ...details });};
         recordHistory('start', `Adding ${value} at index ${index}.`);
-        
         let current;
-        // --- CORRECTED BIDIRECTIONAL TRAVERSAL LOGIC ---
-        if (index < this.size / 2) {
-            // Traverse from HEAD
+        if (index < this.size / 2) { // Traverse from HEAD
             current = this.head;
             for (let i = 0; i < index - 1; i++) {
                 recordHistory('traverse', `Traversing from head past ${current.value}.`, { traversedIndex: i });
                 current = current.next;
             }
             recordHistory('traverse-end', `Reached node before insertion point.`, { traversedIndex: index - 1 });
-
-        } else {
-            // Traverse from TAIL
+        }
+        else { // Traverse from TAIL
+            
             current = this.tail;
-            // Note: loop to index, not index - 1, because we need to step back one from the node *at* the insertion point
+            //loop to index, not index - 1, need to step back one from the node at the insertion point
             for (let i = this.size - 1; i > index; i--) {
                 recordHistory('traverse', `Traversing from tail past ${current.value}.`, { traversedIndex: i });
                 current = current.prev;
@@ -123,11 +98,9 @@ export class DS_DoublyLinkedList {
             recordHistory('traverse-end', `Reached node after insertion point.`, { traversedIndex: index });
             current = current.prev;
         }
-
         // Add a blank frame to reset highlights and then highlight the specific insertion spot
         recordHistory('traverse-complete', 'Traversal complete.');
         recordHistory('highlight', `Highlighting insertion spot at index ${index}.`, { highlightIndices: [index] });
-
         animState.push(null);
         recordHistory('expand', `Making space for the new element.`);
         for (let i = this.size - 1; i >= index; i--) {
@@ -136,28 +109,19 @@ export class DS_DoublyLinkedList {
             animState[i + 1] = valueToMove; animState[i] = null;
             recordHistory('place', `Placing ${valueToMove}.`, { toIndex: i + 1 });
         }
-        
         animState[index] = value;
         recordHistory('insert', `Inserting ${value}.`, { insertIndex: index });
-        
         const newNode = new Node(value, current.next, current);
-        if (current.next) {
-            current.next.prev = newNode;
-        } else {
-            // If we inserted after the old tail, the new node is the new tail
-            this.tail = newNode;
-        }
+        if (current.next) {current.next.prev = newNode;}
+        else {this.tail = newNode;} // If we inserted after the old tail, the new node is the new tail
         current.next = newNode;
         this.size++;
-        
         recordHistory('end', `Addition of ${value} complete.`);
         return history;
     }
 
     removeFromHead() {
-        if (this.size === 0) {
-            return "Cannot remove from an empty list.";
-        }
+        if (this.size === 0) {return "Cannot remove from an empty list.";}
         const history = []; let animState = this.getListState();
         const recordHistory = (type, description, details = {}) => history.push({ type, description, listState: [...animState], ...details });
         recordHistory('start', 'Removing from the head.');
@@ -181,9 +145,7 @@ export class DS_DoublyLinkedList {
     }
 
     removeFromTail() {
-        if (this.size === 0) {
-            return "Cannot remove from an empty list.";
-        }
+        if (this.size === 0) {return "Cannot remove from an empty list.";}
         const history = []; let animState = this.getListState();
         const recordHistory = (type, description, details = {}) => history.push({ type, description, listState: [...animState], ...details });
         recordHistory('start', 'Removing from the tail.');
@@ -200,32 +162,23 @@ export class DS_DoublyLinkedList {
     }
 
     removeAtIndex(index) {
-        if (index < 0 || index >= this.size) {
-            return `Index out of bounds.`;
-        }
+        if (index < 0 || index >= this.size) {return `Index out of bounds.`;}
         if (index === 0) return this.removeFromHead();
         if (index === this.size - 1) return this.removeFromTail();
-        
         const history = [];
         let animState = this.getListState();
-        const recordHistory = (type, description, details = {}) => {
-            history.push({ type, description, listState: [...animState], ...details });
-        };
-        
+        const recordHistory = (type, description, details = {}) => {history.push({ type, description, listState: [...animState], ...details });};
         recordHistory('start', `Removing node at index ${index}.`);
-        
-        // --- OPTIMIZED TRAVERSAL LOGIC ---
         let current;
-        if (index < this.size / 2) {
-             // Traverse from HEAD
+        if (index < this.size / 2) { // Traverse from HEAD
             current = this.head;
             for (let i = 0; i < index; i++) {
                 recordHistory('traverse', `Traversing from head past ${current.value}.`, { traversedIndex: i });
                 current = current.next;
             }
-             recordHistory('traverse-end', `Reached node for removal.`, { traversedIndex: index });
-        } else {
-            // Traverse from TAIL
+            recordHistory('traverse-end', `Reached node for removal.`, { traversedIndex: index });
+        }
+        else { // Traverse from TAIL
             current = this.tail;
             for (let i = this.size - 1; i > index; i--) {
                 recordHistory('traverse', `Traversing from tail past ${current.value}.`, { traversedIndex: i });
@@ -233,12 +186,10 @@ export class DS_DoublyLinkedList {
             }
             recordHistory('traverse-end', `Reached node for removal.`, { traversedIndex: index });
         }
-
         const removedValue = animState[index];
         recordHistory('highlight', `Highlighting node ${removedValue}.`, { highlightIndices: [index] });
         recordHistory('lift', `Lifting ${removedValue}.`, { fromIndex: index });
         animState[index] = null;
-        
         for (let i = index; i < this.size - 1; i++) {
             const valueToMove = animState[i + 1];
             recordHistory('lift', `Lifting ${valueToMove}.`, { fromIndex: i + 1 });
@@ -247,7 +198,6 @@ export class DS_DoublyLinkedList {
         }
         animState.pop();
         recordHistory('shrink', 'Shrinking list.');
-        
         current.prev.next = current.next;
         if (current.next) current.next.prev = current.prev;
         this.size--;

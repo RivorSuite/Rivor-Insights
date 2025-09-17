@@ -1,4 +1,3 @@
-/* --- Horizontal Stack Visualization Styles --- */
 .stack-canvas {
     flex-grow: 1;
     display: flex;
@@ -42,9 +41,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.3s ease;
 }
 
-.stack-index {
-    color: var(--secondary-text);
-}
+.stack-index {color: var(--secondary-text);}
 
 /* --- Animation Styles --- */
 .stack-cell.highlight {
@@ -76,7 +73,6 @@
 
 .ds-controls-section .utilities-group {
     display: grid;
-    /* This creates two columns of equal width */
     grid-template-columns: 1fr 1fr;
-    width: 100%; /* Ensures the grid expands to the full width of the section */
+    width: 100%;
 }

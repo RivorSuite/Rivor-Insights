@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Deque.css';
-import { DS_Deque } from '../../datastructures/DS_Deque';
+import { DS_Deque } from './DS_Deque';
 import { InfoPanel } from '../InfoPanel';
 import { Toast } from '../Toast/Toast';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { dsInfo } from '../../data/ds-info';
+import { CheckIcon, BookIcon } from '../../../common/Icons';
+import {useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
+
 
 const DequeCell = ({ value, index, highlight, liftedFront, liftedBack, isPreAdd }) => {
     const cellClasses = `deque-cell ${highlight ? 'highlight' : ''} ${liftedFront ? 'lifted-front' : ''} ${liftedBack ? 'lifted-back' : ''} ${isPreAdd ? 'pre-add' : ''}`;
@@ -17,63 +20,39 @@ const DequeCell = ({ value, index, highlight, liftedFront, liftedBack, isPreAdd 
     );
 };
 
-const CheckIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> );
-const BookIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> );
-
 function DequeWorkspace({ onBack }) {
-    const [value, setValue] = useState('');
-    const [sliderValue, setSliderValue] = useState(50);
-    const [animationSpeed, setAnimationSpeed] = useState(1050 - (50 * 10));
-    const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
-    const [dequeState, setDequeState] = useState([]);
-    const [animationHistory, setAnimationHistory] = useState([]);
-    const [currentStep, setCurrentStep] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isCompleted, setIsCompleted] = useState(false);
     const topicId = 'ds-deques';
+    const {
+        isInfoPanelOpen, setIsInfoPanelOpen, animationHistory, setAnimationHistory, currentStep, setCurrentStep, isPlaying, setIsPlaying,
+        isCompleted, setIsCompleted, animationSpeed, setAnimationSpeed, sliderValue, setSliderValue, dequeState, setDequeState,
+        value, setValue, toast, setToast
+    } = useWorkspaceLogic();
     const dsDeque = useRef(new DS_Deque());
     const [preAddValue, setPreAddValue] = useState({ value: null, side: null });
-    const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
     const [isFixedSize, setIsFixedSize] = useState(false);
     const [capacity, setCapacity] = useState('');
-
-    const showToast = (message, type = 'info') => {
-        setToast({ show: true, message, type });
-    };
-
+    const showToast = (message, type = 'info') => {setToast({ show: true, message, type });};
     useEffect(() => {
         const checkCompletion = async () => {
             const user = auth.currentUser;
             if (!user) return;
             const docRef = doc(db, "userProgress", user.uid);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {
-                setIsCompleted(true);
-            }
-        };
+            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {setIsCompleted(true);}};
         checkCompletion();
     }, []);
-
     useEffect(() => {
         if (isPlaying && currentStep < animationHistory.length - 1) {
-            const timer = setTimeout(() => {
-                setCurrentStep(currentStep + 1);
-            }, animationSpeed);
+            const timer = setTimeout(() => {setCurrentStep(currentStep + 1);}, animationSpeed);
             return () => clearTimeout(timer);
-        } else {
-            setIsPlaying(false);
         }
+        else {setIsPlaying(false);}
     }, [isPlaying, currentStep, animationHistory, animationSpeed]);
-
     useEffect(() => {
         const currentFrame = animationHistory[currentStep];
-        if (currentFrame?.type === 'pre-add-front') {
-            setPreAddValue({ value: currentFrame.value, side: 'front' });
-        } else if (currentFrame?.type === 'pre-add-back') {
-            setPreAddValue({ value: currentFrame.value, side: 'back' });
-        } else {
-            setPreAddValue({ value: null, side: null });
-        }
+        if (currentFrame?.type === 'pre-add-front') {setPreAddValue({ value: currentFrame.value, side: 'front' });}
+        else if (currentFrame?.type === 'pre-add-back') {setPreAddValue({ value: currentFrame.value, side: 'back' });} 
+        else {setPreAddValue({ value: null, side: null });}
     }, [currentStep, animationHistory]);
 
     const handleOperation = (operation, ...args) => {
@@ -103,11 +82,13 @@ function DequeWorkspace({ onBack }) {
             if (isCompleted) {
                 await updateDoc(docRef, { completed: arrayRemove(topicId) });
                 setIsCompleted(false);
-            } else {
+            }
+            else {
                 await updateDoc(docRef, { completed: arrayUnion(topicId) });
                 setIsCompleted(true);
             }
-        } catch (error) {
+        }
+        catch (error) {
             if (error.code === 'not-found' && !isCompleted) {
                 await setDoc(docRef, { completed: [topicId] });
                 setIsCompleted(true);
@@ -115,44 +96,32 @@ function DequeWorkspace({ onBack }) {
         }
     };
 
-    // --- UPDATED HANDLERS WITH VALIDATION ---
-
     const handleAddFront = () => {
-        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {
-            showToast("Please set a fixed size capacity (1-10).", "error"); return;
-        }
+        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {showToast("Please set a fixed size capacity (1-10).", "error"); return;}
         if (!value) return showToast("Please enter a value.", "info");
         handleOperation('addToFront', value);
         setValue('');
     };
 
     const handleAddBack = () => {
-        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {
-            showToast("Please set a fixed size capacity (1-10).", "error"); return;
-        }
+        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {showToast("Please set a fixed size capacity (1-10).", "error"); return;}
         if (!value) return showToast("Please enter a value.", "info");
         handleOperation('addToBack', value);
         setValue('');
     };
 
     const handleRemoveFront = () => {
-         if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {
-            showToast("Please set a fixed size capacity (1-10).", "error"); return;
-        }
+        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {showToast("Please set a fixed size capacity (1-10).", "error"); return;}
         handleOperation('removeFromFront');
     }
 
     const handleRemoveBack = () => {
-         if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {
-            showToast("Please set a fixed size capacity (1-10).", "error"); return;
-        }
+        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {showToast("Please set a fixed size capacity (1-10).", "error"); return;}
         handleOperation('removeFromBack');
     }
 
     const handlePeekFront = () => {
-        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {
-            showToast("Please set a fixed size capacity (1-10).", "error"); return;
-        }
+        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {showToast("Please set a fixed size capacity (1-10).", "error"); return;}
         const history = dsDeque.current.peekFront();
         if (history.some(step => step.type === 'error')) {
             showToast("Deque is empty.", "error");
@@ -165,9 +134,7 @@ function DequeWorkspace({ onBack }) {
     };
     
     const handlePeekBack = () => {
-        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {
-            showToast("Please set a fixed size capacity (1-10).", "error"); return;
-        }
+        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {showToast("Please set a fixed size capacity (1-10).", "error"); return;}
         const history = dsDeque.current.peekBack();
         if (history.some(step => step.type === 'error')) {
             showToast("Deque is empty.", "error");
@@ -180,9 +147,7 @@ function DequeWorkspace({ onBack }) {
     };
 
     const handleRandom = () => {
-        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {
-            showToast("Please set a fixed size capacity (1-10).", "error"); return;
-        }
+        if (dsDeque.current.isFixedSize && dsDeque.current.capacity <= 0) {showToast("Please set a fixed size capacity (1-10).", "error"); return;}
         const history = dsDeque.current.random();
         if (history) {
             const finalStep = history[history.length - 1];
@@ -257,7 +222,6 @@ function DequeWorkspace({ onBack }) {
                 <h1 className="auth-title" style={{ margin: 0 }}>Deque</h1>
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back to Select</button>
             </div>
-
             <div className="ds-controls-panel">
                 <div className="ds-controls-left">
                     <div className="ds-controls-section">
@@ -284,9 +248,7 @@ function DequeWorkspace({ onBack }) {
                                 <input type="checkbox" checked={isFixedSize} onChange={handleToggleFixedSize} style={{width: '20px', height: '20px'}}/>
                                 Fixed Size
                             </label>
-                            {isFixedSize && (
-                                <input type="number" className="ds-input-field" value={capacity} onChange={handleCapacityChange} style={{width: '60px'}}/>
-                            )}
+                            {isFixedSize && (<input type="number" className="ds-input-field" value={capacity} onChange={handleCapacityChange} style={{width: '60px'}}/>)}
                         </div>
                     </div>
                     <div className="ds-separator"></div>
@@ -308,13 +270,10 @@ function DequeWorkspace({ onBack }) {
                             <CheckIcon />
                             {isCompleted ? 'Completed' : 'Mark as Complete'}
                         </button>
-                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}>
-                            <BookIcon />
-                        </button>
+                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}> <BookIcon /> </button>
                     </div>
                 </div>
             </div>
-
             <div className="deque-canvas">
                 <div className="deque-container">
                     {displayDeque.map((node, i) => (
@@ -328,13 +287,8 @@ function DequeWorkspace({ onBack }) {
                         />
                     ))}
                 </div>
-                {preAddValue.value !== null && (
-                    <div className={`deque-pre-add-container ${preAddValue.side}`}>
-                        <DequeCell value={preAddValue.value} isPreAdd={true} />
-                    </div>
-                )}
+                {preAddValue.value !== null && (<div className={`deque-pre-add-container ${preAddValue.side}`}><DequeCell value={preAddValue.value} isPreAdd={true} /></div>)}
             </div>
-
             <div className="ds-animation-controls">
                 <div className="ds-playback-buttons">
                     <button className="ds-playback-button" onClick={handleStepBack} disabled={!animationHistory.length || currentStep === 0}>‹ Step Back</button>
@@ -350,5 +304,4 @@ function DequeWorkspace({ onBack }) {
         </div>
     );
 }
-
 export default DequeWorkspace;

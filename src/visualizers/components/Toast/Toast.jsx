@@ -3,15 +3,9 @@ import './Toast.css';
 
 export const Toast = ({ message, type = 'info', onClose }) => {
     useEffect(() => {
-        const timer = setTimeout(() => {
-            onClose();
-        }, 3000); // Auto-dismiss after 3 seconds
-
-        return () => {
-            clearTimeout(timer);
-        };
+        const timer = setTimeout(() => {onClose();}, 3000); // Auto disappear after 3 seconds
+        return () => {clearTimeout(timer);};
     }, [onClose]);
-
     return (
         <div className={`toast-container ${type}`}>
             <div className="toast-message">{message}</div>

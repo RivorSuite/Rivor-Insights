@@ -1,5 +1,5 @@
 import React from 'react';
-// An array of simple avatar components
+//array of simple avatar components
 export const avatarPaths = [
     '/avatars/avatar0.png','/avatars/avatar1.png',
     '/avatars/avatar2.jpg','/avatars/avatar3.png',

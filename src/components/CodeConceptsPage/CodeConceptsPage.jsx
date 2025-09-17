@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.mjs';
-import { conceptsInfo } from '../../visualizers/data/concepts-data.js';
+import { conceptsInfo } from '../../Concepts/concepts-data';
 import '../CodeConceptsPage/CodeConceptsPage.css';
 import VariablesWorkspace from '../../Concepts/Variables/VariablesWorkspace';
 import OperatorsWorkspace from '../../Concepts/Operators/OperatorsWorkspace';
@@ -11,8 +11,8 @@ import {
     ListIcon, TupleIcon, DictionaryIcon, FunctionIcon, FibonacciIcon, FactorialIcon
 } from '../ConceptIcons';
 
-// Helper component to render the correct icon based on its string name
-const ConceptIcon = ({ iconName }) => {
+
+const ConceptIcon = ({ iconName }) => { // Helper component to render the correct icon based on its string name
     switch (iconName) {
         case 'VariableIcon': return <VariableIcon />;
         case 'OperatorIcon': return <OperatorIcon />;
@@ -32,7 +32,6 @@ const conceptsData = Object.entries(conceptsInfo).map(([id, data]) => ({
     id,
     ...data
 }));
-
 // Dynamically create categories from the data
 const categories = ['All', ...new Set(conceptsData.map(c => c.category))];
 
@@ -52,7 +51,6 @@ function CodeConceptsPage({ onBack, selectedConcept, onSelectConcept, onPractice
         const results = fuse.search(searchQuery);
         setFilteredData(results.map(result => result.item));
     }, [searchQuery, selectedCategory]);
-
     if (selectedConcept) {
         switch (selectedConcept) {
             case 'variables':

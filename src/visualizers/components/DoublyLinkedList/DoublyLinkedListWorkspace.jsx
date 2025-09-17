@@ -1,21 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { DS_DoublyLinkedList } from '../../datastructures/DS_DoublyLinkedList';
+import React, { useRef, useEffect } from 'react';
+import { DS_DoublyLinkedList } from './DS_DoublyLinkedList';
 import { InfoPanel } from '../InfoPanel';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { dsInfo } from '../../data/ds-info';
 import { Toast } from '../Toast/Toast';
+import { CheckIcon, BookIcon } from '../../../common/Icons';
+import { useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
 
-// This is the new node component with prev/next pointers
 const DoublyLinkedListNode = ({ value, isHead, isTail, highlight, traversed, lifted }) => {
     const nodeClasses = `ll-node ${highlight ? 'highlight' : ''} ${lifted ? 'lifted' : ''} ${traversed ? 'traversed' : ''}`;
     const pointerClasses = `dll-pointer-box`;
-
-    if (value === null) {
-        return (
-            <div className="dll-node-wrapper"><div className="dll-node-container"><div className="ll-node null-node"></div></div></div>
-        );
-    }
+    if (value === null) {return (<div className="dll-node-wrapper"><div className="dll-node-container"><div className="ll-node null-node"></div></div></div>);}
     return (
         <div className="dll-node-wrapper">
             <div className="dll-node-container">
@@ -31,33 +27,15 @@ const DoublyLinkedListNode = ({ value, isHead, isTail, highlight, traversed, lif
     );
 };
 
-
-const CheckIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>);
-const BookIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>);
-
-
 function DoublyLinkedListWorkspace({ onBack }) {
-    const [value, setValue] = useState('');
-    const [index, setIndex] = useState('');
-    const [removeIndex, setRemoveIndex] = useState('');
-    const [sliderValue, setSliderValue] = useState(50);
-    const [animationSpeed, setAnimationSpeed] = useState(1050 - (50 * 10));
-    
-    const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
-    const [listState, setListState] = useState([]);    
-    const [animationHistory, setAnimationHistory] = useState([]);
-    const [currentStep, setCurrentStep] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    
-    const [isCompleted, setIsCompleted] = useState(false);
     const topicId = 'ds-doubly-linked-list';
-
+    const {
+        isInfoPanelOpen, setIsInfoPanelOpen, animationHistory, setAnimationHistory, currentStep, setCurrentStep, isPlaying, setIsPlaying,
+        isCompleted, setIsCompleted, animationSpeed, setAnimationSpeed, sliderValue, setSliderValue, listState, setListState,
+        value, setValue, index, setIndex, removeIndex, setRemoveIndex, toast, setToast
+    } = useWorkspaceLogic();
     const dsDoublyLinkedList = useRef(new DS_DoublyLinkedList());
-    const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
-
-    const showToast = (message, type = 'info') => {
-        setToast({ show: true, message, type });
-    };
+    const showToast = (message, type = 'info') => {setToast({ show: true, message, type });};
 
     useEffect(() => {
         const checkCompletion = async () => {
@@ -79,17 +57,13 @@ function DoublyLinkedListWorkspace({ onBack }) {
             }, animationSpeed);
             return () => clearTimeout(timer);
         } 
-        else {
-            setIsPlaying(false);
-        }
+        else {setIsPlaying(false);}
     }, [isPlaying, currentStep, animationHistory, animationSpeed]);
 
     const handleCompleteTopic = async () => {
         const user = auth.currentUser;
         if (!user) return;
-
         const docRef = doc(db, "userProgress", user.uid);
-
         try {
             if (isCompleted) {
                 await updateDoc(docRef, { completed: arrayRemove(topicId) });
@@ -105,9 +79,7 @@ function DoublyLinkedListWorkspace({ onBack }) {
                 await setDoc(docRef, { completed: [topicId] });
                 setIsCompleted(true);
             } 
-            else {
-                console.error("Error updating progress:", error);
-            }
+            else {console.error("Error updating progress:", error);}
         }
     };
     
@@ -123,9 +95,7 @@ function DoublyLinkedListWorkspace({ onBack }) {
     };
 
     const handlePlayPause = () => {
-        if (!isPlaying && currentStep === animationHistory.length - 1) {
-            setCurrentStep(0);
-        }
+        if (!isPlaying && currentStep === animationHistory.length - 1) {setCurrentStep(0);}
         setIsPlaying(!isPlaying);
     };
 
@@ -141,17 +111,12 @@ function DoublyLinkedListWorkspace({ onBack }) {
     
     const handleOperation = (operation) => {
         const history = operation(dsDoublyLinkedList.current);
-    
         if (history) {
             setAnimationHistory(history);
             setCurrentStep(0);
             setIsPlaying(true);
-
             const animationDuration = (history.length - 1) * animationSpeed;
-            setTimeout(() => {
-                const finalState = dsDoublyLinkedList.current.getListState();
-                setListState(finalState);
-            }, animationDuration);
+            setTimeout(() => {const finalState = dsDoublyLinkedList.current.getListState(); setListState(finalState);}, animationDuration);
         }
         return history;
     };
@@ -242,7 +207,6 @@ function DoublyLinkedListWorkspace({ onBack }) {
 
     const displayList = animationHistory[currentStep]?.listState || listState;
     const currentFrame = animationHistory[currentStep] || {};
-
     return (
         <div className="ds-workspace">
             {toast.show && <Toast message={toast.message} type={toast.type} onClose={() => setToast({ ...toast, show: false })} />}
@@ -250,7 +214,6 @@ function DoublyLinkedListWorkspace({ onBack }) {
                 <h1 className="auth-title" style={{ margin: 0 }}>Doubly Linked List</h1>
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back to Select</button>
             </div>
-            
             <div className="ds-controls-panel">
                 <div className="ds-controls-left">
                     <div className="ds-controls-section">
@@ -270,7 +233,7 @@ function DoublyLinkedListWorkspace({ onBack }) {
                     <div className="ds-controls-section">
                         <h3 className="ds-controls-title">Remove</h3>
                         <div className="ds-control-group">
-                             <span>from</span>
+                            <span>from</span>
                             <input type="number" placeholder="index" className="ds-input-field" value={removeIndex} onChange={(e) => setRemoveIndex(e.target.value)}/>
                             <button className="ds-action-button" onClick={handleRemoveAtIndex}>Remove from Index</button>
                         </div>
@@ -288,20 +251,16 @@ function DoublyLinkedListWorkspace({ onBack }) {
                         </div>  
                     </div>
                 </div>
-
                 <div className="ds-controls-right">
                     <div className="stacked-buttons-container">
                         <button className={`ds-action-button complete-button ${isCompleted ? 'completed' : ''}`} onClick={handleCompleteTopic}>
                             <CheckIcon />
                             {isCompleted ? 'Completed' : 'Mark as Complete'}
                         </button>
-                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}>
-                            <BookIcon />
-                        </button>
+                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}> <BookIcon /> </button>
                     </div>
                 </div>
             </div>
-
             <div className="ds-canvas">
                 {displayList.length === 0
                     ? [...Array(6)].map((_, i) => <DoublyLinkedListNode key={i} value={''} isHead={i===0} isTail={i===5} highlight={false} />)
@@ -323,13 +282,10 @@ function DoublyLinkedListWorkspace({ onBack }) {
                     })
                 }
             </div>
-
             <div className="ds-animation-controls">
                 <div className="ds-playback-buttons">
                     <button className="ds-playback-button" onClick={handleStepBack} disabled={!animationHistory.length || currentStep === 0}>‹ Step Back</button>
-                    <button className="ds-playback-button play" onClick={handlePlayPause} disabled={!animationHistory.length}>
-                        {isPlaying ? 'Pause' : 'Play'}
-                    </button>
+                    <button className="ds-playback-button play" onClick={handlePlayPause} disabled={!animationHistory.length}> {isPlaying ? 'Pause' : 'Play'} </button>
                     <button className="ds-playback-button" onClick={handleStepForward} disabled={!animationHistory.length || currentStep >= animationHistory.length - 1}>Step Forward ›</button>
                 </div>
                 <div className="ds-speed-slider">
@@ -341,5 +297,4 @@ function DoublyLinkedListWorkspace({ onBack }) {
         </div>        
     );
 }
-
 export default DoublyLinkedListWorkspace;

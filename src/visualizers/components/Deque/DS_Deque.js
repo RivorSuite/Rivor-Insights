@@ -29,7 +29,6 @@ export class DS_Deque {
         this.history.push({ type, description, dequeState: values, ...details });
     }
 
-    // --- NEW: Configuration Methods ---
     setType(isFixedSize) {
         this.isFixedSize = isFixedSize;
         this.capacity = isFixedSize ? this.capacity : Infinity;
@@ -58,14 +57,12 @@ export class DS_Deque {
         }
         this._recordHistory('start', `Adding ${value} to front.`);
         this._recordHistory('pre-add-front', `Value ${value} ready.`, { value });
-
         const newNode = new Node(value);
         newNode.next = this.head;
         if (this.head) this.head.prev = newNode;
         else this.tail = newNode;
         this.head = newNode;
         this.size++;
-
         this._recordHistory('end', `Addition of ${value} complete.`);
         return this.history;
     }
@@ -78,14 +75,12 @@ export class DS_Deque {
         }
         this._recordHistory('start', `Adding ${value} to back.`);
         this._recordHistory('pre-add-back', `Value ${value} ready.`, { value });
-
         const newNode = new Node(value);
         newNode.prev = this.tail;
         if (this.tail) this.tail.next = newNode;
         else this.head = newNode;
         this.tail = newNode;
         this.size++;
-
         this._recordHistory('end', `Addition of ${value} complete.`);
         return this.history;
     }
@@ -99,12 +94,10 @@ export class DS_Deque {
         const removedNode = this.head;
         this._recordHistory('start', `Removing ${removedNode.value} from front.`);
         this._recordHistory('lift-front', `Lifting ${removedNode.value}.`, { fromIndex: removedNode.id });
-
         this.head = this.head.next;
         if (this.head) this.head.prev = null;
         else this.tail = null;
         this.size--;
-
         this._recordHistory('end', 'Removal from front complete.');
         return this.history;
     }
@@ -118,17 +111,14 @@ export class DS_Deque {
         const removedNode = this.tail;
         this._recordHistory('start', `Removing ${removedNode.value} from back.`);
         this._recordHistory('lift-back', `Lifting ${removedNode.value}.`, { fromIndex: removedNode.id });
-
         this.tail = this.tail.prev;
         if (this.tail) this.tail.next = null;
         else this.head = null;
         this.size--;
-
         this._recordHistory('end', 'Removal from back complete.');
         return this.history;
     }
 
-    // --- NEW: Peek Methods ---
     peekFront() {
         this.history = [];
         if (!this.head) {
@@ -161,7 +151,6 @@ export class DS_Deque {
         return this.history;
     }
 
-    // --- NEW: Random Method ---
     random(maxVal = 1000) {
         this.clear();
         this.history = [];
@@ -169,9 +158,8 @@ export class DS_Deque {
         for (let i = 0; i < size; i++) {
             const val = Math.floor(Math.random() * maxVal);
             const newNode = new Node(val);
-            if (!this.head) {
-                this.head = this.tail = newNode;
-            } else {
+            if (!this.head) {this.head = this.tail = newNode;}
+            else {
                 this.tail.next = newNode;
                 newNode.prev = this.tail;
                 this.tail = newNode;

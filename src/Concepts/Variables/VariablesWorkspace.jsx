@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { auth, db } from '../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import '../../Concepts/Variables/Variables.css';
-import { conceptsInfo } from '../../visualizers/data/concepts-data.js';
+import { conceptsInfo } from '../concepts-data.js';
 import { ConceptInfoPanel } from '../../Concepts/ConceptInfoPanel';
 import { Toast } from '../../visualizers/components/Toast/Toast'; // <-- NEW: Import Toast
-
-const CheckIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> );
-const BookIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> );
+import { CheckIcon, BookIcon } from '../../common/Icons.jsx';
 
 const dataTypeInfo = {
     integer: "Represents whole numbers, positive or negative, without decimals.",

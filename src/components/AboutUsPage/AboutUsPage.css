@@ -24,10 +24,7 @@
 }
 
 .about-us-section {margin-bottom: 40px;}
-
-.about-us-section:last-child {
-    margin-bottom: 0;
-}
+.about-us-section:last-child {margin-bottom: 0;}
 
 .about-us-section h2 {
     font-size: 24px;

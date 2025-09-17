@@ -14,19 +14,10 @@
     color: white;
 }
 
-.toast-container.info {
-    background-color: var(--accent); /* Blue */
-}
-.toast-container.success {
-    background-color: var(--accent); /* Green (or current accent) */
-}
-.toast-container.error {
-    background-color: #ef4444; /* Red */
-}
-
-.toast-message {
-    font-weight: 500;
-}
+.toast-container.info {background-color: var(--accent);}
+.toast-container.success {background-color: var(--accent); /* Current Accent */}
+.toast-container.error {background-color: #ef4444; /* Red */}
+.toast-message {font-weight: 500;}
 
 .toast-close-btn {
     background: none;
@@ -39,17 +30,9 @@
     padding: 0;
 }
 
-.toast-close-btn:hover {
-    opacity: 1;
-}
+.toast-close-btn:hover {opacity: 1;}
 
 @keyframes slideInDown {
-    from {
-        top: -100px;
-        opacity: 0;
-    }
-    to {
-        top: 20px;
-        opacity: 1;
-    }
+    from {top: -100px; opacity: 0;}
+    to {top: 20px; opacity: 1;}
 }

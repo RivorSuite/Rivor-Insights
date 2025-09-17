@@ -1,4 +1,3 @@
-import React from 'react';
 import { avatarPaths } from '../ProfilePictureSelector/AvatarIcons';
 import './ProfilePictureSelector.css';
 

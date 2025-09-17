@@ -1,46 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Queue.css';
-import { DS_Queue } from '../../datastructures/DS_Queue';
+import { DS_Queue } from './DS_Queue';
 import { InfoPanel } from '../InfoPanel';
 import { Toast } from '../Toast/Toast';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { dsInfo } from '../../data/ds-info';
+import { CheckIcon, BookIcon } from '../../../common/Icons';
+import { useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
 
 const QueueCell = ({ value, index, highlight, isDequeuing, isPreEnqueue }) => {
     const cellClasses = `queue-cell ${highlight ? 'highlight' : ''} ${isDequeuing ? 'lifted-dequeue' : ''} ${isPreEnqueue ? 'pre-enqueue' : ''}`;
-    return (
-        <div className="queue-cell-container">
-            <div className={cellClasses}>{value === null ? '' : value}</div>
-            <div className="queue-index">{index !== undefined ? index : ''}</div>
-        </div>
-    );
+    return (<div className="queue-cell-container"><div className={cellClasses}>{value === null ? '' : value}</div><div className="queue-index">{index !== undefined ? index : ''}</div></div>);
 };
 
-
-const CheckIcon = () => ( <svg xmlns="http://www.w.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> );
-const BookIcon = () => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg> );
-
 function QueueWorkspace({ onBack }) {
-    const [value, setValue] = useState('');
-    const [sliderValue, setSliderValue] = useState(50);
-    const [animationSpeed, setAnimationSpeed] = useState(1050 - (50 * 10));
-    const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
-    const [queueState, setQueueState] = useState([]);
-    const [animationHistory, setAnimationHistory] = useState([]);
-    const [currentStep, setCurrentStep] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isCompleted, setIsCompleted] = useState(false);
+    const {
+        isInfoPanelOpen, setIsInfoPanelOpen, animationHistory, setAnimationHistory, currentStep, setCurrentStep, isPlaying, setIsPlaying,
+        isCompleted, setIsCompleted, animationSpeed, setAnimationSpeed, sliderValue, setSliderValue, queueState, setQueueState,
+        value, setValue, toast, setToast
+    } = useWorkspaceLogic();
     const topicId = 'ds-queues';
     const dsQueue = useRef(new DS_Queue(false, 10));
     const [preEnqueueValue, setPreEnqueueValue] = useState(null);
-    const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
     const [isFixedSize, setIsFixedSize] = useState(false);
     const [capacity, setCapacity] = useState('');
-
-    const showToast = (message, type = 'info') => {
-        setToast({ show: true, message, type });
-    };
+    const showToast = (message, type = 'info') => {setToast({ show: true, message, type });};
 
     useEffect(() => {
         const checkCompletion = async () => {
@@ -48,31 +33,21 @@ function QueueWorkspace({ onBack }) {
             if (!user) return;
             const docRef = doc(db, "userProgress", user.uid);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {
-                setIsCompleted(true);
-            }
+            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {setIsCompleted(true);}
         };
         checkCompletion();
     }, []);
-
     useEffect(() => {
         if (isPlaying && currentStep < animationHistory.length - 1) {
-            const timer = setTimeout(() => {
-                setCurrentStep(currentStep + 1);
-            }, animationSpeed);
+            const timer = setTimeout(() => {setCurrentStep(currentStep + 1);}, animationSpeed);
             return () => clearTimeout(timer);
-        } else {
-            setIsPlaying(false);
         }
+        else {setIsPlaying(false);}
     }, [isPlaying, currentStep, animationHistory, animationSpeed]);
-    
     useEffect(() => {
         const currentFrame = animationHistory[currentStep];
-        if (currentFrame && currentFrame.type === 'pre-enqueue') {
-            setPreEnqueueValue(currentFrame.preEnqueueValue);
-        } else {
-            setPreEnqueueValue(null);
-        }
+        if (currentFrame && currentFrame.type === 'pre-enqueue') {setPreEnqueueValue(currentFrame.preEnqueueValue);} 
+        else {setPreEnqueueValue(null);}
     }, [currentStep, animationHistory]);
     
     const handleCompleteTopic = async () => {
@@ -83,17 +58,18 @@ function QueueWorkspace({ onBack }) {
             if (isCompleted) {
                 await updateDoc(docRef, { completed: arrayRemove(topicId) });
                 setIsCompleted(false);
-            } else {
+            }
+            else {
                 await updateDoc(docRef, { completed: arrayUnion(topicId) });
                 setIsCompleted(true);
             }
-        } catch (error) {
+        }
+        catch (error) {
             if (error.code === 'not-found' && !isCompleted) {
                 await setDoc(docRef, { completed: [topicId] });
                 setIsCompleted(true);
-            } else {
-                console.error("Error updating progress:", error);
             }
+            else {console.error("Error updating progress:", error);}
         }
     };
 
@@ -109,9 +85,7 @@ function QueueWorkspace({ onBack }) {
             setCurrentStep(0);
             setIsPlaying(true);
             const animationDuration = (history.length - 1) * animationSpeed;
-            setTimeout(() => {
-                setQueueState([...dsQueue.current.queue]);
-            }, animationDuration);
+            setTimeout(() => {setQueueState([...dsQueue.current.queue]);}, animationDuration);
         }
     };
     
@@ -145,7 +119,7 @@ function QueueWorkspace({ onBack }) {
         const errorStep = history.find(step => step.type === 'error');
         if (errorStep) { showToast(errorStep.description, 'error'); return; }
         if (dsQueue.current.queue.length > 0) {
-            const frontValue = dsQueue.current.queue[0];
+            const frontValue = dsQueue.current.queue[0].value;
             showToast(`Front value is ${frontValue}`, 'success');
         }
         setAnimationHistory(history);
@@ -190,11 +164,9 @@ function QueueWorkspace({ onBack }) {
     const handleToggleFixedSize = () => {
         const newIsFixedSize = !isFixedSize;
         setIsFixedSize(newIsFixedSize);
-        // Reset capacity input when toggling
         setCapacity('');
-        // Pass the new type and a default/cleared capacity to the backend
         dsQueue.current.setType(newIsFixedSize);
-        dsQueue.current.setCapacity(newIsFixedSize ? 0 : 10); // Use 0 to indicate no size set yet
+        dsQueue.current.setCapacity(newIsFixedSize ? 0 : 10);
         setQueueState([]);
         setAnimationHistory([]);
         setCurrentStep(0);
@@ -210,20 +182,13 @@ function QueueWorkspace({ onBack }) {
         }
     
         let newCapacity = parseInt(rawValue, 10);
-        // Enforce a max capacity of 10
-        if (newCapacity > 10) {
-            newCapacity = 10;
-            showToast("Maximum capacity is 10.", "info");
-        }
-    
+        if (newCapacity > 10) {newCapacity = 10;showToast("Maximum capacity is 10.", "info");}
         setCapacity(newCapacity);
         handleOperation('setCapacity', newCapacity);
         setQueueState([]);
     };
 
-    const handleValueChange = (e) => { 
-        const numericValue = e.target.value.replace(/[^0-9]/g, ''); setValue(numericValue.slice(0, 6)); 
-    };
+    const handleValueChange = (e) => { const numericValue = e.target.value.replace(/[^0-9]/g, ''); setValue(numericValue.slice(0, 6)); };
 
     const handleSpeedChange = (e) => { 
         const newSliderValue = parseInt(e.target.value, 10); 
@@ -232,9 +197,7 @@ function QueueWorkspace({ onBack }) {
     };
 
     const handlePlayPause = () => { 
-        if (!isPlaying && currentStep === animationHistory.length - 1) { 
-            setCurrentStep(0); 
-        } 
+        if (!isPlaying && currentStep === animationHistory.length - 1) {setCurrentStep(0);} 
         setIsPlaying(!isPlaying); 
     };
 
@@ -251,7 +214,6 @@ function QueueWorkspace({ onBack }) {
                 <h1 className="auth-title" style={{ margin: 0 }}>Queue</h1>
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back to Select</button>
             </div>
-            
             <div className="ds-controls-panel">
                 <div className="ds-controls-left">
                     <div className="ds-controls-section">
@@ -273,9 +235,7 @@ function QueueWorkspace({ onBack }) {
                                     <input type="checkbox" checked={isFixedSize} onChange={handleToggleFixedSize} style={{width: '20px', height: '20px'}}/>
                                     Fixed Size
                                 </label>
-                                {isFixedSize && (
-                                    <input type="number" className="ds-input-field" value={capacity} onChange={handleCapacityChange} style={{width: '60px'}}/>
-                                )}
+                                {isFixedSize && (<input type="number" className="ds-input-field" value={capacity} onChange={handleCapacityChange} style={{width: '60px'}}/>)}
                             </div>
                         </div>
                         <div className="ds-separator"></div>
@@ -297,39 +257,28 @@ function QueueWorkspace({ onBack }) {
                             <CheckIcon />
                             {isCompleted ? 'Completed' : 'Mark as Complete'}
                         </button>
-                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}>
-                            <BookIcon />
-                        </button>
+                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}> <BookIcon /> </button>
                     </div>
                 </div>
             </div>
-
             <div className="queue-canvas">
                 <div className="queue-container">
                     {displayQueue.map((item, i) => {
                         const isHighlighted = currentFrame.highlightIndices?.includes(i);
-                        // This is the key fix: Check for 'lift-dequeue' and pass the result
-                        // to the 'isDequeuing' prop, which matches the component.
                         const isDequeuing = currentFrame.type === 'lift-dequeue' && currentFrame.fromIndex === item.id;
-
                         return (
                             <QueueCell 
                                 key={item.id}
                                 value={item.value} 
                                 index={i} 
                                 highlight={isHighlighted} 
-                                isDequeuing={isDequeuing} // Pass the correct prop
+                                isDequeuing={isDequeuing}
                             />
                         );
                     })}
                 </div>
-                {preEnqueueValue !== null && (
-                    <div className="queue-pre-enqueue-container">
-                        <QueueCell value={preEnqueueValue} isPreEnqueue={true} />
-                    </div>
-                )}
+                {preEnqueueValue !== null && (<div className="queue-pre-enqueue-container"><QueueCell value={preEnqueueValue} isPreEnqueue={true} /></div>)}
             </div>
-
             <div className="ds-animation-controls">
                 <div className="ds-playback-buttons">
                     <button className="ds-playback-button" onClick={handleStepBack} disabled={!animationHistory.length || currentStep === 0}>‹ Step Back</button>
@@ -345,5 +294,4 @@ function QueueWorkspace({ onBack }) {
         </div>        
     );
 }
-
 export default QueueWorkspace;

@@ -1,5 +1,3 @@
-// src/components/CodeVisualizerPage/CodeVisualizerPage.jsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import { parseCode } from '../../parser/core.js';
 import './CodeVisualizerPage.css';
@@ -65,13 +63,11 @@ function CodeVisualizerPage({ onBack, initialCode }) {
     const [steps, setSteps] = useState([]);
     const [currentStep, setCurrentStep] = useState(0);
     const [isVisualizing, setIsVisualizing] = useState(false);
-    // --- Refs for auto-scrolling ---
     const activeLineRef = useRef(null);
     const codeEditorRef = useRef(null);
     const codeDisplayRef = useRef(null);
     const statePanelRef = useRef(null);
     const outputPanelRef = useRef(null);
-    // --- Auto-scroll logic ---
     useEffect(() => {
         if (isVisualizing) {
             if (activeLineRef.current) {
@@ -94,7 +90,6 @@ function CodeVisualizerPage({ onBack, initialCode }) {
             codeEditorRef.current.scrollTop = codeEditorRef.current.scrollHeight;
         }
     }, [code, isVisualizing]);
-
 
     const handleVisualize = () => {
         try {
@@ -146,7 +141,6 @@ function CodeVisualizerPage({ onBack, initialCode }) {
                 <h1 className="auth-title" style={{ margin: 0 }}>Code Visualizer</h1>
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back</button>
             </div>
-
             <div className="visualizer-main-content">
                 <div className="visualizer-panel code-panel">
                     <h2 style={{ margin: '0 0 16px 0' }}>Code</h2>
@@ -186,7 +180,6 @@ function CodeVisualizerPage({ onBack, initialCode }) {
                         <button onClick={handleNext} className="auth-button" style={{ flex: 1, backgroundColor: 'var(--surface)', color: 'var(--primary-text)' }} disabled={!isVisualizing || currentStep >= steps.length - 1}>Next »</button>
                     </div>
                 </div>
-                
                 <div className="visualizer-panel state-panel">
                     <h2 style={{ margin: '0 0 16px 0' }}>State</h2>
                     <div className="panel-content" ref={statePanelRef}>
@@ -206,7 +199,6 @@ function CodeVisualizerPage({ onBack, initialCode }) {
                     </div>
                 </div>
             </div>
-
             <div className="visualizer-panel output-panel">
                 <h2 style={{ margin: '0 0 16px 0' }}>Output</h2>
                 <div className="panel-content" ref={outputPanelRef}>

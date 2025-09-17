@@ -37,7 +37,6 @@ function App() {
     });
     const [initialLoopType, setInitialLoopType] = useState('for');
 
-
     useEffect(() => {
         document.body.className = `${theme}-theme`;
         document.body.dataset.accent = accent;
@@ -76,7 +75,6 @@ function App() {
     }, [viewStack, selectedDS, selectedConcept]);
     
     const navigateTo = (view) => {setViewStack(prevStack => [...prevStack, view]);};
-
     const navigateBack = () => {window.history.back();};
     
     const handleSelectDS = (dsId) => {
@@ -95,7 +93,6 @@ function App() {
         if (topicId === 'basics-conditionals') {handleSelectConcept('conditionals'); return;}
         if (topicId === 'basics-for-loops') {setInitialLoopType('for'); handleSelectConcept('loops'); return;}
         if (topicId === 'basics-while-loops') {setInitialLoopType('while'); handleSelectConcept('loops'); return;}
-
         const codeSnippet = exampleCode[topicId];
         if (codeSnippet) {setInitialCode(codeSnippet); navigateTo('code-visualizer'); return;}
         const dsIdMap = {
@@ -132,8 +129,7 @@ function App() {
         const currentView = viewStack[viewStack.length - 1] || 'home';
         // If the URL hash is #forgot-password, show the new page
         if (currentView === 'forgot-password') {return <ForgotPasswordPage onNavigateBack={() => window.location.hash = ''} />;}
-        // Otherwise, show the default login page
-        return <LoginPage />;
+        return <LoginPage />;// Otherwise, show the default login page
     }
 
     if (!user.emailVerified) {return <VerifyEmailPage onLogout={handleLogout} />;}
@@ -177,10 +173,9 @@ function App() {
                 />;
         }
     };
-
     return (
         <div style={{ width: '100%', height: '100%', paddingTop: '70px', boxSizing: 'border-box' }}>
-            <Header theme={theme} onToggleTheme={toggleTheme} onSetAccent={setAccent} accent={accent} />
+            <Header theme={theme} onToggleTheme={toggleTheme} onSetAccent={setAccent} accent={accent}/>
             {renderContent()}
         </div>
     );

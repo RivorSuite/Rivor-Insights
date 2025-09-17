@@ -5,5 +5,5 @@ export const exampleCode = {
     'basics-for-loops': '# This loop prints numbers from 0 to 4\nfor i in range(5):\n  print("Current number:", i)',
     'basics-while-loops': 'count = 0\n\nwhile count < 5:\n  print("Count is:", count)\n  count = count + 1 # Increment the count',
     'basics-functions': 'def greet(name):\n  return "Hello, " + name + "!"\n\nmessage = greet("Rivor")\nprint(message)',
-    // We can add more examples for other topics later
+    //add more examples for other topics later
 };

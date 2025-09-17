@@ -1,5 +1,3 @@
-// src/visualizers/data/ds-info.js
-
 export const dsInfo = {
     arrays: {
         about: {
@@ -27,6 +25,7 @@ export const dsInfo = {
             'Deletion': { best: 'O(1)', worst: 'O(n)' },
         }
     },
+
     singlyLinkedLists: {
         about: {
             title: "About Singly Linked Lists",
@@ -53,6 +52,7 @@ export const dsInfo = {
             'Deletion': { best: 'O(1)', worst: 'O(n)' },
         }
     },
+
     doublyLinkedLists: {
         about: {
             title: "About Doubly Linked Lists",
@@ -77,6 +77,7 @@ export const dsInfo = {
             'Deletion': { best: 'O(1)', worst: 'O(1)' },
         }
     },
+
     circularLinkedLists: {
         about: {
             title: "About Circular Linked Lists",
@@ -96,14 +97,14 @@ export const dsInfo = {
             { name: 'Remove from Tail', snippet: `def remove_from_tail(self):\n  if self.tail is None:\n    return\n  if self.tail.next == self.tail: # Only one node\n    self.tail = None\n    return\n  # Traverse to find the new tail\n  current = self.tail.next # Start at head\n  while current.next != self.tail:\n    current = current.next\n  # current is now the new tail\n  current.next = self.tail.next # New tail points to head\n  self.tail = current` },
             { name: 'Remove from Index', snippet: `def remove_at_index(self, index):\n  if self.tail is None or index < 0:\n    return\n  if index == 0:\n    self.remove_from_head()\n    return\n  prev = self.tail.next # Start at head\n  for _ in range(index - 1):\n    prev = prev.next\n  if prev.next == self.tail:\n    self.tail = prev\n  prev.next = prev.next.next` },
         ],
-        // Big O for a standard Circular Linked List (optimized with tail pointer)
         bigO: {
             'Access': { best: 'O(1)', worst: 'O(n)' },
             'Search': { best: 'O(1)', worst: 'O(n)' },
-            'Insertion': { best: 'O(1)', worst: 'O(n)' }, // O(1) for ends, O(n) for index
-            'Deletion': { best: 'O(1)', worst: 'O(n)' }, // O(1) for head, O(n) for tail/index
+            'Insertion': { best: 'O(1)', worst: 'O(n)' },
+            'Deletion': { best: 'O(1)', worst: 'O(n)' },
         }
     },
+
     stacks: {
         about: {
             title: "About Stacks",
@@ -128,6 +129,7 @@ export const dsInfo = {
             'Deletion (Pop)': { best: 'O(1)', worst: 'O(1)' },
         }
     },
+
     queues: {
         about: {
             title: "About Queues",
@@ -152,6 +154,7 @@ export const dsInfo = {
             'Deletion (Dequeue)': { best: 'O(n)', worst: 'O(n)' }, // Note: O(1) with a linked list or deque
         }
     },
+
     deques: {
         about: {
             title: "About Deques",
@@ -176,6 +179,7 @@ export const dsInfo = {
             'Deletion': { best: 'O(1)', worst: 'O(1)' },
         }
     },
+
     bst: {
         about: {
             title: "About Binary Search Trees",

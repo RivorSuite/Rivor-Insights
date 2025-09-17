@@ -1,108 +1,63 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { DS_Array } from '../../datastructures/DS_Array';
+import React, { useRef, useEffect } from 'react';
+import { DS_Array } from './DS_Array';
 import { InfoPanel } from '../InfoPanel';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { dsInfo } from '../../data/ds-info';
 import { Toast } from '../Toast/Toast';
+import { CheckIcon, BookIcon } from '../../../common/Icons';
+import { useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
 
-// A smarter component that can change its style for animations
 const ArrayCell = ({ value, index, highlight, lifted }) => {
     const isInserting = value !== '' && !lifted;
     const cellClasses = `array-cell ${highlight ? 'highlight' : ''} ${lifted ? 'lifted' : ''} ${isInserting ? 'insert' : ''}`;
-
-    return (
-        <div className="array-cell-container">
-            <div className={cellClasses}>{value}</div>
-            <div className="array-index">{index}</div>
-        </div>
-    );
+    return (<div className="array-cell-container"><div className={cellClasses}>{value}</div><div className="array-index">{index}</div></div>);
 };
 
-
-const CheckIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-    </svg>
-);
-const BookIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-    </svg>
-);
-
-
 function ArrayWorkspace({ onBack }) {
-    const [value, setValue] = useState('');
-    const [index, setIndex] = useState('');
-    const [removeIndex, setRemoveIndex] = useState('');
-    const [sliderValue, setSliderValue] = useState(50);
-    const [animationSpeed, setAnimationSpeed] = useState(1050 - (50 * 10));
-    
-    const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
-    const [arrayState, setArrayState] = useState([]);
-    const [animationHistory, setAnimationHistory] = useState([]);
-    const [currentStep, setCurrentStep] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
-    
-    // --- NEW: State for completion status ---
-    const [isCompleted, setIsCompleted] = useState(false);
-    const topicId = 'ds-arrays'; // The ID from your roadmapData
-
+    const topicId = 'ds-arrays';
+    const {
+        isInfoPanelOpen, setIsInfoPanelOpen, animationHistory, setAnimationHistory, currentStep, setCurrentStep, isPlaying, setIsPlaying,
+        isCompleted, setIsCompleted, animationSpeed, setAnimationSpeed, sliderValue, setSliderValue, arrayState, setArrayState,
+        value, setValue, index, setIndex, removeIndex, setRemoveIndex, toast, setToast
+    } = useWorkspaceLogic();
+    const showToast = (message, type = 'info') => {setToast({ show: true, message, type });};
     const dsArray = useRef(new DS_Array());
-    const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
-
-    const showToast = (message, type = 'info') => {
-        setToast({ show: true, message, type });
-    };
-    
-    // --- NEW: useEffect to check completion status on load ---
     useEffect(() => {
         const checkCompletion = async () => {
             const user = auth.currentUser;
             if (!user) return;
             const docRef = doc(db, "userProgress", user.uid);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {
-                setIsCompleted(true);
-            }
+            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {setIsCompleted(true);}
         };
         checkCompletion();
     }, []);
 
     useEffect(() => {
         if (isPlaying && currentStep < animationHistory.length - 1) {
-            const timer = setTimeout(() => {
-                setCurrentStep(currentStep + 1);
-            }, animationSpeed);
+            const timer = setTimeout(() => {setCurrentStep(currentStep + 1);}, animationSpeed);
             return () => clearTimeout(timer);
-        } else {
-            setIsPlaying(false);
         }
+        else {setIsPlaying(false);}
     }, [isPlaying, currentStep, animationHistory, animationSpeed]);
 
     const handleCompleteTopic = async () => {
         const user = auth.currentUser;
         if (!user) return;
-
         const docRef = doc(db, "userProgress", user.uid);
-
         try {
             if (isCompleted) {
-                // If already completed, REMOVE the topicId
-                await updateDoc(docRef, { completed: arrayRemove(topicId) });
+                await updateDoc(docRef, { completed: arrayRemove(topicId) }); // If already completed, REMOVE the topicId
                 setIsCompleted(false);
             } 
             else {
-                // If not completed, ADD the topicId
-                await updateDoc(docRef, { completed: arrayUnion(topicId) });
+                await updateDoc(docRef, { completed: arrayUnion(topicId) }); // If not completed, Add the topicId
                 setIsCompleted(true);
             }
         } 
         catch (error) {
-            // This handles the case where the user has no progress doc yet
-            if (error.code === 'not-found' && !isCompleted) {
+            if (error.code === 'not-found' && !isCompleted) { // This handles the case where the user has no progress doc yet
                 await setDoc(docRef, { completed: [topicId] });
                 setIsCompleted(true);
             } 
@@ -129,23 +84,18 @@ function ArrayWorkspace({ onBack }) {
         if (!isPlaying && currentStep === animationHistory.length - 1) {
             setCurrentStep(0);
             setIsPlaying(true);
-        } else {
-            setIsPlaying(!isPlaying);
-        }
+        } 
+        else {setIsPlaying(!isPlaying);}
     };
 
     const handleStepBack = () => {
         setIsPlaying(false);
-        if (currentStep > 0) {
-            setCurrentStep(currentStep - 1);
-        }
+        if (currentStep > 0) {setCurrentStep(currentStep - 1);}
     };
 
     const handleStepForward = () => {
         setIsPlaying(false);
-        if (currentStep < animationHistory.length - 1) {
-            setCurrentStep(currentStep + 1);
-        }
+        if (currentStep < animationHistory.length - 1) {setCurrentStep(currentStep + 1);}
     };
     
     const handleAddAtIndex = () => {
@@ -203,9 +153,8 @@ function ArrayWorkspace({ onBack }) {
             return; 
         }
         const history = dsArray.current.removeAtIndex(idx);
-        if (typeof history === 'string') {
-            showToast(history, 'error');
-        } else if (history) {
+        if (typeof history === 'string') {showToast(history, 'error');}
+        else if (history) {
             setAnimationHistory(history);
             setCurrentStep(0);
             setIsPlaying(true);
@@ -215,9 +164,8 @@ function ArrayWorkspace({ onBack }) {
 
     const handleRemoveFromFront = () => {
         const history = dsArray.current.removeFromFront();
-        if (typeof history === 'string') {
-            showToast(history, 'error');
-        } else if (history) {
+        if (typeof history === 'string') {showToast(history, 'error');}
+        else if (history) {
             setAnimationHistory(history);
             setCurrentStep(0);
             setIsPlaying(true);
@@ -226,9 +174,8 @@ function ArrayWorkspace({ onBack }) {
 
     const handleRemoveFromBack = () => {
         const history = dsArray.current.removeFromBack();
-        if (typeof history === 'string') {
-            showToast(history, 'error');
-        } else if (history) {
+        if (typeof history === 'string') {showToast(history, 'error');}
+        else if (history) {
             setAnimationHistory(history);
             setCurrentStep(0);
             setIsPlaying(true);
@@ -252,19 +199,15 @@ function ArrayWorkspace({ onBack }) {
 
     const displayArray = animationHistory[currentStep]?.arrayState || arrayState;
     const currentFrame = animationHistory[currentStep] || {};
-
     return (
         <div className="ds-workspace">
             {toast.show && <Toast message={toast.message} type={toast.type} onClose={() => setToast({ ...toast, show: false })} />}
             <div className="ds-workspace-header">
                 <h1 className="auth-title" style={{ margin: 0 }}>Array</h1>
-                
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back to Select</button>
             </div>
-            
             <div className="ds-controls-panel">
-                {/* --- Left Side Controls --- */}
-                <div className="ds-controls-left">
+                <div className="ds-controls-left"> {/* --- Left Side Controls --- */}
                     <div className="ds-controls-section">
                         <h3 className="ds-controls-title">Add</h3>
                         <div className="ds-control-group">
@@ -300,26 +243,16 @@ function ArrayWorkspace({ onBack }) {
                         </div>  
                     </div>
                 </div>
-
-                {/* --- Right Side Controls --- */}
-                <div className="ds-controls-right">
-                    {/* The wrapper stacks the book icon and the full completion button */}
+                <div className="ds-controls-right">{/* --- Right Side Controls --- */}
                     <div className="stacked-buttons-container">
-                        {/* This is the full-width completion button */}
-                        <button
-                            className={`ds-action-button complete-button ${isCompleted ? 'completed' : ''}`}
-                            onClick={handleCompleteTopic}
-                        >
+                        <button className={`ds-action-button complete-button ${isCompleted ? 'completed' : ''}`} onClick={handleCompleteTopic}>
                             <CheckIcon />
                             {isCompleted ? 'Completed' : 'Mark as Complete'}
                         </button>
-                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}>
-                            <BookIcon />
-                        </button>
+                        <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}> <BookIcon /> </button>
                     </div>
                 </div>
             </div>
-
             <div className="ds-canvas">
                 {(!displayArray || displayArray.length === 0)
                     ? [...Array(6)].map((_, index) => <ArrayCell key={index} value="" index={index} />)
@@ -334,28 +267,19 @@ function ArrayWorkspace({ onBack }) {
                     ))
                 }
             </div>
-
             <div className="ds-animation-controls">
                 <div className="ds-playback-buttons">
-                    <button className="ds-playback-button" onClick={handleStepBack} disabled={!animationHistory.length || currentStep === 0}>
-                        ‹ Step Back
-                    </button>
-                    <button className="ds-playback-button play" onClick={handlePlayPause} disabled={!animationHistory.length}>
-                        {isPlaying ? 'Pause' : 'Play'}
-                    </button>
-                    <button className="ds-playback-button" onClick={handleStepForward} disabled={!animationHistory.length || currentStep >= animationHistory.length - 1}>
-                        Step Forward ›
-                    </button>
+                    <button className="ds-playback-button" onClick={handleStepBack} disabled={!animationHistory.length || currentStep === 0}> ‹ Step Back </button>
+                    <button className="ds-playback-button play" onClick={handlePlayPause} disabled={!animationHistory.length}> {isPlaying ? 'Pause' : 'Play'} </button>
+                    <button className="ds-playback-button" onClick={handleStepForward} disabled={!animationHistory.length || currentStep >= animationHistory.length - 1}> Step Forward › </button>
                 </div>
                 <div className="ds-speed-slider">
                     <span>Animation Speed</span>
                     <input type="range" min="1" max="100" value={sliderValue} onChange={handleSpeedChange}/>
                 </div>
             </div>
-            {/* --- NEW: Add the InfoPanel, controlled by state --- */}
             {isInfoPanelOpen && <InfoPanel data={dsInfo.arrays} onClose={() => setIsInfoPanelOpen(false)} />}
         </div>        
     );
 }
-
 export default ArrayWorkspace;

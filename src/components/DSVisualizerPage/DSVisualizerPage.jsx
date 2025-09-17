@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
-import { 
-    ArrayIcon, SinglyLinkedListIcon, StackIcon, QueueIcon, BstIcon,
-    DoublyLinkedListIcon, CircularLinkedListIcon, DequeIcon 
-} from '../DSIcons';
+import { ArrayIcon, SinglyLinkedListIcon, StackIcon, QueueIcon, BstIcon, DoublyLinkedListIcon, CircularLinkedListIcon, DequeIcon } from '../DSIcons';
 import ArrayWorkspace from '../../visualizers/components/Array/ArrayWorkspace';
 import SinglyLinkedListWorkspace from '../../visualizers/components/SinglyLinkedList/SinglyLinkedListWorkspace';
 import DoublyLinkedListWorkspace from '../../visualizers/components/DoublyLinkedList/DoublyLinkedListWorkspace';
@@ -12,7 +9,6 @@ import StackWorkspace from '../../visualizers/components/Stack/StackWorkspace';
 import QueueWorkspace from '../../visualizers/components/Queue/QueueWorkspace';
 import DequeWorkspace from '../../visualizers/components/Deque/DequeWorkspace';
 import BSTWorkspace from '../../visualizers/components/BST/BSTWorkspace';
-
 import './DSVisualizerPage.css';
 
 const dsData = [
@@ -28,7 +24,6 @@ const dsData = [
 
 const categories = ['All', 'Lists', 'Linear', 'Trees'];
 
-// --- NEW: A list of the workspaces we have actually built ---
 const implementedWorkspaces = new Set([
     'array',
     'singly-linked-list',
@@ -40,7 +35,6 @@ const implementedWorkspaces = new Set([
     'bst',
 ]);
 
-
 function DSVisualizerPage({ onBack, selectedDS, onSelectDS }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredData, setFilteredData] = useState(dsData);
@@ -50,9 +44,7 @@ function DSVisualizerPage({ onBack, selectedDS, onSelectDS }) {
         const categoryFiltered = selectedCategory === 'All'
             ? dsData
             : dsData.filter(ds => ds.category === selectedCategory);
-
-        if (!searchQuery) {setFilteredData(categoryFiltered); return;        }
-
+        if (!searchQuery) {setFilteredData(categoryFiltered); return;}
         const fuse = new Fuse(categoryFiltered, { keys: ['title'], includeScore: true, threshold: 0.4 });
         const results = fuse.search(searchQuery);
         setFilteredData(results.map(result => result.item));

@@ -4,7 +4,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { roadmapData } from '../RoadmapPage/RoadmapPage';
 import { CodeIcon, DSBranchIcon, AlgoIcon, SendIcon, ArticleIcon, CodeConceptsIcon, AboutUsIcon } from '../DSIcons';
 import genAI from '../../gemini';
-import { avatarPaths } from '../ProfilePictureSelector/AvatarIcons'; // Updated import path
+import { avatarPaths } from '../ProfilePictureSelector/AvatarIcons';
 import ProfilePictureSelector from '../ProfilePictureSelector/ProfilePictureSelector';
 
 import './HomePage.css';
@@ -37,7 +37,6 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
     const [showEmail, setShowEmail] = useState(false);
     const [showPfpSelector, setShowPfpSelector] = useState(false);
     const userInitial = userData ? userData.username.charAt(0).toUpperCase() : '?';
-    // State Management for AI Chat & Quotes
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
     const [isAiLoading, setIsAiLoading] = useState(false);
@@ -64,7 +63,6 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
             - Your answers must be concise and directly related to programming, data structures, algorithms, or the features of the Rivor Insights application.
             - IMPORTANT: You must refuse to answer questions about the application's backend, servers, or any non-public implementation details. If asked, politely state, "I can only answer questions about programming concepts and how to use Rivor Insights."
         `;
-    
         const model = genAI.getGenerativeModel({
             model: "gemini-2.5-pro",
             systemInstruction: systemInstruction,
@@ -85,8 +83,7 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
         const fetchData = async () => {
             const user = auth.currentUser;
             if (!user) return;
-            // Fetch User Data (username, email, avatarId)
-            const userDocRef = doc(db, "users", user.uid);
+            const userDocRef = doc(db, "users", user.uid); // Fetch User Data (username, email, avatarId)
             const userDocSnap = await getDoc(userDocRef);
             if (userDocSnap.exists()) {setUserData(userDocSnap.data());}
             else {
@@ -126,12 +123,10 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
         const currentInput = userInput;
         setUserInput('');
         setIsAiLoading(true);
-    
         try {
             const result = await chatSession.sendMessage(currentInput);
             const response = await result.response;
             const text = response.text();
-    
             const aiResponse = { sender: 'ai', text: text };
             setMessages(prev => [...prev, aiResponse]);
         }
@@ -189,15 +184,9 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
                         <p>Ask me anything about DSA!</p>
                     </div>
                 ) : (
-                    messages.map((msg, index) => (
-                        <div key={index} className={msg.sender === 'user' ? 'user-message' : 'ai-message'}> <p>{msg.text}</p> </div>
-                    ))
+                    messages.map((msg, index) => (<div key={index} className={msg.sender === 'user' ? 'user-message' : 'ai-message'}> <p>{msg.text}</p> </div>))
                 )}
-                {isAiLoading && (
-                    <div className="ai-message">
-                       <p><i>typing...</i></p>
-                    </div>
-                )}
+                {isAiLoading && (<div className="ai-message"><p><i>typing...</i></p></div>)}
                 </div>
                 <div className="ai-input-area">
                     <input type="text" placeholder="Explain Big O notation..." value={userInput} onChange={(e) => setUserInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}/>
@@ -208,7 +197,6 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
                 <p className="quote-text">"{quote.text}"</p>
                 <p className="quote-author">- {quote.author}</p>
             </div>
-
             {showPfpSelector && (
                 <ProfilePictureSelector 
                     onSelect={handleAvatarSelect}
@@ -239,8 +227,6 @@ function HomePage(props) {
         sessionStorage.setItem('welcomeSeen', 'true');
         setShowWelcome(false);
     };
-    return (
-        <div className="homepage-wrapper"> {showWelcome ? <AIWelcomeView onEnter={handleEnter} /> : <DashboardView {...props} />} </div>
-    );
+    return (<div className="homepage-wrapper"> {showWelcome ? <AIWelcomeView onEnter={handleEnter} /> : <DashboardView {...props} />} </div>);
 }
 export default HomePage;

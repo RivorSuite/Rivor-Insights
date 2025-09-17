@@ -42,9 +42,7 @@
     flex-shrink: 0;
 }
 
-.deque-index {
-    color: var(--secondary-text);
-}
+.deque-index {color: var(--secondary-text);}
 
 /* --- Animation Styles --- */
 .deque-cell.highlight {
@@ -67,13 +65,8 @@
     display: flex;
 }
 
-.deque-pre-add-container.front {
-    left: 50px;
-}
-
-.deque-pre-add-container.back {
-    right: 50px;
-}
+.deque-pre-add-container.front {left: 50px;}
+.deque-pre-add-container.back {right: 50px;}
 
 .deque-cell.pre-add {
     animation: popIn 0.3s ease forwards;
