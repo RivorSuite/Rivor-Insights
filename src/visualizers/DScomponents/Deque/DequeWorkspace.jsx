@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './Deque.css';
 import { DS_Deque } from './DS_Deque';
 import { InfoPanel } from '../InfoPanel';
-import { Toast } from '../Toast/Toast';
+import { Toast } from '../../Toast/Toast';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { dsInfo } from '../../data/ds-info';

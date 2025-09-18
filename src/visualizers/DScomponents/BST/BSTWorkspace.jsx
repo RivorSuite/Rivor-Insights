@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './BST.css';
 import { DS_BST } from './DS_BST';
 import { InfoPanel } from '../InfoPanel';
-import { Toast } from '../Toast/Toast';
+import { Toast } from '../../Toast/Toast';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { dsInfo } from '../../data/ds-info';

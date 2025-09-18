@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Fuse from 'fuse.js';
 import { ArrayIcon, SinglyLinkedListIcon, StackIcon, QueueIcon, BstIcon, DoublyLinkedListIcon, CircularLinkedListIcon, DequeIcon } from '../DSIcons';
-import ArrayWorkspace from '../../visualizers/components/Array/ArrayWorkspace';
-import SinglyLinkedListWorkspace from '../../visualizers/components/SinglyLinkedList/SinglyLinkedListWorkspace';
-import DoublyLinkedListWorkspace from '../../visualizers/components/DoublyLinkedList/DoublyLinkedListWorkspace';
-import CircularLinkedListWorkspace from '../../visualizers/components/CircularLinkedList/CircularLinkedListWorkspace';
-import StackWorkspace from '../../visualizers/components/Stack/StackWorkspace';
-import QueueWorkspace from '../../visualizers/components/Queue/QueueWorkspace';
-import DequeWorkspace from '../../visualizers/components/Deque/DequeWorkspace';
-import BSTWorkspace from '../../visualizers/components/BST/BSTWorkspace';
+import ArrayWorkspace from '../../visualizers/DScomponents/Array/ArrayWorkspace';
+import SinglyLinkedListWorkspace from '../../visualizers/DScomponents/SinglyLinkedList/SinglyLinkedListWorkspace';
+import DoublyLinkedListWorkspace from '../../visualizers/DScomponents/DoublyLinkedList/DoublyLinkedListWorkspace';
+import CircularLinkedListWorkspace from '../../visualizers/DScomponents/CircularLinkedList/CircularLinkedListWorkspace';
+import StackWorkspace from '../../visualizers/DScomponents/Stack/StackWorkspace';
+import QueueWorkspace from '../../visualizers/DScomponents/Queue/QueueWorkspace';
+import DequeWorkspace from '../../visualizers/DScomponents/Deque/DequeWorkspace';
+import BSTWorkspace from '../../visualizers/DScomponents/BST/BSTWorkspace';
 import './DSVisualizerPage.css';
 
 const dsData = [

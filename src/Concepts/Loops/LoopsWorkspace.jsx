@@ -4,14 +4,14 @@ import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebas
 import './Loops.css';
 import { conceptsInfo } from '../concepts-data.js';
 import { ConceptInfoPanel } from '../ConceptInfoPanel';
-import { Toast } from '../../visualizers/components/Toast/Toast';
+import { Toast } from '../../visualizers/Toast/Toast.jsx';
 import { CheckIcon, BookIcon } from '../../common/Icons.jsx';
 
 function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
-    const [isCompleted, setIsCompleted] = useState(false);
+    const [isForLoopCompleted, setIsForLoopCompleted] = useState(false);
+    const [isWhileLoopCompleted, setIsWhileLoopCompleted] = useState(false);
     const [isInfoPanelOpen, setIsInfoPanelOpen] = useState(false);
     const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
-    const topicId = 'basics-loops';
     const [loopType, setLoopType] = useState(initialType);
 
     const forLoopData = ['A', 'B', 'C', 'D'];
@@ -47,8 +47,10 @@ function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
             if (!user) return;
             const docRef = doc(db, "userProgress", user.uid);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists() && docSnap.data().completed?.includes(topicId)) {
-                setIsCompleted(true);
+            if (docSnap.exists()) {
+                const completedTopics = docSnap.data().completed || [];
+                setIsForLoopCompleted(completedTopics.includes('basics-for-loops'));
+                setIsWhileLoopCompleted(completedTopics.includes('basics-while-loops'));
             }
         };
         checkCompletion();
@@ -57,23 +59,23 @@ function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
     const handleCompleteTopic = async () => {
         const user = auth.currentUser;
         if (!user) return;
+
+        const topicId = loopType === 'for' ? 'basics-for-loops' : 'basics-while-loops';
+        const isCompleted = loopType === 'for' ? isForLoopCompleted : isWhileLoopCompleted;
+        const setIsCompleted = loopType === 'for' ? setIsForLoopCompleted : setIsWhileLoopCompleted;
+
         const docRef = doc(db, "userProgress", user.uid);
         try {
             if (isCompleted) {
                 await updateDoc(docRef, { completed: arrayRemove(topicId) });
                 setIsCompleted(false);
-            } 
-            else {
-                await updateDoc(docRef, { completed: arrayUnion(topicId) });
+            } else {
+                // Use setDoc with merge: true to create the document if it doesn't exist
+                await setDoc(docRef, { completed: arrayUnion(topicId) }, { merge: true });
                 setIsCompleted(true);
             }
-        } 
-        catch (error) {
-            if (error.code === 'not-found' && !isCompleted) {
-                await setDoc(docRef, { completed: [topicId] });
-                setIsCompleted(true);
-            }
-            else {console.error("Error updating progress:", error);}
+        } catch (error) {
+            console.error("Error updating progress:", error);
         }
     };
 
@@ -132,7 +134,10 @@ function LoopsWorkspace({ onBack, onPractice, initialType = 'for' }) {
                 <div className="ds-controls-right">
                     <div><button onClick={() => onPractice(loopType === 'for' ? 'basics-for-loops' : 'basics-while-loops')} className="auth-button" style={{ maxWidth: '150px', marginRight: '16px' }}>Practice</button></div>
                     <div className="stacked-buttons-container">
-                        <button className={`ds-action-button complete-button ${isCompleted ? 'completed' : ''}`} onClick={handleCompleteTopic}><CheckIcon />{isCompleted ? 'Completed' : 'Mark as Complete'}</button>
+                        <button className={`ds-action-button complete-button ${(loopType === 'for' ? isForLoopCompleted : isWhileLoopCompleted) ? 'completed' : ''}`} onClick={handleCompleteTopic}>
+                            <CheckIcon />
+                            {(loopType === 'for' ? isForLoopCompleted : isWhileLoopCompleted) ? 'Completed' : 'Mark as Complete'}
+                        </button>
                         <button className="ds-action-button icon-button" onClick={() => setIsInfoPanelOpen(true)}><BookIcon /></button>
                     </div>
                 </div>

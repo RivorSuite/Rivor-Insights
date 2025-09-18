@@ -27,16 +27,25 @@ function App() {
     const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
     const [accent, setAccent] = useState(() => localStorage.getItem('accent') || 'green');
     const [initialCode, setInitialCode] = useState('');
+   
     const [selectedDS, setSelectedDS] = useState(() => {
         const hashParts = window.location.hash.substring(1).split('/');
         if (hashParts[0] === 'ds-visualizer') {return hashParts[1] || null;}
         return null;
     });
+
     const [selectedConcept, setSelectedConcept] = useState(() => {
         const hashParts = window.location.hash.substring(1).split('/');
         if (hashParts[0] === 'code-concepts') {return hashParts[1] || null;}
         return null;
     });
+
+    const [selectedAlgo, setSelectedAlgo] = useState(() => {
+        const hashParts = window.location.hash.substring(1).split('/');
+        if (hashParts[0] === 'algo-visualizer') { return hashParts[1] || null; }
+        return null;
+    });
+
     const [initialLoopType, setInitialLoopType] = useState('for');
 
     useEffect(() => {
@@ -47,15 +56,32 @@ function App() {
     }, [theme, accent]);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => { 
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
-            if (currentUser) { 
+            if (currentUser) {
+                // --- USER IS LOGGED IN ---
                 const userDocRef = doc(db, "users", currentUser.uid);
                 const userDocSnap = await getDoc(userDocRef);
-                if (userDocSnap.exists() && userDocSnap.data().accent) {setAccent(userDocSnap.data().accent);}
-                else {setAccent('green');}
-            } 
-            else {setAccent('green'); }
+                if (userDocSnap.exists()) {
+                    const userData = userDocSnap.data();
+                    const userTheme = userData.theme || 'dark';
+                    setTheme(userTheme);
+                    localStorage.setItem('theme', userTheme); // Sync localStorage
+    
+                    setAccent(userData.accent || 'green');
+                } else {
+                    // This case handles a brand new user whose document might not be created yet.
+                    setTheme('dark');
+                    localStorage.setItem('theme', 'dark');
+                    setAccent('green');
+                }
+            } else {
+                // --- USER IS LOGGED OUT ---
+                // Reset theme to a consistent default for the login page
+                setTheme('dark');
+                localStorage.setItem('theme', 'dark');
+                setAccent('green');
+            }
             setIsLoading(false);
         });
         return () => unsubscribe();
@@ -67,9 +93,11 @@ function App() {
             const view = hashParts[0] || 'home';
             const ds = hashParts[0] === 'ds-visualizer' ? hashParts[1] : null;
             const concept = hashParts[0] === 'code-concepts' ? hashParts[1] : null;
+            const algo = hashParts[0] === 'algo-visualizer' ? hashParts[1] : null;
             setViewStack([view]);
             setSelectedDS(ds);
             setSelectedConcept(concept);
+            setSelectedAlgo(algo);
         };
         window.addEventListener('hashchange', handleHashChange);
         return () => window.removeEventListener('hashchange', handleHashChange);
@@ -79,8 +107,9 @@ function App() {
         let newHash = viewStack[viewStack.length - 1] || 'home';
         if (newHash === 'ds-visualizer' && selectedDS) {newHash += `/${selectedDS}`;}
         if (newHash === 'code-concepts' && selectedConcept) {newHash += `/${selectedConcept}`;}
+        if (newHash === 'algo-visualizer' && selectedAlgo) {newHash += `/${selectedAlgo}`;}        
         if (window.location.hash !== `#${newHash}`) {window.location.hash = newHash;}
-    }, [viewStack, selectedDS, selectedConcept]);
+    }, [viewStack, selectedDS, selectedConcept, selectedAlgo]);
     
     const navigateTo = (view) => {setViewStack(prevStack => [...prevStack, view]);};
     const navigateBack = () => {window.history.back();};
@@ -95,14 +124,25 @@ function App() {
         if (conceptId && viewStack[viewStack.length - 1] !== 'code-concepts') {navigateTo('code-concepts');}
     };
 
+    const handleSelectAlgo = (algoId) => {
+        setSelectedAlgo(algoId);
+        if (algoId && viewStack[viewStack.length - 1] !== 'algo-visualizer') {navigateTo('algo-visualizer');}
+    };
+
     const handleViewTopic = (topicId) => {
         if (topicId === 'basics-variables') {handleSelectConcept('variables'); return;}
         if (topicId === 'basics-operators') { handleSelectConcept('operators'); return;}
         if (topicId === 'basics-conditionals') {handleSelectConcept('conditionals'); return;}
         if (topicId === 'basics-for-loops') {setInitialLoopType('for'); handleSelectConcept('loops'); return;}
         if (topicId === 'basics-while-loops') {setInitialLoopType('while'); handleSelectConcept('loops'); return;}
+        
+        if (topicId === 'algo-linear-search') {handleSelectAlgo('linear-search'); return;}
+        if (topicId === 'algo-binary-search') {handleSelectAlgo('binary-search'); return;}
+
+
         const codeSnippet = exampleCode[topicId];
         if (codeSnippet) {setInitialCode(codeSnippet); navigateTo('code-visualizer'); return;}
+        
         const dsIdMap = {
             'ds-arrays': 'array',
             'ds-singly-linked-list': 'singly-linked-list',
@@ -130,7 +170,21 @@ function App() {
     };
 
     const handleLogout = async () => { await signOut(auth); setAccent('green');}; // reset the accent on logout
-    const toggleTheme = () => { setTheme(prevTheme => (prevTheme === 'dark' ? 'light' : 'dark')); };
+    
+    const toggleTheme = async () => {
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme); // Add this line
+    
+        if (user) {
+            const userDocRef = doc(db, "users", user.uid);
+            try {
+                await updateDoc(userDocRef, { theme: newTheme });
+            } catch (error) {
+                console.error("Error updating theme:", error);
+            }
+        }
+    };
 
     if (isLoading) { return <div style={{ color: 'white', textAlign: 'center' }}>Loading...</div>; }
     if (!user) {
@@ -156,7 +210,12 @@ function App() {
                     onSelectDS={handleSelectDS}
                     entryPoint={previousView}
                 />;
-            case 'algo-visualizer':return <AlgoVisualizerPage onBack={navigateBack} />;
+            case 'algo-visualizer':
+                return <AlgoVisualizerPage
+                    onBack={navigateBack}
+                    selectedAlgo={selectedAlgo}
+                    onSelectAlgo={handleSelectAlgo}
+                />;
             case 'code-concepts':
                 return <CodeConceptsPage
                     onBack={navigateBack}
@@ -174,10 +233,11 @@ function App() {
                     onViewTextPage={() => navigateTo('text-page')}
                     onViewCodeVisualizer={() => { setInitialCode(''); navigateTo('code-visualizer'); }}
                     onViewDSVisualizer={() => { setSelectedDS(null); navigateTo('ds-visualizer'); }}
-                    onViewAlgoVisualizer={() => navigateTo('algo-visualizer')}
+                    onViewAlgoVisualizer={() => { setSelectedAlgo(null); navigateTo('algo-visualizer')}}
                     onViewCodeConcepts={() => { setSelectedConcept(null); navigateTo('code-concepts'); }}
                     onViewAboutUs={() => navigateTo('about-us')}
                     onSelectTopic={handleViewTopic}
+                    accent={accent}
                 />;
         }
     };

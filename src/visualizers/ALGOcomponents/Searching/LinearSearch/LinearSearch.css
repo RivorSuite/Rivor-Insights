@@ -1,0 +1,69 @@
+.search-canvas {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+    padding: 20px;
+    position: relative;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-cell-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative; /* Needed for pointer positioning */
+}
+
+.search-cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 3px solid var(--border);
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.search-index {
+    color: var(--secondary-text);
+}
+
+/* --- Animation Styles --- */
+.search-cell.comparing {
+    border-color: var(--accent);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.search-cell.found {
+    border-color: #22c55e; /* Green */
+    background-color: color-mix(in srgb, #22c55e 20%, transparent);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px color-mix(in srgb, #22c55e 50%, transparent);
+}
+
+.search-pointer {
+    position: absolute;
+    top: -45px; /* Position above the cell */
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid var(--accent);
+    transition: left 0.5s ease-in-out; /* Smooth movement */
+}

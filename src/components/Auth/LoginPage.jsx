@@ -59,7 +59,8 @@ function LoginPage() {
                     username: username,
                     email: user.email,
                     avatarId: 0,
-                    accent: 'green'
+                    accent: 'green',
+                    theme: 'dark'
                 });
                 await sendEmailVerification(user); // Send email verification
             }
@@ -96,7 +97,8 @@ function LoginPage() {
                     username: user.displayName || user.email.split('@')[0],
                     email: user.email,
                     avatarId: 0,
-                    accent: 'green' // Default accent color
+                    accent: 'green', // Default accent color
+                    theme: 'dark'
                 });
             }
         } 

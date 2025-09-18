@@ -4,7 +4,7 @@ import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebas
 import './Operators.css';
 import { conceptsInfo } from '../concepts-data.js';
 import { ConceptInfoPanel } from '../ConceptInfoPanel';
-import { Toast } from '../../visualizers/components/Toast/Toast';
+import { Toast } from '../../visualizers/Toast/Toast.jsx';
 import { CheckIcon, BookIcon } from '../../common/Icons.jsx';
 
 const CodeLine = ({ a, b, op, result, type }) => {

@@ -4,7 +4,7 @@ import { InfoPanel } from '../InfoPanel';
 import { auth, db } from '../../../firebase';
 import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { dsInfo } from '../../data/ds-info';
-import { Toast } from '../Toast/Toast';
+import { Toast } from '../../Toast/Toast';
 import { CheckIcon, BookIcon } from '../../../common/Icons';
 import { useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
 

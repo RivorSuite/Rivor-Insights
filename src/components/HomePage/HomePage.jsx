@@ -32,7 +32,7 @@ const CircularProgressBar = ({ percentage, onClick }) => {
     );
 };
 
-const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer, onViewAlgoVisualizer, onViewCodeVisualizer, onViewTextPage, onViewRoadmap, onViewCodeConcepts, onViewAboutUs }) => {
+const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer, onViewAlgoVisualizer, onViewCodeVisualizer, onViewTextPage, onViewRoadmap, onViewCodeConcepts, onViewAboutUs, accent }) => {
     const [progress, setProgress] = useState({ completed: new Set(), nextTopic: null });
     const [userData, setUserData] = useState(null);
     const [showEmail, setShowEmail] = useState(false);
@@ -76,7 +76,7 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
             systemInstruction: systemInstruction,
         });
         setChatSession(model.startChat());
-        setMessages([]); // This clears the messages from the screen
+        setMessages([]); //clears the messages from the screen
     };
     
     useEffect(() => {
@@ -151,13 +151,26 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
         finally { setIsAiLoading(false); }
     };
 
-    const handleClearChat = () => {
-        startNewChat();
-    };
+    const handleClearChat = () => {startNewChat();};
 
     const totalTopics = roadmapData.flatMap(stage => stage.topics).length;
     const progressPercent = totalTopics > 0 ? Math.round((progress.completed.size / totalTopics) * 100) : 0;
 
+    const accentGradients = { // Gradient map for each accent color
+        indigo: 'linear-gradient(45deg, #4f46e5, #c084fc)', // Indigo to a bright Lavender
+        green: 'linear-gradient(45deg, #16a34a, #bef264)',  // Green to a bright Lime
+        pink: 'linear-gradient(45deg, #db2777, #fda4af)',   // Pink to a light Rose
+        orange: 'linear-gradient(45deg, #ea580c, #fde047)', // Orange to a bright Saffron Yellow
+        cyan: 'linear-gradient(45deg, #0891b2, #16E5E5)',   // Cyan to a bright Sky Blue
+    };
+
+    const aiheaderStyle = {
+        background: accentGradients[accent] || accentGradients.indigo,
+        WebkitBackgroundClip: 'text',
+        backgroundClip: 'text',
+        color: 'transparent',
+    };
+    
     return (
         <div className="dashboard-grid">
             <div className="dashboard-card profile-card">
@@ -191,14 +204,9 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
             </div>
             <div className="dashboard-card ai-card">
             <div className="ai-card-header">
-    <h3>Ask Rivor AI</h3>
-    <div className="ai-header-right">
-        <span className="ai-status">Online</span>
-        <button className="dashboard-button clear-chat-button" onClick={handleClearChat} title="Clear Chat">
-            <ClearIcon />
-        </button>
-    </div>
-</div>
+                <h3 style={aiheaderStyle} key={accent}>Rivor AI</h3>
+                <div className="ai-header-right"> <button className="dashboard-button clear-chat-button" onClick={handleClearChat} title="Clear Chat"> <ClearIcon / ></button> </div>
+            </div>
                 <div className="ai-chat-box" ref={chatBoxRef}>
                     {messages.length === 0 ? (
                     <div className="empty-chat-placeholder">

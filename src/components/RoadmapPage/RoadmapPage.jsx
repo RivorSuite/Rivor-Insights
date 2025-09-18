@@ -38,6 +38,13 @@ export const roadmapData = [
             { id: "ds-binary-search-trees", title: "Binary Search Trees (BST)" },
         ]
     },
+    {
+        category: "Stage 5: Searching & Sorting Algorithms",
+        topics: [
+            { id: "algo-linear-search", title: "Linear Search" },
+            { id: "algo-binary-search", title: "Binary Search" },
+        ]
+    },
 ];
 
 function RoadmapPage({ onBack, onSelectTopic }) {

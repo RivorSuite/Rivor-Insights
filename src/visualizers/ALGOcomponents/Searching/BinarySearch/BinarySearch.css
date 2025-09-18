@@ -1,0 +1,107 @@
+.search-canvas {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+    padding: 40px 20px 20px 20px; /* Added more top padding for pointers */
+    position: relative;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    position: relative; /* Container needs to be relative for pointer positioning */
+}
+
+.search-cell-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.search-cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 3px solid var(--border);
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.search-index {
+    color: var(--secondary-text);
+}
+
+.search-cell.comparing {
+    border-color: var(--accent);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.search-cell.found {
+    border-color: #22c55e;
+    background-color: color-mix(in srgb, #22c55e 20%, transparent);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px color-mix(in srgb, #22c55e 50%, transparent);
+}
+
+.search-cell.discarded {
+    opacity: 0.3;
+    border-color: var(--border);
+    background-color: var(--background);
+}
+
+/* --- NEW AND UPDATED POINTER STYLES --- */
+.pointer {
+    position: absolute;
+    top: -40px;
+    transition: left 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    transform: translateX(-50%);
+    width: 60px; /* ADD a fixed width */
+}
+
+/* REPLACE the existing .pointer-label rule */
+.pointer-label {
+    width: 100%; /* ADD this to make the label fill the pointer's width */
+    text-align: center; /* ADD this to center the text inside the label */
+    padding: 2px 0; /* Adjust padding to be vertical only */
+    border-radius: 4px;
+    color: white;
+    font-size: 14px; /* Explicitly set font-size and weight */
+    font-weight: 700;
+}
+
+.pointer-arrow {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+}
+
+/* Low Pointer Styles */
+.pointer-low .pointer-label { background-color: #3b82f6; } /* Blue */
+.pointer-low .pointer-arrow { border-top: 8px solid #3b82f6; }
+
+/* High Pointer Styles */
+.pointer-high .pointer-label { background-color: #ef4444; } /* Red */
+.pointer-high .pointer-arrow { border-top: 8px solid #ef4444; }
+
+/* Mid Pointer Styles */
+.pointer-mid .pointer-label { background-color: var(--accent); }
+.pointer-mid .pointer-arrow { border-top: 8px solid var(--accent); }

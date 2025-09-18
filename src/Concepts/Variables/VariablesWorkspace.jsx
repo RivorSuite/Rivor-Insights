@@ -4,7 +4,7 @@ import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from "firebas
 import '../../Concepts/Variables/Variables.css';
 import { conceptsInfo } from '../concepts-data.js';
 import { ConceptInfoPanel } from '../../Concepts/ConceptInfoPanel';
-import { Toast } from '../../visualizers/components/Toast/Toast'; // <-- NEW: Import Toast
+import { Toast } from '../../visualizers/Toast/Toast.jsx'; // <-- NEW: Import Toast
 import { CheckIcon, BookIcon } from '../../common/Icons.jsx';
 
 const dataTypeInfo = {
