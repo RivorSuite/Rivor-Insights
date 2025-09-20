@@ -1,6 +1,6 @@
-export const algoBigO = {
+export const algoConceptsBigO = {
     title: "Understanding Big O Notation",
-    category: "Stage 6: Complexities",
+    category: "Stage 6: Algorithmic Concepts",
     content: [
         { type: 'h2', text: 'How We Measure Efficiency' },
         { type: 'p', text: 'Big O notation is a mathematical notation used in computer science to describe the performance or complexity of an algorithm. It tells you how the runtime or memory usage of an algorithm grows as the input size grows.' },

@@ -15,9 +15,9 @@ const CircularProgressBar = ({ percentage, onClick }) => {
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (percentage / 100) * circumference;
     const getRank = (p) => {
-        if (p < 30) return "Progress: Beginner";
-        if (p < 70) return "Progress: Intermediate";
-        return "Progress:Advanced";
+        if (p < 30) return "Beginner";
+        if (p < 70) return "Intermediate";
+        return "Advanced";
     };
     const rank = getRank(percentage);
     return (
@@ -45,11 +45,7 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
     const [quote, setQuote] = useState({ text: '', author: '' });
     const chatBoxRef = useRef(null);
 
-    useEffect(() => {
-        if (chatBoxRef.current) {
-            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-        }
-    }, [messages, isAiLoading]);
+    useEffect(() => {if (chatBoxRef.current) {chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;}}, [messages, isAiLoading]);
 
     const quotes = [
         { text: "Talk is cheap. Show me the code.", author: "Linus Torvalds" },
@@ -79,14 +75,10 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
         setMessages([]); //clears the messages from the screen
     };
     
-    useEffect(() => {
-        startNewChat(); 
-    }, []);
+    useEffect(() => {startNewChat();}, []);
     
     useEffect(() => {
-        const updateQuote = () => {
-            setQuote(quotes[Math.floor(Math.random() * quotes.length)]);
-        };
+        const updateQuote = () => {setQuote(quotes[Math.floor(Math.random() * quotes.length)]);};
         updateQuote();
         const intervalId = setInterval(updateQuote, 10000);
         return () => clearInterval(intervalId);
@@ -171,7 +163,7 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
         color: 'transparent',
     };
     
-    return (
+    return(
         <div className="dashboard-grid">
             <div className="dashboard-card profile-card">
                 <div className="profile-picture-container" onClick={() => setShowPfpSelector(true)}>

@@ -25,7 +25,7 @@ import { algoLinearSearch } from './stage-5/algo-linear-search.js';
 import { algoBinarySearch } from './stage-5/algo-binary-search.js';
 import { algoBubbleSort } from './stage-5/algo-bubble-sort.js';
 // Stage 6
-import { algoBigO } from './stage-6/algo-big-o.js';
+import { algoConceptsBigO } from './stage-6/algo-con-big-o.js';
 
 export const textContent = {
   'history-programming': historyProgramming,
@@ -48,5 +48,5 @@ export const textContent = {
   'algo-linear-search': algoLinearSearch,
   'algo-binary-search': algoBinarySearch,
   'algo-bubble-sort': algoBubbleSort,
-  'algo-big-o': algoBigO,
+  'algo-concepts-big-o': algoConceptsBigO,
 };

@@ -134,7 +134,6 @@ function App() {
         if (topicId === 'algo-binary-search') {handleSelectAlgo('binary-search'); return;}
         if (topicId === 'algo-bubble-sort') {handleSelectAlgo('bubble-sort'); return;}
 
-
         const codeSnippet = exampleCode[topicId];
         if (codeSnippet) {setInitialCode(codeSnippet); navigateTo('code-visualizer'); return;}
         

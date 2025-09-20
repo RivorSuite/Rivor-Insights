@@ -46,12 +46,6 @@ export const roadmapData = [
             { id: "algo-bubble-sort", title: "Bubble Sort" },
         ]
     },
-    {
-        category: "Stage 6: Complexities",
-        topics: [
-            { id: "algo-big-o", title: "Understanding Big O Notation" },
-        ]
-    }
 ];
 
 function RoadmapPage({ onBack, onSelectTopic }) {

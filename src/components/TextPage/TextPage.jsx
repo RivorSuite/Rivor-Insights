@@ -2,19 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { textContent } from './Content'; 
 import './TextPage.css';
 
-// A new component to render different content types
 const ContentRenderer = ({ item }) => {
     switch (item.type) {
-        case 'h2':
-            return <h2 className="article-h2">{item.text}</h2>;
-        case 'p':
-            return <p dangerouslySetInnerHTML={{ __html: item.text }} />;
-        case 'li':
-            return <li dangerouslySetInnerHTML={{ __html: item.text }} />;
-        case 'code':
-            return <pre className="article-code"><code>{item.text}</code></pre>;
-        default:
-            return null;
+        case 'h2': return <h2 className="article-h2">{item.text}</h2>;
+        case 'p': return <p dangerouslySetInnerHTML={{ __html: item.text }} />;
+        case 'li': return <li dangerouslySetInnerHTML={{ __html: item.text }} />;
+        case 'code': return <pre className="article-code"><code>{item.text}</code></pre>;
+        default: return null;
     }
 };
 
@@ -50,7 +44,6 @@ function TextPage({ onBack }) {
                 <h1 className="auth-title">Articles & Concepts</h1>
                 <button onClick={onBack} className="auth-button" style={{ maxWidth: '150px' }}>Back</button>
             </div>
-            
             {Object.entries(articlesByCategory).map(([category, articles]) => (
                 <div key={category} className="article-category-section">
                     <h2 className="article-category-title">{category}</h2>
