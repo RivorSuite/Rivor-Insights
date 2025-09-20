@@ -5,99 +5,149 @@ export const LinearSearchIcon = () => (
         {[0, 1, 2, 3, 4].map(i => (
             <rect 
                 key={i} 
-                x={10 + i * 25} 
+                x={15 + i * 25} 
                 y="10" 
                 width="20" 
                 height="20" 
+                rx="3"
                 className="ds-icon-box"
                 style={{ fill: i === 2 ? 'var(--accent)' : 'var(--surface)' }}
             />
         ))}
-        {/* Magnifying glass */}
-        <g transform="translate(125, 20) scale(0.8)">
-            <circle cx="0" cy="0" r="8" stroke="var(--accent)" strokeWidth="2.5" fill="none" />
-            <line x1="6" y1="6" x2="12" y2="12" stroke="var(--accent)" strokeWidth="2.5" />
-        </g>
     </svg>
 );
 
 export const BinarySearchIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 40">
-        {[0, 1, 2, 3, 4, 5, 6].map(i => (
-            <rect 
-                key={i} 
-                x={5 + i * 20} 
-                y="10" 
-                width="18" 
-                height="20" 
-                className="ds-icon-box"
-                style={{ opacity: (i >= 2 && i <= 4) ? 1 : 0.3 }}
-            />
-        ))}
-        {/* Arrows pointing inwards */}
-        <g fill="none" stroke="var(--accent)" strokeWidth="2">
-            <line x1="40" y1="5" x2="50" y2="15" />
-            <line x1="60" y1="5" x2="50" y2="15" />
-            <line x1="110" y1="5" x2="100" y2="15" />
-            <line x1="90" y1="5" x2="100" y2="15" />
-        </g>
+        {[0, 1, 2, 3, 4].map(i => {
+            let fillColor = 'var(--surface)';
+            if (i === 0) fillColor = '#3b82f6'; // Blue for Low
+            if (i === 2) fillColor = 'var(--accent)'; // Accent for Mid
+            if (i === 4) fillColor = '#ef4444'; // Red for High
+
+            return (
+                <rect 
+                    key={i} 
+                    x={15 + i * 25} 
+                    y="10" 
+                    width="20" 
+                    height="20" 
+                    rx="3"
+                    className="ds-icon-box"
+                    style={{ fill: fillColor }}
+                />
+            );
+        })}
     </svg>
 );
 
 export const BubbleSortIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 40">
-        <rect x="20" y="20" width="15" height="15" className="ds-icon-box" />
-        <rect x="40" y="15" width="15" height="20" className="ds-icon-box" />
-        <rect x="60" y="5" width="15" height="30" className="ds-icon-box" style={{ fill: 'var(--accent)' }}/>
-        <rect x="80" y="10" width="15" height="25" className="ds-icon-box" style={{ fill: 'var(--accent)' }}/>
-        <rect x="100" y="18" width="15" height="17" className="ds-icon-box" />
-        
-        {/* Swap Arrows */}
-        <g fill="none" stroke="var(--accent)" strokeWidth="1.5">
-            <path d="M 67.5 3 C 60 0, 80 0, 87.5 3" />
-            <path d="M 67.5 3 L 65 0" />
-            <path d="M 87.5 3 L 90 0" />
-        </g>
+        {[0, 1, 2, 3, 4].map(i => (
+            <rect 
+                key={i} 
+                x={15 + i * 25} 
+                y="10" 
+                width="20" 
+                height="20" 
+                rx="3"
+                className="ds-icon-box"
+                style={{ 
+                    // Highlight the two adjacent blocks to represent a swap
+                    fill: (i === 2 || i === 3) ? 'var(--key-color)' : 'var(--surface)' 
+                }}
+            />
+        ))}
     </svg>
 );
 
 export const InsertionSortIcon = () => (
-     <svg className="ds-icon-svg" viewBox="0 0 150 40">
-        {/* Sorted portion */}
-        <rect x="10" y="15" width="15" height="20" className="ds-icon-box" />
-        <rect x="30" y="10" width="15" height="25" className="ds-icon-box" />
-        <rect x="50" y="5" width="15" height="30" className="ds-icon-box" />
-        
-        {/* Element being inserted */}
-        <rect x="80" y="12" width="15" height="23" className="ds-icon-box" style={{ fill: 'var(--accent)' }}/>
-        
-        {/* Unsorted portion */}
-        <rect x="110" y="20" width="15" height="15" className="ds-icon-box" style={{ opacity: 0.5 }} />
-        <rect x="130" y="18" width="15" height="17" className="ds-icon-box" style={{ opacity: 0.5 }} />
+    <svg className="ds-icon-svg" viewBox="0 0 150 40">
+        {/* Render the main 5 array boxes */}
+        {[0, 1, 2, 3, 4].map(i => (
+            <rect 
+                key={`array-box-${i}`}
+                x={10 + i * 22} 
+                y="10" 
+                width="18" 
+                height="20" 
+                rx="3"
+                className="ds-icon-box"
+                style={{ 
+                    // Highlight the first block as the "sorted" part
+                    fill: i === 0 ? 'var(--accent)' : 'var(--surface)' 
+                }}
+            />
+        ))}
+        {/* Render the separate "key" box to the right */}
+        <rect 
+            x={125} 
+            y="10" 
+            width="18" 
+            height="20" 
+            rx="3"
+            className="ds-icon-box"
+            style={{ 
+                fill: 'var(--key-color)' // Use the opposite accent color for the key
+            }}
+        />
+    </svg>
+);
 
-        {/* Arrow showing insertion point */}
-        <g fill="none" stroke="var(--accent)" strokeWidth="2">
-             <line x1="87.5" y1="5" x2="87.5" y2="0" />
-             <line x1="82.5" y1="5" x2="87.5" y2="0" />
-             <line x1="92.5" y1="5" x2="87.5" y2="0" />
+export const BFSIcon = () => (
+    <svg className="ds-icon-svg" viewBox="0 0 150 50">
+        {/* Nodes */}
+        <rect x="65" y="2" width="20" height="10" rx="3" className="ds-icon-box" />
+        <rect x="40" y="20" width="20" height="10" rx="3" className="ds-icon-box" />
+        <rect x="90" y="20" width="20" height="10" rx="3" className="ds-icon-box" />
+        <rect x="25" y="38" width="20" height="10" rx="3" className="ds-icon-box" />
+        <rect x="55" y="38" width="20" height="10" rx="3" className="ds-icon-box" />
+        {/* Edges connecting nodes */}
+        <g className="ds-icon-line" fill="none">
+            <line x1="75" y1="12" x2="50" y2="20" />
+            <line x1="75" y1="12" x2="100" y2="20" />
+            <line x1="50" y1="30" x2="35" y2="38" />
+            <line x1="50" y1="30" x2="65" y2="38" />
+        </g>
+
+        <g fill="none" className="ds-icon-line" stroke="var(--accent)" strokeWidth="2">
+            {/* Arrow #1: Curved path to left child with correct arrowhead */}
+            <path d="M 60 5 Q 45 4, 42 14" />
+            <polyline points="46 12, 43 15, 40 12" />
+
+            {/* Arrow #2: Shorter path to right child to leave a gap */}
+            <path d="M 65 25 H 85" />
+            <polyline points="82 22, 85 25, 82 28" />
         </g>
     </svg>
 );
 
-export const GraphTraversalIcon = () => (
-    <svg className="ds-icon-svg" viewBox="0 0 150 40">
+export const DFSIcon = () => (
+    <svg className="ds-icon-svg" viewBox="0 0 150 50">
         {/* Nodes */}
-        <circle cx="30" cy="20" r="8" className="ds-icon-box" style={{ fill: 'var(--accent)' }} />
-        <circle cx="75" cy="10" r="8" className="ds-icon-box" />
-        <circle cx="75" cy="30" r="8" className="ds-icon-box" />
-        <circle cx="120" cy="20" r="8" className="ds-icon-box" />
-        
-        {/* Edges */}
-        <g stroke="var(--secondary-text)" strokeWidth="1.5">
-            <line x1="38" y1="20" x2="67" y2="12" />
-            <line x1="38" y1="20" x2="67" y2="28" />
-            <line x1="83" y1="12" x2="112" y2="20" />
-            <line x1="83" y1="30" x2="112" y2="20" />
+        <rect x="65" y="2" width="20" height="10" rx="3" className="ds-icon-box" />
+        <rect x="40" y="20" width="20" height="10" rx="3" className="ds-icon-box" />
+        <rect x="90" y="20" width="20" height="10" rx="3" className="ds-icon-box" />
+        <rect x="25" y="38" width="20" height="10" rx="3" className="ds-icon-box" />
+        <rect x="55" y="38" width="20" height="10" rx="3" className="ds-icon-box" />
+
+        {/* Edges connecting nodes */}
+        <g className="ds-icon-line" fill="none">
+            <line x1="75" y1="12" x2="50" y2="20" />
+            <line x1="75" y1="12" x2="100" y2="20" />
+            <line x1="50" y1="30" x2="35" y2="38" />
+            <line x1="50" y1="30" x2="65" y2="38" />
+        </g>
+
+        {/* DFS Traversal Arrows */}
+        <g fill="none" className="ds-icon-line" stroke="var(--accent)" strokeWidth="2">
+        {/* Arrow #1: Curved path to left child with correct arrowhead */}
+            <path d="M 60 5 Q 45 4, 42 14" />
+            <polyline points="46 12, 43 15, 40 12" />
+            
+            {/* Arrow #2: Curved path from Left Child to its own Left Child */}
+            <path d="M 36 23 Q 23 23, 26 32" />
+            <polyline points="29 31, 26 34, 23 31" />
         </g>
     </svg>
 );

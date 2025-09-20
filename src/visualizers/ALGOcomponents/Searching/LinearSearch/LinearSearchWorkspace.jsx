@@ -19,6 +19,17 @@ const SearchCell = ({ value, index, isComparing, isFound }) => {
     );
 };
 
+const Pointer = ({ label, index }) => {
+    if (index === null || index < 0) return null;
+    const position = (index * 112.8) + 52.4; // Calculation: (index * (cell_width + gap)) + (cell_width / 2)
+    return (
+        <div className="pointer" style={{ left: `${position}px` }}>
+            <div className="pointer-label">{label}</div>
+            <div className="pointer-arrow"></div>
+        </div>
+    );
+};
+
 function LinearSearchWorkspace({ onBack }) {
     const topicId = 'algo-linear-search';
     const {
@@ -53,8 +64,7 @@ function LinearSearchWorkspace({ onBack }) {
             const timer = setTimeout(() => {setCurrentStep(currentStep + 1);}, animationSpeed);
             return () => clearTimeout(timer);
         } else if (isPlaying && currentStep === animationHistory.length - 1) {
-             // When animation finishes
-            setIsPlaying(false);
+            setIsPlaying(false); // When animation finishes
             const finalFrame = animationHistory[animationHistory.length - 2]; // Second to last frame has the result
             if (finalFrame.type === 'found') {showToast(`Value ${finalFrame.arrayState[finalFrame.foundIndex]} found at index ${finalFrame.foundIndex}.`, 'success');}
             else if (finalFrame.type === 'not-found') {showToast(`The value was not found in the array.`, 'error');}
@@ -139,9 +149,6 @@ function LinearSearchWorkspace({ onBack }) {
 
     const currentFrame = animationHistory[currentStep] || {};
     const displayArray = currentFrame.arrayState || arrayState;
-    const pointerPosition = currentFrame.comparingIndex !== undefined 
-        ? (currentFrame.comparingIndex * 108) + 54 
-        : null;
 
     return (
         <div className="ds-workspace">
@@ -173,7 +180,7 @@ function LinearSearchWorkspace({ onBack }) {
             </div>
             <div className="search-canvas">
                 <div className="search-container">
-                    {pointerPosition !== null && <div className="search-pointer" style={{ left: `${pointerPosition}px` }}></div>}
+                    {currentFrame.comparingIndex !== undefined && <Pointer label="Pointer" index={currentFrame.comparingIndex} />}
                     {displayArray.map((val, index) => (
                         <SearchCell
                             key={index}

@@ -40,9 +40,7 @@
     flex-shrink: 0;
 }
 
-.search-index {
-    color: var(--secondary-text);
-}
+.search-index {color: var(--secondary-text);}
 
 .search-cell.comparing {
     border-color: var(--accent);
@@ -51,10 +49,10 @@
 }
 
 .search-cell.found {
-    border-color: #22c55e;
-    background-color: color-mix(in srgb, #22c55e 20%, transparent);
+    border-color: var(--accent);
+    background-color: color-mix(in srgb, var(--accent) 20%, transparent);
     transform: scale(1.1);
-    box-shadow: 0 0 20px color-mix(in srgb, #22c55e 50%, transparent);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent), transparent);
 }
 
 .search-cell.discarded {
@@ -63,7 +61,7 @@
     background-color: var(--background);
 }
 
-/* --- NEW AND UPDATED POINTER STYLES --- */
+/* --- POINTER STYLES --- */
 .pointer {
     position: absolute;
     top: -40px;
@@ -76,10 +74,9 @@
     width: 60px; /* ADD a fixed width */
 }
 
-/* REPLACE the existing .pointer-label rule */
 .pointer-label {
-    width: 100%; /* ADD this to make the label fill the pointer's width */
-    text-align: center; /* ADD this to center the text inside the label */
+    width: 100%; /* Add this to make the label fill the pointer's width */
+    text-align: center; /* Add this to center the text inside the label */
     padding: 2px 0; /* Adjust padding to be vertical only */
     border-radius: 4px;
     color: white;

@@ -1,4 +1,4 @@
-.search-canvas {
+.sort-canvas {
     flex-grow: 1;
     display: flex;
     align-items: center;
@@ -9,22 +9,21 @@
     position: relative;
 }
 
-.search-container {
+.sort-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 8px;
 }
 
-.search-cell-container {
+.sort-cell-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    position: relative; /* Needed for pointer positioning */
 }
 
-.search-cell {
+.sort-cell {
     width: 100px;
     height: 100px;
     display: flex;
@@ -39,26 +38,32 @@
     flex-shrink: 0;
 }
 
-.search-index {color: var(--secondary-text);}
+.sort-index {color: var(--secondary-text);}
 
-/* --- Animation Styles --- */
-.search-cell.comparing {
+/* --- Bubble Sort Specific Animation Styles --- */
+.sort-cell.comparing {
     border-color: var(--accent);
     transform: scale(1.1);
     box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
-.search-cell.found {
+.sort-cell.swapping {
+    border-color: var(--key-color); /* Use opposite accent color */
+    background-color: color-mix(in srgb, var(--key-color) 20%, transparent);
+    transform: translateY(-20px) scale(1.05);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--key-color) 40%, transparent);
+}
+
+.sort-cell.sorted {
     border-color: #22c55e; /* Green */
     background-color: color-mix(in srgb, #22c55e 20%, transparent);
-    transform: scale(1.1);
-    box-shadow: 0 0 20px color-mix(in srgb, #22c55e 50%, transparent);
+    opacity: 0.7;
 }
 
 .pointer {
     position: absolute;
     top: -40px;
-    transition: left 0.5s ease-in-out;
+    transition: left 0.4s ease-in-out;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -75,7 +80,6 @@
     color: white;
     font-size: 14px;
     font-weight: 700;
-    background-color: var(--accent); /* Uses the current theme accent color */
 }
 
 .pointer-arrow {
@@ -83,5 +87,12 @@
     height: 0;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
-    border-top: 8px solid var(--accent);
 }
+
+/* 'j' Pointer Styles */
+.pointer-j .pointer-label { background-color: #3b82f6; } /* Blue */
+.pointer-j .pointer-arrow { border-top: 8px solid #3b82f6; }
+
+/* 'j+1' Pointer Styles */
+.pointer-jplus1 .pointer-label { background-color: #ef4444; } /* Red */
+.pointer-jplus1 .pointer-arrow { border-top: 8px solid #ef4444; }

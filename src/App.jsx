@@ -27,25 +27,21 @@ function App() {
     const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
     const [accent, setAccent] = useState(() => localStorage.getItem('accent') || 'green');
     const [initialCode, setInitialCode] = useState('');
-   
     const [selectedDS, setSelectedDS] = useState(() => {
         const hashParts = window.location.hash.substring(1).split('/');
         if (hashParts[0] === 'ds-visualizer') {return hashParts[1] || null;}
         return null;
     });
-
     const [selectedConcept, setSelectedConcept] = useState(() => {
         const hashParts = window.location.hash.substring(1).split('/');
         if (hashParts[0] === 'code-concepts') {return hashParts[1] || null;}
         return null;
     });
-
     const [selectedAlgo, setSelectedAlgo] = useState(() => {
         const hashParts = window.location.hash.substring(1).split('/');
         if (hashParts[0] === 'algo-visualizer') { return hashParts[1] || null; }
         return null;
     });
-
     const [initialLoopType, setInitialLoopType] = useState('for');
 
     useEffect(() => {
@@ -67,18 +63,16 @@ function App() {
                     const userTheme = userData.theme || 'dark';
                     setTheme(userTheme);
                     localStorage.setItem('theme', userTheme); // Sync localStorage
-    
                     setAccent(userData.accent || 'green');
-                } else {
-                    // This case handles a brand new user whose document might not be created yet.
+                }
+                else {// This case handles a brand new user whose document might not be created yet
                     setTheme('dark');
                     localStorage.setItem('theme', 'dark');
                     setAccent('green');
                 }
-            } else {
-                // --- USER IS LOGGED OUT ---
-                // Reset theme to a consistent default for the login page
-                setTheme('dark');
+            }
+            else {// --- USER IS LOGGED OUT ---
+                setTheme('dark');// Reset theme to a consistent default for the login page
                 localStorage.setItem('theme', 'dark');
                 setAccent('green');
             }
@@ -138,6 +132,7 @@ function App() {
         
         if (topicId === 'algo-linear-search') {handleSelectAlgo('linear-search'); return;}
         if (topicId === 'algo-binary-search') {handleSelectAlgo('binary-search'); return;}
+        if (topicId === 'algo-bubble-sort') {handleSelectAlgo('bubble-sort'); return;}
 
 
         const codeSnippet = exampleCode[topicId];
@@ -178,11 +173,8 @@ function App() {
     
         if (user) {
             const userDocRef = doc(db, "users", user.uid);
-            try {
-                await updateDoc(userDocRef, { theme: newTheme });
-            } catch (error) {
-                console.error("Error updating theme:", error);
-            }
+            try {await updateDoc(userDocRef, { theme: newTheme });}
+            catch (error) {console.error("Error updating theme:", error);}
         }
     };
 
@@ -250,8 +242,6 @@ function App() {
             catch (error) {console.error("Error updating accent color:", error);}
         }
     };
-
-
     return (
         <div style={{ width: '100%', height: '100%', paddingTop: '70px', boxSizing: 'border-box' }}>
             <Header theme={theme} onToggleTheme={toggleTheme} onSetAccent={handleSetAccent} accent={accent}/>

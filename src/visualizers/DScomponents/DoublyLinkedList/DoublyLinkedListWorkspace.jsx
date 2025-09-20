@@ -7,6 +7,7 @@ import { dsInfo } from '../../data/ds-info';
 import { Toast } from '../../Toast/Toast';
 import { CheckIcon, BookIcon } from '../../../common/Icons';
 import { useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
+import './DoublyLinkedList.css';
 
 const DoublyLinkedListNode = ({ value, isHead, isTail, highlight, traversed, lifted }) => {
     const nodeClasses = `ll-node ${highlight ? 'highlight' : ''} ${lifted ? 'lifted' : ''} ${traversed ? 'traversed' : ''}`;

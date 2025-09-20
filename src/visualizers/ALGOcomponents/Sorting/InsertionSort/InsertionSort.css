@@ -1,0 +1,145 @@
+/* --- ACCENT COLOR PALETTES --- */
+[data-accent='indigo'] { --key-color: #e59e46; }
+[data-accent='green'] { --key-color: #e546a3; }
+[data-accent='pink'] { --key-color: #46e577; }
+[data-accent='orange'] { --key-color: #4688e5; }
+[data-accent='cyan'] { --key-color: #e54646; }
+
+.search-canvas {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+    padding: 20px;
+    padding-top: 90px; /* Extra padding for pointers */
+    position: relative;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.sort-cell-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.sort-cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 3px solid var(--border);
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.sort-index {color: var(--secondary-text);}
+
+/* --- Base Animation Styles --- */
+.sort-cell.comparing {
+    border-color: var(--accent);
+    transform: scale(1.1);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.sort-cell.sorted {
+    border-color: var(--accent); /* Use accent color */
+    background-color: color-mix(in srgb, var(--accent) 20%, transparent);
+    opacity: 0.7;
+}
+
+/* --- Insertion Sort Specific Styles --- */
+.sort-cell.key {
+    border-color: var(--key-color); /* Use opposite accent color */
+    background-color: color-mix(in srgb, var(--key-color) 20%, transparent);
+    transform: translateY(-25px) scale(1.1);
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--key-color) 40%, transparent);
+}
+
+/* --- Pointer Styles --- */
+.pointer {
+    position: absolute;
+    top: -80px; /* Aligns all pointers at the same height */
+    transition: left 0.4s ease-in-out; /* Smooth sliding animation */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    transform: translateX(-50%);
+    width: 60px;
+}
+
+.pointer-label {
+    width: 100%;
+    text-align: center;
+    padding: 2px 0;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: var(--key-color);
+}
+
+.pointer-arrow {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--key-color);
+}
+
+/* 'key' Pointer Styles */
+.pointer-key .pointer-label {background-color: var(--key-color); /* Use opposite accent color */}
+.pointer-key .pointer-arrow {border-top: 8px solid var(--key-color); /* Use opposite accent color */}
+
+/* 'j' Pointer Styles */
+.pointer-j .pointer-label { background-color: #3b82f6; /* Blue */}
+.pointer-j .pointer-arrow { border-top: 8px solid #3b82f6; }
+
+/* --- Key Display Block Styles --- */
+.key-display-container {
+    position: absolute;
+    /* This is the line that controls the block's placement.
+       'left: 100%' positions the start of the container at the very end 
+       of its parent (.search-container). The 'margin-left' then pushes 
+       it further to the right, creating a gap. This ensures it's always 
+       outside and to the right of the array, regardless of the array's size.
+    */
+    left: 100%;
+    margin-left: 50px; /* Adjust this value for more/less space */
+    /* The rest is for alignment and fade-in animation */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Make the key block stand out */
+.key-display-container .sort-cell.key {
+    transform: none; /* Override the lift effect from the main key style */
+    box-shadow: 0 0 25px color-mix(in srgb, var(--key-color) 50%, transparent);
+}
+
+.sort-cell.inserted-key {
+    border-color: var(--key-color); /* Use opposite accent color */
+    background-color: color-mix(in srgb, var(--key-color) 20%, transparent);
+}

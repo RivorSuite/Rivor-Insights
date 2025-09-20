@@ -18,11 +18,13 @@ export const useWorkspaceLogic = (topicId) => {
     const [queueState, setQueueState] = useState([]); //queueState
     const [dequeState, setDequeState] = useState([]); //dequeState
     const [treeState, setTreeState] = useState({ nodes: [], edges: [] }); //treeState
+    
+    const [keyDisplayValue, setKeyDisplayValue] = useState(null); //Insertion Sort
+
     return{
         value, setValue, index, setIndex, removeIndex, setRemoveIndex, sliderValue, setSliderValue, animationSpeed, setAnimationSpeed,
         isInfoPanelOpen, setIsInfoPanelOpen, animationHistory, setAnimationHistory, currentStep, setCurrentStep, isPlaying, setIsPlaying,
         isCompleted, setIsCompleted, toast, setToast, arrayState, setArrayState, listState, setListState, stackState, setStackState,
-        queueState, setQueueState, dequeState, setDequeState, treeState, setTreeState
+        queueState, setQueueState, dequeState, setDequeState, treeState, setTreeState, keyDisplayValue, setKeyDisplayValue,
     }
-    
 };

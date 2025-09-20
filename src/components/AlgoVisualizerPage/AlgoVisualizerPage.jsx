@@ -3,28 +3,31 @@ import Fuse from 'fuse.js';
 import './AlgoVisualizerPage.css';
 import LinearSearchWorkspace from '../../visualizers/ALGOcomponents/Searching/LinearSearch/LinearSearchWorkspace.jsx';
 import BinarySearchWorkspace from '../../visualizers/ALGOcomponents/Searching/BinarySearch/BinarySearchWorkspace';
+import BubbleSortWorkspace from '../../visualizers/ALGOcomponents/Sorting/BubbleSort/BubbleSortWorkspace';
+import InsertionSortWorkspace from '../../visualizers/ALGOcomponents/Sorting/InsertionSort/InsertionSortWorkspace.jsx';
 import { 
     LinearSearchIcon, 
     BinarySearchIcon, 
     BubbleSortIcon, 
-    InsertionSortIcon, 
-    GraphTraversalIcon 
+    InsertionSortIcon,
+    BFSIcon,
+    DFSIcon,
 } from '../AlgoIcons';
 
-// TEMP: Define the initial set of algorithms we plan to build.
+// Define the initial set of algorithms planned to be built.
 const algoData = [
     { id: 'linear-search', title: 'Linear Search', category: 'Searching', description: 'Sequentially checks each element of a list.', icon: <LinearSearchIcon /> },
     { id: 'binary-search', title: 'Binary Search', category: 'Searching', description: 'Efficiently finds an item by repeatedly dividing the search interval in half.', icon: <BinarySearchIcon /> },
     { id: 'bubble-sort', title: 'Bubble Sort', category: 'Sorting', description: 'A simple sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.', icon: <BubbleSortIcon /> },
     { id: 'insertion-sort', title: 'Insertion Sort', category: 'Sorting', description: 'Builds the final sorted array one item at a time.', icon: <InsertionSortIcon /> },
-    { id: 'bfs', title: 'Breadth-First Search', category: 'Graph Traversal', description: 'Explores the neighbor nodes first, before moving to the next level neighbors.', icon: <GraphTraversalIcon /> },
-    { id: 'dfs', title: 'Depth-First Search', category: 'Graph Traversal', description: 'Explores as far as possible along each branch before backtracking.', icon: <GraphTraversalIcon /> },
+    { id: 'bfs', title: 'Breadth-First Search', category: 'Graph Traversal', description: 'Explores the neighbor nodes first, before moving to the next level neighbors.', icon: <BFSIcon /> },
+    { id: 'dfs', title: 'Depth-First Search', category: 'Graph Traversal', description: 'Explores as far as possible along each branch before backtracking.', icon: <DFSIcon /> },
 ];
 
 const categories = ['All', 'Searching', 'Sorting', 'Graph Traversal'];
 
-// This set will track which algorithms are actually implemented and clickable.
-const implementedWorkspaces = new Set(['linear-search', 'binary-search']);
+// set to track which algorithms are actually implemented and clickable.
+const implementedWorkspaces = new Set(['linear-search', 'binary-search', 'bubble-sort', 'insertion-sort']);
 
 function AlgoVisualizerPage({ onBack, selectedAlgo, onSelectAlgo}) {
     const [searchQuery, setSearchQuery] = useState('');
@@ -48,10 +51,10 @@ function AlgoVisualizerPage({ onBack, selectedAlgo, onSelectAlgo}) {
 
     if (selectedAlgo) {
         switch (selectedAlgo) {
-            case 'linear-search':
-                return <LinearSearchWorkspace onBack={onBack} />;
-            case 'binary-search':
-                return <BinarySearchWorkspace onBack={onBack} />;
+            case 'linear-search':return <LinearSearchWorkspace onBack={onBack} />;
+            case 'binary-search':return <BinarySearchWorkspace onBack={onBack} />;
+            case 'bubble-sort':return <BubbleSortWorkspace onBack={onBack} />;
+            case 'insertion-sort': return <InsertionSortWorkspace onBack={onBack} />;
             default:
                 onSelectAlgo(null); // Go back if no match
                 return null;
@@ -104,5 +107,4 @@ function AlgoVisualizerPage({ onBack, selectedAlgo, onSelectAlgo}) {
         </div>
     );
 }
-
 export default AlgoVisualizerPage;

@@ -1,0 +1,10 @@
+.dll-node-wrapper { display: flex; align-items: center; }
+.dll-node-container { display: flex; align-items: center; position: relative; }
+.dll-node-container .ll-node { width: 90px; justify-content: space-between; }
+.dll-pointer-box { width: 25%; height: 100%; border-left: 2px solid var(--secondary-text); border-right: 2px solid var(--secondary-text); position: relative; }
+.dll-node-container .ll-node-value { width: 50%; border: none; }
+.dll-pointer-box::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; background-color: var(--secondary-text); border-radius: 50%; }
+.dll-pointer-box.is-head::after, .dll-pointer-box.is-tail::after { background-color: var(--null-pointer); }
+.dll-connector-forward, .dll-connector-back { width: 40px; height: 2px; background-color: var(--secondary-text); position: relative; }
+.dll-connector-forward::after { content: ''; position: absolute; right: -1px; top: 50%; transform: translateY(-50%) rotate(45deg); width: 12px; height: 12px; border-top: 2px solid var(--secondary-text); border-right: 2px solid var(--secondary-text); }
+.dll-connector-back::before { content: ''; position: absolute; left: -1px; top: 50%; transform: translateY(-50%) rotate(45deg); width: 12px; height: 12px; border-bottom: 2px solid var(--secondary-text); border-left: 2px solid var(--secondary-text); }

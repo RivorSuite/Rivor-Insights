@@ -21,7 +21,11 @@ import { dsDeques } from './stage-3/ds-deques.js';
 import { dsTreesIntro } from './stage-4/ds-trees-intro.js';
 import { dsGraphsIntro } from './stage-4/ds-graphs-intro.js';
 // Stage 5
-import { algoBigO } from './stage-5/algo-big-o.js';
+import { algoLinearSearch } from './stage-5/algo-linear-search.js';
+import { algoBinarySearch } from './stage-5/algo-binary-search.js';
+import { algoBubbleSort } from './stage-5/algo-bubble-sort.js';
+// Stage 6
+import { algoBigO } from './stage-6/algo-big-o.js';
 
 export const textContent = {
   'history-programming': historyProgramming,
@@ -41,5 +45,8 @@ export const textContent = {
   'ds-deques': dsDeques,
   'ds-trees-intro': dsTreesIntro,
   'ds-graphs-intro': dsGraphsIntro,
+  'algo-linear-search': algoLinearSearch,
+  'algo-binary-search': algoBinarySearch,
+  'algo-bubble-sort': algoBubbleSort,
   'algo-big-o': algoBigO,
 };

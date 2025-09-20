@@ -7,6 +7,7 @@ import { dsInfo } from '../../data/ds-info';
 import { Toast } from '../../Toast/Toast';
 import { CheckIcon, BookIcon } from '../../../common/Icons';
 import { useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
+import './CircularLinkedList.css';
 
 const CircularLinkedListNode = ({ value, isHead, isTail, highlight, traversed, isNew, isDetached, lifted }) => {
     const nodeClasses = `ll-node ${highlight ? 'highlight' : ''} ${lifted ? 'lifted' : ''} ${traversed ? 'traversed' : ''}`;

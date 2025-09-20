@@ -43,8 +43,15 @@ export const roadmapData = [
         topics: [
             { id: "algo-linear-search", title: "Linear Search" },
             { id: "algo-binary-search", title: "Binary Search" },
+            { id: "algo-bubble-sort", title: "Bubble Sort" },
         ]
     },
+    {
+        category: "Stage 6: Complexities",
+        topics: [
+            { id: "algo-big-o", title: "Understanding Big O Notation" },
+        ]
+    }
 ];
 
 function RoadmapPage({ onBack, onSelectTopic }) {

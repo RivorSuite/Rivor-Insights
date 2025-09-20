@@ -7,13 +7,12 @@ import { dsInfo } from '../../data/ds-info';
 import { Toast } from '../../Toast/Toast';
 import { CheckIcon, BookIcon } from '../../../common/Icons';
 import { useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
+import './SinglyLinkedList.css';
 
 const LinkedListNode = ({ value, isHead, isTail, highlight, traversed, isNew, isDetached, lifted }) => {
     const nodeClasses = `ll-node ${highlight ? 'highlight' : ''} ${lifted ? 'lifted' : ''} ${traversed ? 'traversed' : ''}`;
     const pointerClasses = `ll-node-pointer ${isTail ? 'is-tail' : ''}`;
-    if (value === null) {
-        return (<div className="ll-node-wrapper"><div className="ll-node-container"><div className="ll-node null-node"></div></div></div>);
-    }
+    if (value === null) {return (<div className="ll-node-wrapper"><div className="ll-node-container"><div className="ll-node null-node"></div></div></div>);}
     return (
         <div className="ll-node-wrapper">
             <div className="ll-node-container">

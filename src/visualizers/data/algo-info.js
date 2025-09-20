@@ -41,4 +41,46 @@ export const algoInfo = {
             'Deletion': { best: 'N/A', worst: 'N/A' },
         }
     },
+    bubbleSort: {
+        about: {
+            title: "About Bubble Sort",
+            description: "Bubble Sort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. The pass through the list is repeated until the list is sorted.",
+            details: [
+                { title: "Simplicity", complexity: "Core Concept", note: "It's one of the easiest sorting algorithms to understand and implement, making it a great educational tool." },
+                { title: "Performance", complexity: "O(n²) Time", note: "Its quadratic time complexity makes it very inefficient for large datasets." },
+                { title: "In-Place Sort", complexity: "Key Trait", note: "It sorts the list without requiring significant additional memory." },
+                { title: "Use Cases", complexity: "Applications", note: "Primarily used for educational purposes or for very small, nearly-sorted datasets." },
+            ]
+        },
+        code: [
+            { name: 'Python Implementation', snippet: `def bubble_sort(data):\n  n = len(data)\n  for i in range(n):\n    swapped = False\n    for j in range(0, n-i-1):\n      if data[j] > data[j+1]:\n        data[j], data[j+1] = data[j+1], data[j]\n        swapped = True\n    if not swapped:\n      break # Exit early if no swaps occurred` },
+        ],
+        bigO: {
+            'Best Case': { best: 'O(n)', worst: 'O(n)' },
+            'Average Case': { best: 'O(n²)', worst: 'O(n²)' },
+            'Worst Case': { best: 'O(n²)', worst: 'O(n²)' },
+            'Space Complexity': { best: 'O(1)', worst: 'O(1)' },
+        }
+    },
+    insertionSort: {
+        about: {
+            title: "About Insertion Sort",
+            description: "Insertion Sort is a simple sorting algorithm that builds the final sorted array one item at a time. It iterates through an input array and removes one element per iteration, finds the place the element belongs in the array, and then places it there.",
+            details: [
+                { title: "In-Place", complexity: "Core Concept", note: "It only requires a constant amount of additional memory space." },
+                { title: "Performance", complexity: "O(n²) Time", note: "Like Bubble Sort, its quadratic time complexity makes it inefficient for large datasets." },
+                { title: "Adaptive", complexity: "Key Trait", note: "It is efficient for data sets that are already substantially sorted: the time complexity is O(nk) when each element in the input is no more than k places away from its sorted position." },
+                { title: "Use Cases", complexity: "Applications", note: "Efficient for small data sets, and is often used as a part of more sophisticated algorithms, such as hybrid sorting algorithms." },
+            ]
+        },
+        code: [
+            { name: 'Python Implementation', snippet: `def insertion_sort(data):\n  for i in range(1, len(data)):\n    key = data[i]\n    j = i - 1\n    while j >= 0 and key < data[j]:\n      data[j + 1] = data[j]\n      j -= 1\n    data[j + 1] = key` },
+        ],
+        bigO: {
+            'Best Case': { best: 'O(n)', worst: 'O(n)' },
+            'Average Case': { best: 'O(n²)', worst: 'O(n²)' },
+            'Worst Case': { best: 'O(n²)', worst: 'O(n²)' },
+            'Space Complexity': { best: 'O(1)', worst: 'O(1)' },
+        }
+    },
 };

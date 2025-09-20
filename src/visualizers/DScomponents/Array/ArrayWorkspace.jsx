@@ -7,6 +7,7 @@ import { dsInfo } from '../../data/ds-info';
 import { Toast } from '../../Toast/Toast';
 import { CheckIcon, BookIcon } from '../../../common/Icons';
 import { useWorkspaceLogic} from '../../../hooks/useWorkspaceLogic';
+import './Array.css';
 
 const ArrayCell = ({ value, index, highlight, lifted }) => {
     const isInserting = value !== '' && !lifted;

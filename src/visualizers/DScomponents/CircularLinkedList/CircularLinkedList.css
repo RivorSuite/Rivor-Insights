@@ -1,0 +1,4 @@
+.cll-loop-connector { position: absolute; bottom: -50px; height: 30px; left: 35px; right: 11px; border-bottom: 2px solid var(--null-pointer); border-left: 2px solid var(--null-pointer); border-right: 2px solid var(--null-pointer); border-radius: 0 0 15px 15px; }
+.cll-loop-connector::before { content: ''; position: absolute; top: -7px; left: -7px; width: 12px; height: 12px; border-top: 2px solid var(--null-pointer); border-left: 2px solid var(--null-pointer); transform: rotate(45deg); }
+.cll-wrapper { position: relative; display: inline-flex; align-items: center; gap: 8px; }
+.ll-node-wrapper { display: flex; align-items: center; position: relative; }
