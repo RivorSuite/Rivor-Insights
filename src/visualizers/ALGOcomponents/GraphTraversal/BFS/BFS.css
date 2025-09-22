@@ -1,0 +1,134 @@
+.bfs-main-content {
+    display: flex;
+    gap: 24px;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.bfs-main-content .ds-controls-panel {
+    height: 100%;
+    box-sizing: border-box;
+    /* --- New Rules for the side panel --- */
+    display: flex;
+    flex-direction: column;
+}
+
+.bfs-canvas {
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+    overflow: auto;
+    background-color: var(--background);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+}
+
+.graph-node {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 2px solid var(--secondary-text);
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-text);
+    transition: all 0.4s ease-in-out;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.graph-node.visited {
+    border-color: var(--accent);
+    background-color: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.graph-node.current {
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 50%, transparent);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.graph-edge {
+    position: absolute;
+    height: 3px;
+    background-color: var(--secondary-text);
+    transform-origin: 0 0;
+    z-index: 1;
+    transition: background-color 0.3s ease;
+}
+
+.graph-edge.highlighted {
+    background-color: var(--accent);
+}
+
+/* --- State Panel Layout Fix --- */
+.bfs-state-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 16px;
+    /* --- Key Rules --- */
+    flex-grow: 1;      /* Allows this panel to grow and fill space */
+    min-height: 0;     /* Prevents flex items from overflowing their container */
+    overflow-y: auto;  /* Makes THIS panel scrollable */
+}
+
+.bfs-state-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bfs-state-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--secondary-text);
+}
+
+.bfs-queue-container, .bfs-visited-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background-color: var(--background);
+    padding: 8px;
+    border-radius: 8px;
+    min-height: 40px; /* Keep a minimum height */
+}
+
+.bfs-state-item {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.bfs-state-item.dequeued {
+    animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* --- Path Highlighting Styles --- */
+.graph-node.path {
+    border-color: #f59e0b;
+    background-color: color-mix(in srgb, #f59e0b 25%, transparent);
+    box-shadow: 0 0 20px color-mix(in srgb, #f59e0b 50%, transparent);
+}
+
+.graph-edge.path {
+    background-color: #f59e0b;
+    height: 4px;
+}

@@ -24,6 +24,8 @@ import { dsGraphsIntro } from './stage-4/ds-graphs-intro.js';
 import { algoLinearSearch } from './stage-5/algo-linear-search.js';
 import { algoBinarySearch } from './stage-5/algo-binary-search.js';
 import { algoBubbleSort } from './stage-5/algo-bubble-sort.js';
+import { algoBFS } from './stage-5/algo-bfs.js';
+import { algoDFS } from './stage-5/algo-dfs.js';
 // Stage 6
 import { algoConceptsBigO } from './stage-6/algo-con-big-o.js';
 
@@ -48,5 +50,7 @@ export const textContent = {
   'algo-linear-search': algoLinearSearch,
   'algo-binary-search': algoBinarySearch,
   'algo-bubble-sort': algoBubbleSort,
+  'algo-bfs': algoBFS,
+  'algo-dfs': algoDFS,
   'algo-concepts-big-o': algoConceptsBigO,
 };

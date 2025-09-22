@@ -5,6 +5,9 @@ import LinearSearchWorkspace from '../../visualizers/ALGOcomponents/Searching/Li
 import BinarySearchWorkspace from '../../visualizers/ALGOcomponents/Searching/BinarySearch/BinarySearchWorkspace';
 import BubbleSortWorkspace from '../../visualizers/ALGOcomponents/Sorting/BubbleSort/BubbleSortWorkspace';
 import InsertionSortWorkspace from '../../visualizers/ALGOcomponents/Sorting/InsertionSort/InsertionSortWorkspace.jsx';
+import BFSWorkspace from '../../visualizers/ALGOcomponents/GraphTraversal/BFS/BFSWorkspace.jsx';
+import DFSWorkspace from '../../visualizers/ALGOcomponents/GraphTraversal/DFS/DFSWorkspace.jsx';
+
 import { 
     LinearSearchIcon, 
     BinarySearchIcon, 
@@ -27,7 +30,7 @@ const algoData = [
 const categories = ['All', 'Searching', 'Sorting', 'Graph Traversal'];
 
 // set to track which algorithms are actually implemented and clickable.
-const implementedWorkspaces = new Set(['linear-search', 'binary-search', 'bubble-sort', 'insertion-sort']);
+const implementedWorkspaces = new Set(['linear-search', 'binary-search', 'bubble-sort', 'insertion-sort', 'bfs', 'dfs']);
 
 function AlgoVisualizerPage({ onBack, selectedAlgo, onSelectAlgo}) {
     const [searchQuery, setSearchQuery] = useState('');
@@ -55,6 +58,8 @@ function AlgoVisualizerPage({ onBack, selectedAlgo, onSelectAlgo}) {
             case 'binary-search':return <BinarySearchWorkspace onBack={onBack} />;
             case 'bubble-sort':return <BubbleSortWorkspace onBack={onBack} />;
             case 'insertion-sort': return <InsertionSortWorkspace onBack={onBack} />;
+            case 'bfs': return <BFSWorkspace onBack={onBack} />;
+            case 'dfs': return <DFSWorkspace onBack={onBack} />;
             default:
                 onSelectAlgo(null); // Go back if no match
                 return null;

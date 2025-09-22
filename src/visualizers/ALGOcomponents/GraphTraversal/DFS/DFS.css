@@ -1,0 +1,84 @@
+.dfs-main-content {
+    display: flex;
+    gap: 24px;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.dfs-main-content .ds-controls-panel {
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.dfs-canvas {
+    flex-grow: 1;
+    width: 100%;
+    position: relative;
+    overflow: auto;
+    background-color: var(--background);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+}
+
+/* --- State Panel Layout --- */
+.dfs-state-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 16px;
+    flex-grow: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.dfs-state-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dfs-state-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--secondary-text);
+}
+
+.dfs-stack-container, .dfs-visited-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    background-color: var(--background);
+    padding: 8px;
+    border-radius: 8px;
+    min-height: 40px;
+}
+
+.dfs-state-item {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.dfs-state-item.popped {
+    animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.dfs-state-item.top-of-stack {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--accent) 30%, transparent);
+}

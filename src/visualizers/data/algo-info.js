@@ -83,4 +83,43 @@ export const algoInfo = {
             'Space Complexity': { best: 'O(1)', worst: 'O(1)' },
         }
     },
+    bfs: {
+        about: {
+            title: "About Breadth-First Search (BFS)",
+            description: "Breadth-First Search is a graph traversal algorithm that explores neighbors first before children. It uses a queue data structure to keep track of the nodes to visit. It's often used to find the shortest path in an unweighted graph.",
+            details: [
+                { title: "Queue-Based", complexity: "Core Concept", note: "BFS uses a queue (First-In, First-Out) to manage the order of nodes to visit." },
+                { title: "Level by Level", complexity: "Traversal Order", note: "It explores all nodes at the present 'level' or depth before moving to the next level." },
+                { title: "Shortest Path", complexity: "Key Use Case", note: "For unweighted graphs, BFS is guaranteed to find the shortest path from the start node to any other node." },
+                { title: "Completeness", complexity: "Algorithm Trait", note: "BFS is a 'complete' algorithm, meaning if a solution exists, BFS is guaranteed to find it." },
+            ]
+        },
+        code: [
+            { name: 'Python Implementation', snippet: `from collections import deque\n\ndef bfs(graph, start):\n  visited = {start}\n  queue = deque([start])\n  result = []\n\n  while queue:\n    vertex = queue.popleft()\n    result.append(vertex)\n    for neighbor in graph[vertex]:\n      if neighbor not in visited:\n        visited.add(neighbor)\n        queue.append(neighbor)\n\n  return result` },
+        ],
+        bigO: {
+            'Time Complexity': { best: 'O(V + E)', worst: 'O(V + E)' },
+            'Space Complexity': { best: 'O(V)', worst: 'O(V)' },
+        }
+    },
+    dfs: {
+        about: {
+            title: "About Depth-First Search (DFS)",
+            description: "Depth-First Search is a graph traversal algorithm that explores as far as possible along each branch before backtracking. It uses a stack data structure to keep track of the nodes to visit, which results in a deep exploration of the graph.",
+            details: [
+                { title: "Stack-Based", complexity: "Core Concept", note: "DFS uses a stack (Last-In, First-Out) to manage the order of nodes to visit, which naturally leads to a deep, recursive-like traversal." },
+                { title: "Path Finding", complexity: "Traversal Order", note: "It explores one path to its conclusion before exploring another. This is different from BFS which explores level by level." },
+                { title: "Backtracking", complexity: "Key Use Case", note: "Ideal for problems that require exploring all possible paths, like solving mazes, puzzles, or finding connected components in a graph." },
+                { title: "Completeness", complexity: "Algorithm Trait", note: "DFS is 'complete' on finite graphs, but can get stuck in infinite loops on graphs with cycles if not handled with a 'visited' set." },
+            ]
+        },
+        code: [
+            { name: 'Python Implementation (Recursive)', snippet: `def dfs_recursive(graph, vertex, visited=None):\n  if visited is None:\n    visited = set()\n  visited.add(vertex)\n  print(vertex, end=' ')\n  for neighbor in graph[vertex]:\n    if neighbor not in visited:\n      dfs_recursive(graph, neighbor, visited)` },
+            { name: 'Python Implementation (Iterative)', snippet: `def dfs_iterative(graph, start):\n  visited = set()\n  stack = [start]\n  while stack:\n    vertex = stack.pop()\n    if vertex not in visited:\n      visited.add(vertex)\n      print(vertex, end=' ')\n      # Add neighbors in reverse order to visit them in order\n      for neighbor in reversed(graph[vertex]):\n        if neighbor not in visited:\n          stack.append(neighbor)` },
+        ],
+        bigO: {
+            'Time Complexity': { best: 'O(V + E)', worst: 'O(V + E)' },
+            'Space Complexity': { best: 'O(V)', worst: 'O(V)' },
+        }
+    },
 };
