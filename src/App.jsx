@@ -54,8 +54,7 @@ function App() {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             setUser(currentUser);
-            if (currentUser) {
-                // --- USER IS LOGGED IN ---
+            if (currentUser) {// --- USER IS LOGGED IN ---
                 const userDocRef = doc(db, "users", currentUser.uid);
                 const userDocSnap = await getDoc(userDocRef);
                 if (userDocSnap.exists()) {
@@ -133,6 +132,9 @@ function App() {
         if (topicId === 'algo-linear-search') {handleSelectAlgo('linear-search'); return;}
         if (topicId === 'algo-binary-search') {handleSelectAlgo('binary-search'); return;}
         if (topicId === 'algo-bubble-sort') {handleSelectAlgo('bubble-sort'); return;}
+        if (topicId === 'algo-insertion-sort') {handleSelectAlgo('insertion-sort'); return;}
+        if (topicId === 'algo-bfs') {handleSelectAlgo('bfs'); return;}
+        if (topicId === 'algo-dfs') {handleSelectAlgo('dfs'); return;}
 
         const codeSnippet = exampleCode[topicId];
         if (codeSnippet) {setInitialCode(codeSnippet); navigateTo('code-visualizer'); return;}

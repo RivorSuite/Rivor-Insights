@@ -245,7 +245,6 @@ function BFSWorkspace({ onBack }) {
                             <button className="ds-action-button" onClick={() => handleRandomize(false, false)}>Simple Graph</button>
                         </div>
                         <div className="ds-control-group">
-                            <button className="ds-action-button" onClick={() => handleRandomize(true, true)}>Complex Tree</button>
                             <button className="ds-action-button" onClick={() => handleRandomize(false, true)}>Complex Graph</button>
                         </div>
                     </div>

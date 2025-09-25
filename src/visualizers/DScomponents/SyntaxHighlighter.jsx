@@ -7,8 +7,6 @@ const pythonKeywords = [
 
 const tokenize = (code) => {
     const tokens = [];
-    // --- THIS IS THE NEW, SIMPLIFIED REGEX ---
-    // It uses '\\w+' to reliably capture words with underscores.
     const regex = new RegExp(
         `(#.*)|(".*?")|('.*?')|(\\w+)`, 'g'
     );
@@ -54,7 +52,7 @@ function SyntaxHighlighter({ code }) {
     const tokens = tokenize(code);
     return (
         <pre>
-            <code>
+            <code style={{ fontFamily: "'Fira Code', 'Courier New', Courier, monospace" }}>
                 {tokens.map((token, index) => (
                     <span key={index} className={`token-${token.type}`}>
                         {token.value}

@@ -11,12 +11,30 @@ export const dsInfo = {
             ]
         },
         code: [
-            { name: 'Add to Front', snippet: `def add_to_front(arr, value):\n  # This is an O(n) operation as all elements must shift right\n  arr.insert(0, value)\n  return arr` },
-            { name: 'Add to Back', snippet: `def add_to_back(arr, value):\n  # In Python, this is an efficient O(1) operation\n  arr.append(value)\n  return arr` },
-            { name: 'Add at Index', snippet: `def add_at_index(arr, index, value):\n  # Elements from the index onward must be shifted\n  arr.insert(index, value)\n  return arr` },
-            { name: 'Remove from Front', snippet: `def remove_from_front(arr):\n  # An O(n) operation as all elements must shift left\n  if len(arr) > 0:\n    arr.pop(0)\n  return arr` },
-            { name: 'Remove from Back', snippet: `def remove_from_back(arr):\n  # An efficient O(1) operation\n  if len(arr) > 0:\n    arr.pop()\n  return arr` },
-            { name: 'Remove at Index', snippet: `def remove_at_index(arr, index):\n  # Elements after the index must be shifted\n  if len(arr) > index:\n    arr.pop(index)\n  return arr` },
+            { 
+                name: 'Add to Front', 
+                snippet: `# O(n) - All elements must be shifted to the right\ndef add_to_front(arr, value):\n  arr.insert(0, value)\n  return arr\n\n# --- Example ---\nmy_array = [10, 20, 30]\nprint(f"Original: {my_array}")\nadd_to_front(my_array, 5)\nprint(f"Modified: {my_array}")` 
+            },
+            { 
+                name: 'Add to Back', 
+                snippet: `# O(1) - Amortized constant time\ndef add_to_back(arr, value):\n  arr.append(value)\n  return arr\n\n# --- Example ---\nmy_array = [10, 20, 30]\nprint(f"Original: {my_array}")\nadd_to_back(my_array, 40)\nprint(f"Modified: {my_array}")` 
+            },
+            { 
+                name: 'Add at Index', 
+                snippet: `# O(n) - Elements from the index onward must be shifted\ndef add_at_index(arr, index, value):\n  if 0 <= index <= len(arr):\n    arr.insert(index, value)\n  return arr\n\n# --- Example ---\nmy_array = [10, 20, 40, 50]\nprint(f"Original: {my_array}")\nadd_at_index(my_array, 2, 30)\nprint(f"Modified: {my_array}")` 
+            },
+            { 
+                name: 'Remove from Front', 
+                snippet: `# O(n) - All elements must be shifted to the left\ndef remove_from_front(arr):\n  if len(arr) > 0:\n    arr.pop(0)\n  return arr\n\n# --- Example ---\nmy_array = [10, 20, 30]\nprint(f"Original: {my_array}")\nremove_from_front(my_array)\nprint(f"Modified: {my_array}")` 
+            },
+            { 
+                name: 'Remove from Back', 
+                snippet: `# O(1) - Constant time operation\ndef remove_from_back(arr):\n  if len(arr) > 0:\n    arr.pop()\n  return arr\n\n# --- Example ---\nmy_array = [10, 20, 30]\nprint(f"Original: {my_array}")\nremove_from_back(my_array)\nprint(f"Modified: {my_array}")` 
+            },
+            { 
+                name: 'Remove at Index', 
+                snippet: `# O(n) - Elements after the index must be shifted\ndef remove_at_index(arr, index):\n  if 0 <= index < len(arr):\n    arr.pop(index)\n  return arr\n\n# --- Example ---\nmy_array = [10, 20, 99, 30]\nprint(f"Original: {my_array}")\nremove_at_index(my_array, 2)\nprint(f"Modified: {my_array}")` 
+            },
         ],
         bigO: {
             'Access': { best: 'O(1)', worst: 'O(1)' },
@@ -25,7 +43,6 @@ export const dsInfo = {
             'Deletion': { best: 'O(1)', worst: 'O(n)' },
         }
     },
-
     singlyLinkedLists: {
         about: {
             title: "About Singly Linked Lists",
@@ -38,12 +55,30 @@ export const dsInfo = {
             ]
         },
         code: [
-            { name: 'Add to Head', snippet: `def add_to_head(self, value):\n  new_node = Node(value)\n  new_node.next = self.head\n  self.head = new_node` },
-            { name: 'Add to Tail', snippet: `def add_to_tail(self, value):\n  new_node = Node(value)\n  if self.head is None:\n    self.head = new_node\n    return\n  last = self.head\n  while last.next:\n    last = last.next\n  last.next = new_node` },
-            { name: 'Add at Index', snippet: `def add_at_index(self, index, value):\n  if index == 0:\n    self.add_to_head(value)\n    return\n  current = self.head\n  count = 0\n  while current and count < index - 1:\n    current = current.next\n    count += 1\n  if current is None:\n    return # Index out of bounds\n  new_node = Node(value)\n  new_node.next = current.next\n  current.next = new_node` },
-            { name: 'Remove from Head', snippet: `def remove_from_head(self):\n  if self.head is None:\n    return\n  self.head = self.head.next` },
-            { name: 'Remove from Tail', snippet: `def remove_from_tail(self):\n  if self.head is None or self.head.next is None:\n    self.head = None\n    return\n  second_last = self.head\n  while second_last.next.next:\n    second_last = second_last.next\n  second_last.next = None` },
-            { name: 'Remove at Index', snippet: `def remove_at_index(self, index):\n  if self.head is None or index < 0:\n    return\n  if index == 0:\n    self.head = self.head.next\n    return\n  current = self.head\n  count = 0\n  while current and count < index - 1:\n    current = current.next\n    count += 1\n  if current is None or current.next is None:\n    return # Index out of bounds\n  current.next = current.next.next` },
+            {
+                name: 'Add to Head',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass LinkedList:\n  def __init__(self):\n    self.head = None\n\n  def add_to_head(self, value):\n    new_node = Node(value)\n    new_node.next = self.head\n    self.head = new_node\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" -> ".join(res) + " -> None")\n\n# --- Example ---\nll = LinkedList()\nll.add_to_head(20)\nll.add_to_head(10)\nll.print_list() # Output: 10 -> 20 -> None'
+            },
+            {
+                name: 'Add to Tail',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass LinkedList:\n  def __init__(self):\n    self.head = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.head is None:\n      self.head = new_node\n      return\n    last = self.head\n    while last.next:\n      last = last.next\n    last.next = new_node\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" -> ".join(res) + " -> None")\n\n# --- Example ---\nll = LinkedList()\nll.add_to_tail(10)\nll.add_to_tail(20)\nll.print_list() # Output: 10 -> 20 -> None'
+            },
+            {
+                name: 'Add at Index',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass LinkedList:\n  def __init__(self):\n    self.head = None\n\n  def add_to_head(self, value):\n    new_node = Node(value)\n    new_node.next = self.head\n    self.head = new_node\n\n  def add_at_index(self, index, value):\n    if index == 0:\n      self.add_to_head(value)\n      return\n    current = self.head\n    count = 0\n    while current and count < index - 1:\n      current = current.next\n      count += 1\n    if current is None:\n      print("Index out of bounds")\n      return\n    new_node = Node(value)\n    new_node.next = current.next\n    current.next = new_node\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" -> ".join(res) + " -> None")\n\n# --- Example ---\nll = LinkedList()\nll.add_to_head(30)\nll.add_to_head(10)\nll.add_at_index(1, 20)\nll.print_list() # Output: 10 -> 20 -> 30 -> None'
+            },
+            {
+                name: 'Remove from Head',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass LinkedList:\n  def __init__(self):\n    self.head = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.head is None:\n      self.head = new_node\n      return\n    last = self.head\n    while last.next:\n      last = last.next\n    last.next = new_node\n\n  def remove_from_head(self):\n    if self.head is not None:\n      self.head = self.head.next\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" -> ".join(res) + " -> None")\n\n# --- Example ---\nll = LinkedList()\nll.add_to_tail(10)\nll.add_to_tail(20)\nll.remove_from_head()\nll.print_list() # Output: 20 -> None'
+            },
+            {
+                name: 'Remove from Tail',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass LinkedList:\n  def __init__(self):\n    self.head = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.head is None:\n      self.head = new_node\n      return\n    last = self.head\n    while last.next:\n      last = last.next\n    last.next = new_node\n\n  def remove_from_tail(self):\n    if self.head is None or self.head.next is None:\n      self.head = None\n      return\n    second_last = self.head\n    while second_last.next.next:\n      second_last = second_last.next\n    second_last.next = None\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" -> ".join(res) + " -> None")\n\n# --- Example ---\nll = LinkedList()\nll.add_to_tail(10)\nll.add_to_tail(20)\nll.remove_from_tail()\nll.print_list() # Output: 10 -> None'
+            },
+            {
+                name: 'Remove at Index',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass LinkedList:\n  def __init__(self):\n    self.head = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.head is None:\n      self.head = new_node\n      return\n    last = self.head\n    while last.next:\n      last = last.next\n    last.next = new_node\n\n  def remove_at_index(self, index):\n    if self.head is None or index < 0:\n      return\n    if index == 0:\n      self.head = self.head.next\n      return\n    current = self.head\n    count = 0\n    while current and count < index - 1:\n      current = current.next\n      count += 1\n    if current is None or current.next is None:\n      print("Index out of bounds")\n      return\n    current.next = current.next.next\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" -> ".join(res) + " -> None")\n\n# --- Example ---\nll = LinkedList()\nll.add_to_tail(10)\nll.add_to_tail(99)\nll.add_to_tail(20)\nll.remove_at_index(1)\nll.print_list() # Output: 10 -> 20 -> None'
+            },
         ],
         bigO: {
             'Access': { best: 'O(1)', worst: 'O(n)' },
@@ -52,7 +87,6 @@ export const dsInfo = {
             'Deletion': { best: 'O(1)', worst: 'O(n)' },
         }
     },
-
     doublyLinkedLists: {
         about: {
             title: "About Doubly Linked Lists",
@@ -65,10 +99,30 @@ export const dsInfo = {
             ]
         },
         code: [
-            { name: 'Add to Head', snippet: `def add_to_head(self, value):\n  new_node = Node(value)\n  new_node.next = self.head\n  if self.head:\n    self.head.prev = new_node\n  self.head = new_node\n  if self.tail is None:\n    self.tail = new_node` },
-            { name: 'Add to Tail', snippet: `def add_to_tail(self, value):\n  new_node = Node(value)\n  if self.tail is None:\n    self.head = new_node\n    self.tail = new_node\n    return\n  self.tail.next = new_node\n  new_node.prev = self.tail\n  self.tail = new_node` },
-            { name: 'Remove from Head', snippet: `def remove_from_head(self):\n  if self.head is None:\n    return\n  self.head = self.head.next\n  if self.head:\n    self.head.prev = None\n  else:\n    self.tail = None` },
-            { name: 'Remove from Tail', snippet: `def remove_from_tail(self):\n  if self.tail is None:\n    return\n  self.tail = self.tail.prev\n  if self.tail:\n    self.tail.next = None\n  else:\n    self.head = None` },
+            {
+                name: 'Add to Head',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n    self.prev = None\n\nclass DoublyLinkedList:\n  def __init__(self):\n    self.head = None\n    self.tail = None\n\n  def add_to_head(self, value):\n    new_node = Node(value)\n    new_node.next = self.head\n    if self.head:\n      self.head.prev = new_node\n    self.head = new_node\n    if self.tail is None:\n      self.tail = new_node\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" <-> ".join(res))\n\n# --- Example ---\ndll = DoublyLinkedList()\ndll.add_to_head(20)\ndll.add_to_head(10)\ndll.print_list() # Output: 10 <-> 20'
+            },
+            {
+                name: 'Add to Tail',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n    self.prev = None\n\nclass DoublyLinkedList:\n  def __init__(self):\n    self.head = None\n    self.tail = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      self.head = new_node\n      self.tail = new_node\n      return\n    self.tail.next = new_node\n    new_node.prev = self.tail\n    self.tail = new_node\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" <-> ".join(res))\n\n# --- Example ---\ndll = DoublyLinkedList()\ndll.add_to_tail(10)\ndll.add_to_tail(20)\ndll.print_list() # Output: 10 <-> 20'
+            },
+            {
+                name: 'Add at Index',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n    self.prev = None\n\nclass DoublyLinkedList:\n  def __init__(self):\n    self.head = None\n    self.tail = None\n\n  def add_to_head(self, value):\n    new_node = Node(value)\n    new_node.next = self.head\n    if self.head:\n      self.head.prev = new_node\n    self.head = new_node\n    if self.tail is None:\n      self.tail = new_node\n\n  def add_at_index(self, index, value):\n    if index == 0:\n      self.add_to_head(value)\n      return\n    current = self.head\n    for _ in range(index - 1):\n      if current is None:\n        print("Index out of bounds")\n        return\n      current = current.next\n    if current is None:\n      print("Index out of bounds")\n      return\n    new_node = Node(value)\n    new_node.next = current.next\n    if current.next:\n      current.next.prev = new_node\n    else: # If we are inserting at the end\n      self.tail = new_node\n    current.next = new_node\n    new_node.prev = current\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" <-> ".join(res))\n\n# --- Example ---\ndll = DoublyLinkedList()\ndll.add_to_head(30)\ndll.add_to_head(10)\ndll.add_at_index(1, 20)\ndll.print_list() # Output: 10 <-> 20 <-> 30'
+            },
+            {
+                name: 'Remove from Head',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n    self.prev = None\n\nclass DoublyLinkedList:\n  def __init__(self):\n    self.head = None\n    self.tail = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      self.head = new_node\n      self.tail = new_node\n      return\n    self.tail.next = new_node\n    new_node.prev = self.tail\n    self.tail = new_node\n\n  def remove_from_head(self):\n    if self.head is None:\n      return\n    self.head = self.head.next\n    if self.head:\n      self.head.prev = None\n    else:\n      self.tail = None\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" <-> ".join(res))\n\n# --- Example ---\ndll = DoublyLinkedList()\ndll.add_to_tail(10)\ndll.add_to_tail(20)\ndll.remove_from_head()\ndll.print_list() # Output: 20'
+            },
+            {
+                name: 'Remove from Tail',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n    self.prev = None\n\nclass DoublyLinkedList:\n  def __init__(self):\n    self.head = None\n    self.tail = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      self.head = new_node\n      self.tail = new_node\n      return\n    self.tail.next = new_node\n    new_node.prev = self.tail\n    self.tail = new_node\n\n  def remove_from_tail(self):\n    if self.tail is None:\n      return\n    self.tail = self.tail.prev\n    if self.tail:\n      self.tail.next = None\n    else:\n      self.head = None\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" <-> ".join(res))\n\n# --- Example ---\ndll = DoublyLinkedList()\ndll.add_to_tail(10)\ndll.add_to_tail(20)\ndll.remove_from_tail()\ndll.print_list() # Output: 10'
+            },
+            {
+                name: 'Remove at Index',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n    self.prev = None\n\nclass DoublyLinkedList:\n  def __init__(self):\n    self.head = None\n    self.tail = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      self.head = new_node\n      self.tail = new_node\n      return\n    self.tail.next = new_node\n    new_node.prev = self.tail\n    self.tail = new_node\n\n  def remove_at_index(self, index):\n    if self.head is None or index < 0:\n      return\n    current = self.head\n    count = 0\n    while current and count < index:\n      current = current.next\n      count += 1\n    if current is None:\n      print("Index out of bounds")\n      return\n    if current.prev:\n      current.prev.next = current.next\n    else: # Removing the head\n      self.head = current.next\n    if current.next:\n      current.next.prev = current.prev\n    else: # Removing the tail\n      self.tail = current.prev\n\n  def print_list(self):\n    temp = self.head\n    res = []\n    while temp:\n      res.append(str(temp.data))\n      temp = temp.next\n    print(" <-> ".join(res))\n\n# --- Example ---\ndll = DoublyLinkedList()\ndll.add_to_tail(10)\ndll.add_to_tail(99)\ndll.add_to_tail(20)\ndll.remove_at_index(1)\ndll.print_list() # Output: 10 <-> 20'
+            }
         ],
         bigO: {
             'Access': { best: 'O(1)', worst: 'O(n)' },
@@ -90,12 +144,30 @@ export const dsInfo = {
             ]
         },
         code: [
-            { name: 'Add to Tail', snippet: `def add_to_tail(self, value):\n  new_node = Node(value)\n  if self.tail is None:\n    new_node.next = new_node\n    self.tail = new_node\n  else:\n    new_node.next = self.tail.next # New node points to head\n    self.tail.next = new_node      # Old tail points to new node\n    self.tail = new_node           # Update tail pointer` },
-            { name: 'Add to Head', snippet: `def add_to_head(self, value):\n  new_node = Node(value)\n  if self.tail is None:\n    new_node.next = new_node\n    self.tail = new_node\n  else:\n    new_node.next = self.tail.next\n    self.tail.next = new_node` },
-            { name: 'Add at Index', snippet: `def add_at_index(self, index, value):\n  if index == 0:\n    self.add_to_head(value)\n    return\n  current = self.tail.next # Start at head\n  for _ in range(index - 1):\n    current = current.next\n  new_node = Node(value)\n  new_node.next = current.next\n  current.next = new_node\n  if current == self.tail:\n    self.tail = new_node` },
-            { name: 'Remove from Head', snippet: `def remove_from_head(self):\n  if self.tail is None:\n    return\n  if self.tail.next == self.tail: # Only one node\n    self.tail = None\n  else:\n    self.tail.next = self.tail.next.next` },
-            { name: 'Remove from Tail', snippet: `def remove_from_tail(self):\n  if self.tail is None:\n    return\n  if self.tail.next == self.tail: # Only one node\n    self.tail = None\n    return\n  # Traverse to find the new tail\n  current = self.tail.next # Start at head\n  while current.next != self.tail:\n    current = current.next\n  # current is now the new tail\n  current.next = self.tail.next # New tail points to head\n  self.tail = current` },
-            { name: 'Remove from Index', snippet: `def remove_at_index(self, index):\n  if self.tail is None or index < 0:\n    return\n  if index == 0:\n    self.remove_from_head()\n    return\n  prev = self.tail.next # Start at head\n  for _ in range(index - 1):\n    prev = prev.next\n  if prev.next == self.tail:\n    self.tail = prev\n  prev.next = prev.next.next` },
+            {
+                name: 'Add to Head',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass CircularLinkedList:\n  def __init__(self):\n    self.tail = None\n\n  def add_to_head(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      new_node.next = new_node\n      self.tail = new_node\n    else:\n      new_node.next = self.tail.next\n      self.tail.next = new_node\n\n  def print_list(self):\n    if self.tail is None:\n      print("List is empty")\n      return\n    res = []\n    current = self.tail.next\n    while True:\n      res.append(str(current.data))\n      current = current.next\n      if current == self.tail.next:\n        break\n    print(" -> ".join(res) + " -> (Head)")\n\n# --- Example ---\ncll = CircularLinkedList()\ncll.add_to_head(20)\ncll.add_to_head(10)\ncll.print_list() # Output: 10 -> 20 -> (Head)'
+            },
+            {
+                name: 'Add to Tail',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass CircularLinkedList:\n  def __init__(self):\n    self.tail = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      new_node.next = new_node\n      self.tail = new_node\n    else:\n      new_node.next = self.tail.next\n      self.tail.next = new_node\n      self.tail = new_node\n\n  def print_list(self):\n    if self.tail is None:\n      print("List is empty")\n      return\n    res = []\n    current = self.tail.next\n    while True:\n      res.append(str(current.data))\n      current = current.next\n      if current == self.tail.next:\n        break\n    print(" -> ".join(res) + " -> (Head)")\n\n# --- Example ---\ncll = CircularLinkedList()\ncll.add_to_tail(10)\ncll.add_to_tail(20)\ncll.print_list() # Output: 10 -> 20 -> (Head)'
+            },
+            {
+                name: 'Add at Index',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass CircularLinkedList:\n  def __init__(self):\n    self.tail = None\n\n  def add_to_head(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      new_node.next = new_node\n      self.tail = new_node\n    else:\n      new_node.next = self.tail.next\n      self.tail.next = new_node\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      new_node.next = new_node\n      self.tail = new_node\n    else:\n      new_node.next = self.tail.next\n      self.tail.next = new_node\n      self.tail = new_node\n\n  def add_at_index(self, index, value):\n    if self.tail is None or index <= 0:\n      self.add_to_head(value)\n      return\n    new_node = Node(value)\n    current = self.tail.next # Head\n    count = 0\n    while count < index - 1:\n      current = current.next\n      count += 1\n      if current == self.tail.next:\n        print("Index out of bounds, adding to tail.")\n        self.add_to_tail(value)\n        return\n    new_node.next = current.next\n    current.next = new_node\n    if current == self.tail:\n      self.tail = new_node\n\n  def print_list(self):\n    if self.tail is None:\n      print("List is empty")\n      return\n    res = []\n    current = self.tail.next\n    while True:\n      res.append(str(current.data))\n      current = current.next\n      if current == self.tail.next:\n        break\n    print(" -> ".join(res) + " -> (Head)")\n\n# --- Example ---\ncll = CircularLinkedList()\ncll.add_to_tail(10)\ncll.add_to_tail(30)\ncll.add_at_index(1, 20)\ncll.print_list() # Output: 10 -> 20 -> 30 -> (Head)'
+            },
+            {
+                name: 'Remove from Head',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass CircularLinkedList:\n  def __init__(self):\n    self.tail = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      new_node.next = new_node\n      self.tail = new_node\n    else:\n      new_node.next = self.tail.next\n      self.tail.next = new_node\n      self.tail = new_node\n\n  def remove_from_head(self):\n    if self.tail is None:\n      return\n    if self.tail.next == self.tail:\n      self.tail = None\n    else:\n      self.tail.next = self.tail.next.next\n\n  def print_list(self):\n    if self.tail is None:\n      print("List is empty")\n      return\n    res = []\n    current = self.tail.next\n    while True:\n      res.append(str(current.data))\n      current = current.next\n      if current == self.tail.next:\n        break\n    print(" -> ".join(res) + " -> (Head)")\n\n# --- Example ---\ncll = CircularLinkedList()\ncll.add_to_tail(10)\ncll.add_to_tail(20)\ncll.remove_from_head()\ncll.print_list() # Output: 20 -> (Head)'
+            },
+            {
+                name: 'Remove from Tail',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass CircularLinkedList:\n  def __init__(self):\n    self.tail = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      new_node.next = new_node\n      self.tail = new_node\n    else:\n      new_node.next = self.tail.next\n      self.tail.next = new_node\n      self.tail = new_node\n\n  def remove_from_tail(self):\n    if self.tail is None:\n      return\n    if self.tail.next == self.tail:\n      self.tail = None\n      return\n    current = self.tail.next\n    while current.next != self.tail:\n      current = current.next\n    current.next = self.tail.next\n    self.tail = current\n\n  def print_list(self):\n    if self.tail is None:\n      print("List is empty")\n      return\n    res = []\n    current = self.tail.next\n    while True:\n      res.append(str(current.data))\n      current = current.next\n      if current == self.tail.next:\n        break\n    print(" -> ".join(res) + " -> (Head)")\n\n# --- Example ---\ncll = CircularLinkedList()\ncll.add_to_tail(10)\ncll.add_to_tail(20)\ncll.remove_from_tail()\ncll.print_list() # Output: 10 -> (Head)'
+            },
+            {
+                name: 'Remove at Index',
+                snippet: 'class Node:\n  def __init__(self, data):\n    self.data = data\n    self.next = None\n\nclass CircularLinkedList:\n  def __init__(self):\n    self.tail = None\n\n  def add_to_tail(self, value):\n    new_node = Node(value)\n    if self.tail is None:\n      new_node.next = new_node\n      self.tail = new_node\n    else:\n      new_node.next = self.tail.next\n      self.tail.next = new_node\n      self.tail = new_node\n\n  def remove_from_head(self):\n    if self.tail is None:\n      return\n    if self.tail.next == self.tail:\n      self.tail = None\n    else:\n      self.tail.next = self.tail.next.next\n\n  def remove_at_index(self, index):\n    if self.tail is None or index < 0:\n      return\n    if index == 0:\n      self.remove_from_head()\n      return\n    prev = self.tail.next\n    for _ in range(index - 1):\n      prev = prev.next\n      if prev == self.tail.next:\n        print("Index out of bounds")\n        return\n    if prev.next == self.tail:\n      self.tail = prev\n    prev.next = prev.next.next\n\n  def print_list(self):\n    if self.tail is None:\n      print("List is empty")\n      return\n    res = []\n    current = self.tail.next\n    while True:\n      res.append(str(current.data))\n      current = current.next\n      if current == self.tail.next:\n        break\n    print(" -> ".join(res) + " -> (Head)")\n\n# --- Example ---\ncll = CircularLinkedList()\ncll.add_to_tail(10)\ncll.add_to_tail(99)\ncll.add_to_tail(20)\ncll.remove_at_index(1)\ncll.print_list() # Output: 10 -> 20 -> (Head)'
+            }
         ],
         bigO: {
             'Access': { best: 'O(1)', worst: 'O(n)' },
@@ -117,10 +189,26 @@ export const dsInfo = {
             ]
         },
         code: [
-            { name: 'Push Operation', snippet: `def push(self, item):\n  # Adds an item to the top of the stack\n  self.items.append(item)` },
-            { name: 'Pop Operation', snippet: `def pop(self):\n  # Removes and returns the top item\n  if not self.is_empty():\n    return self.items.pop()\n  return None # Or raise an error` },
-            { name: 'Peek/Top Operation', snippet: `def peek(self):\n  # Returns the top item without removing it\n  if not self.is_empty():\n    return self.items[-1]\n  return None` },
-            { name: 'Check if Empty', snippet: `def is_empty(self):\n  return len(self.items) == 0` },
+            {
+                name: 'Push Operation',
+                snippet: 'class Stack:\n  def __init__(self):\n    self.items = []\n\n  def push(self, item):\n    self.items.append(item)\n\n  def print_stack(self):\n    print("Stack Top ->", self.items[::-1])\n\n# --- Example ---\ns = Stack()\ns.push(10)\ns.push(20)\ns.print_stack() # Output: Stack Top -> [20, 10]'
+            },
+            {
+                name: 'Pop Operation',
+                snippet: 'class Stack:\n  def __init__(self):\n    self.items = []\n\n  def push(self, item):\n    self.items.append(item)\n\n  def pop(self):\n    if not self.is_empty():\n      return self.items.pop()\n    print("Stack is empty")\n    return None\n\n  def is_empty(self):\n    return len(self.items) == 0\n\n  def print_stack(self):\n    print("Stack Top ->", self.items[::-1])\n\n# --- Example ---\ns = Stack()\ns.push(10)\ns.push(20)\npopped_item = s.pop()\nprint(f"Popped: {popped_item}") # Popped: 20\ns.print_stack() # Output: Stack Top -> [10]'
+            },
+            {
+                name: 'Peek/Top Operation',
+                snippet: 'class Stack:\n  def __init__(self):\n    self.items = []\n\n  def push(self, item):\n    self.items.append(item)\n\n  def peek(self):\n    if not self.is_empty():\n      return self.items[-1]\n    return None\n\n  def is_empty(self):\n    return len(self.items) == 0\n\n# --- Example ---\ns = Stack()\ns.push(10)\ns.push(20)\ntop_item = s.peek()\nprint(f"Top item: {top_item}") # Top item: 20'
+            },
+            {
+                name: 'Check if Empty',
+                snippet: 'class Stack:\n  def __init__(self):\n    self.items = []\n\n  def is_empty(self):\n    return len(self.items) == 0\n\n# --- Example ---\ns = Stack()\nprint(f"Is stack empty? {s.is_empty()}") # Is stack empty? True\ns.items.append(10)\nprint(f"Is stack empty? {s.is_empty()}") # Is stack empty? False'
+            },
+            {
+                name: 'Check if Full',
+                snippet: 'class Stack:\n  def __init__(self, capacity):\n    self.items = []\n    self.capacity = capacity\n\n  def is_full(self):\n    return len(self.items) == self.capacity\n\n# --- Example ---\ns = Stack(capacity=2)\ns.items.append(10)\nprint(f"Is stack full? {s.is_full()}") # Is stack full? False\ns.items.append(20)\nprint(f"Is stack full? {s.is_full()}") # Is stack full? True'
+            },
         ],
         bigO: {
             'Access (Peek)': { best: 'O(1)', worst: 'O(1)' },
@@ -142,10 +230,26 @@ export const dsInfo = {
             ]
         },
         code: [
-            { name: 'Enqueue Operation', snippet: `def enqueue(self, item):\n  # Adds an item to the back of the queue\n  self.items.append(item)` },
-            { name: 'Dequeue Operation', snippet: `def dequeue(self):\n  # Removes and returns the front item\n  if not self.is_empty():\n    return self.items.pop(0) # Inefficient O(n)\n  return None` },
-            { name: 'Peek/Front Operation', snippet: `def peek(self):\n  # Returns the front item without removing it\n  if not self.is_empty():\n    return self.items[0]\n  return None` },
-            { name: 'Check if Empty', snippet: `def is_empty(self):\n  return len(self.items) == 0` },
+            {
+                name: 'Enqueue Operation',
+                snippet: 'from collections import deque\n\nclass Queue:\n  def __init__(self):\n    self.items = deque()\n\n  def enqueue(self, item):\n    self.items.append(item)\n\n  def print_queue(self):\n    print("Front -> " + " -> ".join(map(str, self.items)) + " -> Back")\n\n# --- Example ---\nq = Queue()\nq.enqueue(10)\nq.enqueue(20)\nq.print_queue() # Output: Front -> 10 -> 20 -> Back'
+            },
+            {
+                name: 'Dequeue Operation',
+                snippet: 'from collections import deque\n\nclass Queue:\n  def __init__(self):\n    self.items = deque()\n\n  def enqueue(self, item):\n    self.items.append(item)\n\n  def dequeue(self):\n    if self.items:\n      return self.items.popleft()\n    print("Queue is empty")\n    return None\n\n  def print_queue(self):\n    print("Front -> " + " -> ".join(map(str, self.items)) + " -> Back")\n\n# --- Example ---\nq = Queue()\nq.enqueue(10)\nq.enqueue(20)\ndequeued_item = q.dequeue()\nprint(f"Dequeued: {dequeued_item}") # Dequeued: 10\nq.print_queue() # Output: Front -> 20 -> Back'
+            },
+            {
+                name: 'Peek/Front Operation',
+                snippet: 'from collections import deque\n\nclass Queue:\n  def __init__(self):\n    self.items = deque()\n\n  def enqueue(self, item):\n    self.items.append(item)\n\n  def peek(self):\n    if self.items:\n      return self.items[0]\n    return None\n\n# --- Example ---\nq = Queue()\nq.enqueue(10)\nq.enqueue(20)\nfront_item = q.peek()\nprint(f"Front item: {front_item}") # Front item: 10'
+            },
+            {
+                name: 'Check if Empty',
+                snippet: 'from collections import deque\n\nclass Queue:\n  def __init__(self):\n    self.items = deque()\n\n  def is_empty(self):\n    return len(self.items) == 0\n\n# --- Example ---\nq = Queue()\nprint(f"Is queue empty? {q.is_empty()}") # Is queue empty? True\nq.items.append(10)\nprint(f"Is queue empty? {q.is_empty()}") # Is queue empty? False'
+            },
+            {
+                name: 'Check if Full',
+                snippet: 'from collections import deque\n\nclass Queue:\n  def __init__(self, capacity):\n    self.items = deque()\n    self.capacity = capacity\n\n  def is_full(self):\n    return len(self.items) == self.capacity\n\n# --- Example ---\nq = Queue(capacity=2)\nq.items.append(10)\nprint(f"Is queue full? {q.is_full()}") # Is queue full? False\nq.items.append(20)\nprint(f"Is queue full? {q.is_full()}") # Is queue full? True'
+            },
         ],
         bigO: {
             'Access (Peek)': { best: 'O(1)', worst: 'O(1)' },
@@ -167,10 +271,38 @@ export const dsInfo = {
             ]
         },
         code: [
-            { name: 'Add to Front', snippet: `def add_front(self, item):\n  # Using Python's collections.deque for O(1) speed\n  self.items.appendleft(item)` },
-            { name: 'Add to Back', snippet: `def add_back(self, item):\n  self.items.append(item)` },
-            { name: 'Remove from Front', snippet: `def remove_front(self):\n  if self.items:\n    return self.items.popleft()` },
-            { name: 'Remove from Back', snippet: `def remove_back(self):\n  if self.items:\n    return self.items.pop()` },
+            {
+                name: 'Add to Front',
+                snippet: 'from collections import deque\n\nclass Deque:\n  def __init__(self):\n    self.items = deque()\n\n  def add_front(self, item):\n    self.items.appendleft(item)\n\n  def print_deque(self):\n    print("Front -> " + " <-> ".join(map(str, self.items)) + " <- Back")\n\n# --- Example ---\nd = Deque()\nd.add_front(10)\nd.add_front(5)\nd.print_deque() # Output: Front -> 5 <-> 10 <- Back'
+            },
+            {
+                name: 'Add to Back',
+                snippet: 'from collections import deque\n\nclass Deque:\n  def __init__(self):\n    self.items = deque()\n\n  def add_back(self, item):\n    self.items.append(item)\n\n  def print_deque(self):\n    print("Front -> " + " <-> ".join(map(str, self.items)) + " <- Back")\n\n# --- Example ---\nd = Deque()\nd.add_back(10)\nd.add_back(20)\nd.print_deque() # Output: Front -> 10 <-> 20 <- Back'
+            },
+            {
+                name: 'Remove from Front',
+                snippet: 'from collections import deque\n\nclass Deque:\n  def __init__(self):\n    self.items = deque()\n\n  def add_back(self, item):\n    self.items.append(item)\n\n  def remove_front(self):\n    if self.items:\n      return self.items.popleft()\n    print("Deque is empty")\n    return None\n\n  def print_deque(self):\n    print("Front -> " + " <-> ".join(map(str, self.items)) + " <- Back")\n\n# --- Example ---\nd = Deque()\nd.add_back(10)\nd.add_back(20)\nremoved = d.remove_front()\nprint(f"Removed: {removed}") # Removed: 10\nd.print_deque() # Output: Front -> 20 <- Back'
+            },
+            {
+                name: 'Remove from Back',
+                snippet: 'from collections import deque\n\nclass Deque:\n  def __init__(self):\n    self.items = deque()\n\n  def add_back(self, item):\n    self.items.append(item)\n\n  def remove_back(self):\n    if self.items:\n      return self.items.pop()\n    print("Deque is empty")\n    return None\n\n  def print_deque(self):\n    print("Front -> " + " <-> ".join(map(str, self.items)) + " <- Back")\n\n# --- Example ---\nd = Deque()\nd.add_back(10)\nd.add_back(20)\nremoved = d.remove_back()\nprint(f"Removed: {removed}") # Removed: 20\nd.print_deque() # Output: Front -> 10 <- Back'
+            },
+            {
+                name: 'Peek Front',
+                snippet: 'from collections import deque\n\nclass Deque:\n  def __init__(self):\n    self.items = deque()\n\n  def add_back(self, item):\n    self.items.append(item)\n\n  def peek_front(self):\n    if self.items:\n      return self.items[0]\n    return None\n\n# --- Example ---\nd = Deque()\nd.add_back(10)\nd.add_back(20)\nprint(f"Front item: {d.peek_front()}") # Front item: 10'
+            },
+            {
+                name: 'Peek Back',
+                snippet: 'from collections import deque\n\nclass Deque:\n  def __init__(self):\n    self.items = deque()\n\n  def add_back(self, item):\n    self.items.append(item)\n\n  def peek_back(self):\n    if self.items:\n      return self.items[-1]\n    return None\n\n# --- Example ---\nd = Deque()\nd.add_back(10)\nd.add_back(20)\nprint(f"Back item: {d.peek_back()}") # Back item: 20'
+            },
+            {
+                name: 'Check if Empty',
+                snippet: 'from collections import deque\n\nclass Deque:\n  def __init__(self):\n    self.items = deque()\n\n  def is_empty(self):\n    return len(self.items) == 0\n\n# --- Example ---\nd = Deque()\nprint(f"Is deque empty? {d.is_empty()}") # Is deque empty? True\nd.items.append(10)\nprint(f"Is deque empty? {d.is_empty()}") # Is deque empty? False'
+            },
+            {
+                name: 'Check if Full',
+                snippet: 'from collections import deque\n\nclass Deque:\n  def __init__(self, capacity):\n    self.items = deque()\n    self.capacity = capacity\n\n  def is_full(self):\n    return len(self.items) == self.capacity\n\n# --- Example ---\nd = Deque(capacity=2)\nd.items.append(10)\nprint(f"Is deque full? {d.is_full()}") # Is deque full? False\nd.items.append(20)\nprint(f"Is deque full? {d.is_full()}") # Is deque full? True'
+            }
         ],
         bigO: {
             'Access': { best: 'O(1)', worst: 'O(n)' },
@@ -192,8 +324,30 @@ export const dsInfo = {
             ]
         },
         code: [
-            { name: 'Insert Operation', snippet: `def insert(self, value):\n  if self.root is None:\n    self.root = Node(value)\n    return\n  current = self.root\n  while True:\n    if value < current.value:\n      if current.left is None:\n        current.left = Node(value)\n        break\n      current = current.left\n    else:\n      if current.right is None:\n        current.right = Node(value)\n        break\n      current = current.right` },
-            { name: 'Find Operation', snippet: `def find(self, value):\n  current = self.root\n  while current is not None:\n    if value == current.value:\n      return True # Found\n    elif value < current.value:\n      current = current.left\n    else:\n      current = current.right\n  return False # Not found` },
+            {
+                name: 'Insert Operation',
+                snippet: 'class Node:\n  def __init__(self, value):\n    self.value = value\n    self.left = None\n    self.right = None\n\nclass BST:\n  def __init__(self):\n    self.root = None\n\n  def insert(self, value):\n    if self.root is None:\n      self.root = Node(value)\n      return\n    current = self.root\n    while True:\n      if value < current.value:\n        if current.left is None:\n          current.left = Node(value)\n          break\n        current = current.left\n      elif value > current.value:\n        if current.right is None:\n          current.right = Node(value)\n          break\n        current = current.right\n      else:\n        break # Value already exists\n\n# --- Example ---\ntree = BST()\ntree.insert(10)\ntree.insert(5)\ntree.insert(15)\n# To see the result, you would need a traversal method.'
+            },
+            {
+                name: 'Find Operation',
+                snippet: 'class Node:\n  def __init__(self, value):\n    self.value = value\n    self.left = None\n    self.right = None\n\nclass BST:\n  def __init__(self):\n    self.root = None\n\n  def insert(self, value):\n    if self.root is None: self.root = Node(value); return\n    current = self.root\n    while True:\n      if value < current.value:\n        if current.left is None: current.left = Node(value); break\n        current = current.left\n      elif value > current.value:\n        if current.right is None: current.right = Node(value); break\n        current = current.right\n      else: break\n\n  def find(self, value):\n    current = self.root\n    while current is not None:\n      if value == current.value:\n        return True\n      elif value < current.value:\n        current = current.left\n      else:\n        current = current.right\n    return False\n\n# --- Example ---\ntree = BST()\ntree.insert(10)\ntree.insert(5)\nprint(f"Found 15? {tree.find(15)}") # Found 15? False\ntree.insert(15)\nprint(f"Found 15? {tree.find(15)}") # Found 15? True'
+            },
+            {
+                name: 'Delete Operation',
+                snippet: 'class Node:\n  def __init__(self, value):\n    self.value = value\n    self.left = None\n    self.right = None\n\nclass BST:\n  def __init__(self):\n    self.root = None\n\n  def insert(self, value):\n    if self.root is None: self.root = Node(value); return\n    current = self.root\n    while True:\n      if value < current.value:\n        if current.left is None: current.left = Node(value); break\n        current = current.left\n      elif value > current.value:\n        if current.right is None: current.right = Node(value); break\n        current = current.right\n      else: break\n\n  def delete(self, value):\n    self.root = self._delete_recursive(self.root, value)\n\n  def _delete_recursive(self, current, value):\n    if current is None: return current\n    if value < current.value:\n      current.left = self._delete_recursive(current.left, value)\n    elif value > current.value:\n      current.right = self._delete_recursive(current.right, value)\n    else: # Node to be deleted is found\n      if current.left is None: return current.right\n      if current.right is None: return current.left\n      # Node with two children: Get inorder successor\n      temp = self._get_min_value_node(current.right)\n      current.value = temp.value\n      current.right = self._delete_recursive(current.right, temp.value)\n    return current\n\n  def _get_min_value_node(self, node):\n    current = node\n    while current.left is not None:\n      current = current.left\n    return current\n\n# --- Example ---\ntree = BST()\ntree.insert(10)\ntree.insert(5)\ntree.insert(15)\ntree.delete(5) # Deletes a leaf node'
+            },
+            {
+                name: 'In-order Traversal',
+                snippet: 'class Node:\n  def __init__(self, value):\n    self.value = value\n    self.left = None\n    self.right = None\n\nclass BST:\n  def __init__(self):\n    self.root = None\n\n  def insert(self, value):\n    if self.root is None: self.root = Node(value); return\n    current = self.root\n    while True:\n      if value < current.value:\n        if current.left is None: current.left = Node(value); break\n        current = current.left\n      elif value > current.value:\n        if current.right is None: current.right = Node(value); break\n        current = current.right\n      else: break\n\n  def inorder_traversal(self):\n    result = []\n    self._inorder_recursive(self.root, result)\n    return result\n\n  def _inorder_recursive(self, node, result):\n    if node:\n      self._inorder_recursive(node.left, result)\n      result.append(node.value)\n      self._inorder_recursive(node.right, result)\n\n# --- Example ---\ntree = BST()\ntree.insert(10)\ntree.insert(5)\ntree.insert(15)\nprint(tree.inorder_traversal()) # Output: [5, 10, 15]'
+            },
+            {
+                name: 'Pre-order Traversal',
+                snippet: 'class Node:\n  def __init__(self, value):\n    self.value = value\n    self.left = None\n    self.right = None\n\nclass BST:\n  def __init__(self):\n    self.root = None\n\n  def insert(self, value):\n    if self.root is None: self.root = Node(value); return\n    current = self.root\n    while True:\n      if value < current.value:\n        if current.left is None: current.left = Node(value); break\n        current = current.left\n      elif value > current.value:\n        if current.right is None: current.right = Node(value); break\n        current = current.right\n      else: break\n\n  def preorder_traversal(self):\n    result = []\n    self._preorder_recursive(self.root, result)\n    return result\n\n  def _preorder_recursive(self, node, result):\n    if node:\n      result.append(node.value)\n      self._preorder_recursive(node.left, result)\n      self._preorder_recursive(node.right, result)\n\n# --- Example ---\ntree = BST()\ntree.insert(10)\ntree.insert(5)\ntree.insert(15)\nprint(tree.preorder_traversal()) # Output: [10, 5, 15]'
+            },
+            {
+                name: 'Post-order Traversal',
+                snippet: 'class Node:\n  def __init__(self, value):\n    self.value = value\n    self.left = None\n    self.right = None\n\nclass BST:\n  def __init__(self):\n    self.root = None\n\n  def insert(self, value):\n    if self.root is None: self.root = Node(value); return\n    current = self.root\n    while True:\n      if value < current.value:\n        if current.left is None: current.left = Node(value); break\n        current = current.left\n      elif value > current.value:\n        if current.right is None: current.right = Node(value); break\n        current = current.right\n      else: break\n\n  def postorder_traversal(self):\n    result = []\n    self._postorder_recursive(self.root, result)\n    return result\n\n  def _postorder_recursive(self, node, result):\n    if node:\n      self._postorder_recursive(node.left, result)\n      self._postorder_recursive(node.right, result)\n      result.append(node.value)\n\n# --- Example ---\ntree = BST()\ntree.insert(10)\ntree.insert(5)\ntree.insert(15)\nprint(tree.postorder_traversal()) # Output: [5, 15, 10]'
+            }
         ],
         bigO: {
             'Access': { best: 'O(log n)', worst: 'O(n)' },

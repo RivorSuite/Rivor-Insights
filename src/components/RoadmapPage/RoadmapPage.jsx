@@ -44,6 +44,14 @@ export const roadmapData = [
             { id: "algo-linear-search", title: "Linear Search" },
             { id: "algo-binary-search", title: "Binary Search" },
             { id: "algo-bubble-sort", title: "Bubble Sort" },
+            { id: "algo-insertion-sort", title: "Insertion Sort" },
+        ]
+    },
+    {
+        category: "Stage 6: Graph Traversal",
+        topics: [
+            { id: "algo-bfs", title: "Breadth-First Search (BFS)" },
+            { id: "algo-dfs", title: "Depth-First Search (DFS)" },
         ]
     },
 ];
