@@ -61,7 +61,7 @@ function Header({ theme, onToggleTheme, onSetAccent, accent }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                 <AccentColorSwitcher onSetAccent={onSetAccent} />
                 <button onClick={onToggleTheme} className="auth-button" style={{ width: 'auto', padding: '8px 12px' }}>
-                    {theme === 'dark' ? 'Light ☀️' : 'Dark 🌙'}
+                    {theme === 'dark' ? '☀️' : '🌙'}
                 </button>
             </div>
         </div>

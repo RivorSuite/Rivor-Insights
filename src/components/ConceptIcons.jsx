@@ -4,7 +4,6 @@ export const VariableIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 40">
         {/* Main window/container shape */}
         <rect x="35" y="2" width="80" height="36" rx="4" className="ds-icon-box" strokeWidth="3" />
-        
         {/* Header bar of the window */}
         <path d="M 35 10 H 115" className="ds-icon-line" strokeWidth="3" />
 
@@ -28,19 +27,15 @@ export const OperatorIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 40">
         {/* Main container, now larger */}
         <rect x="45" y="2" width="60" height="36" rx="5" className="ds-icon-box" fill="var(--background)" />
-
         {/* Quadrant 1: Arithmetic (+) */}
         <rect x="45" y="2" width="30" height="18" fill="var(--surface)" />
         <text x="60" y="16" className="ds-icon-text" textAnchor="middle" fontSize="14" fill="var(--secondary-text)">+</text>
-        
         {/* Quadrant 2: Comparison (>) */}
         <rect x="75" y="2" width="30" height="18" fill="var(--background)" />
         <text x="90" y="16" className="ds-icon-text" textAnchor="middle" fontSize="14" fill="var(--secondary-text)">{'>'}</text>
-        
         {/* Quadrant 3: Logical (and) */}
         <rect x="45" y="20" width="30" height="18" fill="var(--background)" />
         <text x="60" y="34" className="ds-icon-text" textAnchor="middle" fontSize="12" fill="var(--secondary-text)">and</text>
-        
         {/* Quadrant 4: Bitwise (&) */}
         <rect x="75" y="20" width="30" height="18" fill="var(--surface)" />
         <text x="90" y="34" className="ds-icon-text" textAnchor="middle" fontSize="14" fill="var(--secondary-text)">&</text>
@@ -51,15 +46,12 @@ export const ConditionalIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 40">
         {/* Central decision node, moved down slightly */}
         <circle cx="75" cy="22" r="4" fill="var(--background)" stroke="var(--secondary-text)" strokeWidth="2" className="ds-icon-line" />
-
         {/* Top branch and node, line now connects to edge */}
         <line x1="75" y1="18" x2="75" y2="8" className="ds-icon-line" strokeWidth="2" />
         <circle cx="75" cy="5" r="4" fill="var(--secondary-text)" className="ds-icon-text" /> 
-
         {/* Left branch and node, path now connects to edge */}
         <path d="M 71 22 H 50 V 35" fill="none" className="ds-icon-line" strokeWidth="2" />
         <circle cx="50" cy="35" r="4" fill="var(--secondary-text)" className="ds-icon-text" />
-
         {/* Right branch and node, path now connects to edge */}
         <path d="M 79 22 H 100 V 35" fill="none" className="ds-icon-line" strokeWidth="2" />
         <circle cx="100" cy="35" r="4" fill="var(--secondary-text)" className="ds-icon-text" />
@@ -112,19 +104,15 @@ export const DictionaryIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 40">
         {/* Key on the left */}
         <text x="35" y="26" fontFamily="monospace" fontSize="14" className="ds-icon-text" fill="var(--secondary-text)">'k'</text>
-        
         {/* Value box on the right */}
         <rect x="91" y="12" width="30" height="20" rx="4" className="ds-icon-box" />
-
         {/* Arrow connecting key to value */}
         <line x1="60" y1="23" x2="85" y2="23" className="ds-icon-line" strokeWidth="2"/>
-        
         {/* Curly braces */}
         <text x="25" y="30" fontFamily="monospace" fontSize="30" className="ds-icon-text" fill="var(--secondary-text)">{'{'}</text>
         <text x="120" y="30" fontFamily="monospace" fontSize="30" className="ds-icon-text" fill="var(--secondary-text)">{'}'}</text>
     </svg>
 );
-
 
 export const FunctionIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 40">

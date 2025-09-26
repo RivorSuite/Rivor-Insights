@@ -174,7 +174,5 @@
     padding: 6px 8px;
     border-bottom: 1px solid var(--border);
 }
-.dict-table tr:last-child td {
-    border-bottom: none;
-}
+.dict-table tr:last-child td {border-bottom: none;}
 .dict-key {color: var(--secondary-text);}

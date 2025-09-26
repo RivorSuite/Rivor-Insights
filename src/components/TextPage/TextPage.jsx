@@ -30,9 +30,7 @@ function TextPage({ onBack }) {
                     <button onClick={() => setSelectedArticleId(null)} className="auth-button" style={{ maxWidth: '200px' }}>Back to Articles</button>
                 </div>
                 <div className="text-page-content">
-                    {article.content.map((item, index) => (
-                        <ContentRenderer key={index} item={item} />
-                    ))}
+                    {article.content.map((item, index) => (<ContentRenderer key={index} item={item} />))}
                 </div>
             </div>
         );

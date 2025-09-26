@@ -201,14 +201,10 @@ const DashboardView = ({ userEmail, onLogout, onSelectTopic, onViewDSVisualizer,
             </div>
                 <div className="ai-chat-box" ref={chatBoxRef}>
                     {messages.length === 0 ? (
-                    <div className="empty-chat-placeholder">
-                        <p>Ask me anything about DSA!</p>
-                    </div>
+                    <div className="empty-chat-placeholder"> <p>Ask me anything about DSA!</p> </div>
                 ) : (
                     messages.map((msg, index) => (
-                        <div key={index} className={msg.sender === 'user' ? 'user-message' : 'ai-message'}>
-                            <ReactMarkdown>{msg.text}</ReactMarkdown>
-                        </div>
+                        <div key={index} className={msg.sender === 'user' ? 'user-message' : 'ai-message'}> <ReactMarkdown>{msg.text}</ReactMarkdown> </div>
                     ))
                 )}
                 {isAiLoading && (<div className="ai-message"><p><i>typing...</i></p></div>)}
@@ -239,9 +235,7 @@ const AIWelcomeView = ({ onEnter }) => {
             <svg className="ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 8V4H8"/><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 4v4"/><path d="M9 4v4"/></svg>
             <h1>Welcome to Rivor Insights</h1>
             <p>Your personal playground for mastering data structures and algorithms. Use our interactive visualizers and AI assistant to accelerate your learning.</p>
-            <button className="dashboard-button welcome-button" onClick={onEnter}>
-                Enter Dashboard
-            </button>
+            <button className="dashboard-button welcome-button" onClick={onEnter}> Enter Dashboard </button>
         </div>
     );
 };

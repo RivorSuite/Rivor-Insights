@@ -76,12 +76,8 @@ function CodeVisualizerPage({ onBack, initialCode }) {
                     block: 'nearest',
                 });
             }
-            if (statePanelRef.current) {
-                statePanelRef.current.scrollTop = statePanelRef.current.scrollHeight;
-            }
-            if (outputPanelRef.current) {
-                outputPanelRef.current.scrollTop = outputPanelRef.current.scrollHeight;
-            }
+            if (statePanelRef.current) {statePanelRef.current.scrollTop = statePanelRef.current.scrollHeight;}
+            if (outputPanelRef.current) {outputPanelRef.current.scrollTop = outputPanelRef.current.scrollHeight;}
         }
     }, [currentStep, isVisualizing]);
 

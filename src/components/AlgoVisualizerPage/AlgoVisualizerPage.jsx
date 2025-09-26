@@ -17,8 +17,7 @@ import {
     DFSIcon,
 } from '../AlgoIcons';
 
-// Define the initial set of algorithms planned to be built.
-const algoData = [
+const algoData = [// Define the initial set of algorithms
     { id: 'linear-search', title: 'Linear Search', category: 'Searching', description: 'Sequentially checks each element of a list.', icon: <LinearSearchIcon /> },
     { id: 'binary-search', title: 'Binary Search', category: 'Searching', description: 'Efficiently finds an item by repeatedly dividing the search interval in half.', icon: <BinarySearchIcon /> },
     { id: 'bubble-sort', title: 'Bubble Sort', category: 'Sorting', description: 'A simple sorting algorithm that repeatedly steps through the list, compares adjacent elements and swaps them if they are in the wrong order.', icon: <BubbleSortIcon /> },

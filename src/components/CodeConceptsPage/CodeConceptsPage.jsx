@@ -11,7 +11,6 @@ import {
     ListIcon, TupleIcon, DictionaryIcon, FunctionIcon, FibonacciIcon, FactorialIcon
 } from '../ConceptIcons';
 
-
 const ConceptIcon = ({ iconName }) => { // Helper component to render the correct icon based on its string name
     switch (iconName) {
         case 'VariableIcon': return <VariableIcon />;
@@ -81,7 +80,6 @@ function CodeConceptsPage({ onBack, selectedConcept, onSelectConcept, onPractice
             default: onSelectConcept(null); return null;
         }
     }
-
     return (
         <div className="ds-page-container">
             <div className="ds-sidebar">

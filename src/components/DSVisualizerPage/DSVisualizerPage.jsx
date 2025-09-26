@@ -23,7 +23,6 @@ const dsData = [
 ];
 
 const categories = ['All', 'Lists', 'Linear', 'Trees'];
-
 const implementedWorkspaces = new Set(['array', 'singly-linked-list', 'doubly-linked-list', 'circular-linked-list', 'stack', 'queue', 'deque', 'bst']);
 
 function DSVisualizerPage({ onBack, selectedDS, onSelectDS }) {

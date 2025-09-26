@@ -66,15 +66,12 @@ export const BstIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 50">
         {/* Level 1 (Root) */}
         <rect x="65" y="2" width="20" height="10" rx="3" className="ds-icon-box" />
-
         {/* Level 2 */}
         <rect x="40" y="20" width="20" height="10" rx="3" className="ds-icon-box" />
         <rect x="90" y="20" width="20" height="10" rx="3" className="ds-icon-box" />
-        
         {/* Level 3 (Leaves under the LEFT child) */}
         <rect x="25" y="38" width="20" height="10" rx="3" className="ds-icon-box" />
         <rect x="55" y="38" width="20" height="10" rx="3" className="ds-icon-box" />
-
         {/* Edges connecting the nodes */}
         <g className="ds-icon-line" fill="none">
             <line x1="75" y1="12" x2="50" y2="20" />
@@ -95,7 +92,6 @@ export const DoublyLinkedListIcon = () => (
                         {/* Forward pointer and arrowhead */}
                         <line x1={35 + i * 40} y1="17" x2={50 + i * 40} y2="17" />
                         <polyline points={`${46 + i * 40} 13, ${50 + i * 40} 17, ${46 + i * 40} 21`} />
-                        
                         {/* Backward pointer and arrowhead */}
                         <line x1={50 + i * 40} y1="23" x2={35 + i * 40} y2="23" />
                         <polyline points={`${39 + i * 40} 19, ${35 + i * 40} 23, ${39 + i * 40} 27`} />
@@ -112,17 +108,14 @@ export const DequeIcon = () => (
         {[0, 1, 2].map(i => (
             <rect key={i} x={25 + i * 37.5} y="10" width="25" height="20" className="ds-icon-box" />
         ))}
-
         <g className="ds-icon-line" fill="none">
             {/* Centered container borders */}
             <line x1="15" y1="8" x2="135" y2="8" />
             <line x1="15" y1="32" x2="135" y2="32" />
-
             {/* Symmetrically placed double arrow on the left */}
             <line x1="5" y1="20" x2="20" y2="20" />
             <polyline points="9 16, 5 20, 9 24" />
             <polyline points="16 16, 20 20, 16 24" />
-
             {/* Symmetrically placed double arrow on the right */}
             <line x1="145" y1="20" x2="130" y2="20" />
             <polyline points="141 16, 145 20, 141 24" />
@@ -130,12 +123,11 @@ export const DequeIcon = () => (
         </g>
     </svg>
 );
-
+{/* EXTRA */}
 export const HashMapIcon = () => (
     <svg className="ds-icon-svg" viewBox="0 0 150 40">
         {/* Key (rounded rectangle) */}
         <rect x="20" y="15" width="25" height="12" rx="4" className="ds-icon-box" />
-
         {/* The array of thicker buckets on the right */}
         {[0, 1, 2, 3].map(i => (
             <g key={i}>
@@ -151,7 +143,6 @@ export const HashMapIcon = () => (
                 />
             </g>
         ))}
-
         {/* Simple line representing the lookup from the key to the table */}
         <g className="ds-icon-line" fill="none">
             <line x1="45" y1="21" x2="90" y2="21" />
@@ -183,8 +174,7 @@ export const CircularLinkedListIcon = () => (
         <g fill="none" className="ds-icon-line">
             {/* Path with straight lines */}
             <path d="M 102.5 25 V 40 H 22.5 V 28" />
-
-            {/* NEW: A larger, line-based arrowhead pointing up */}
+            {/* arrowhead */}
             <polyline points="18.5 32, 22.5 28, 26.5 32" />
         </g>
     </svg>
@@ -203,7 +193,6 @@ export const DSBranchIcon = () => (
         <circle cx="18" cy="5" r="3"></circle>
         <circle cx="6" cy="12" r="3"></circle>
         <circle cx="18" cy="19" r="3"></circle>
-
         {/* The connecting lines/edges */}
         <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
         <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>

@@ -14,7 +14,6 @@ function VerifyEmailPage({ onLogout }) {
             }
         }
     };
-
     return (
         <div className="auth-container" style={{ textAlign: 'center' }}>
             <h1 className="auth-title">Verify Your Email</h1>

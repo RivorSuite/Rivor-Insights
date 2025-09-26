@@ -111,11 +111,11 @@ export const BFSIcon = () => (
         </g>
 
         <g fill="none" className="ds-icon-line" stroke="var(--accent)" strokeWidth="2">
-            {/* Arrow #1: Curved path to left child with correct arrowhead */}
+            {/* Arrow #1*/}
             <path d="M 60 5 Q 45 4, 42 14" />
             <polyline points="46 12, 43 15, 40 12" />
 
-            {/* Arrow #2: Shorter path to right child to leave a gap */}
+            {/* Arrow #2*/}
             <path d="M 65 25 H 85" />
             <polyline points="82 22, 85 25, 82 28" />
         </g>
@@ -130,7 +130,6 @@ export const DFSIcon = () => (
         <rect x="90" y="20" width="20" height="10" rx="3" className="ds-icon-box" />
         <rect x="25" y="38" width="20" height="10" rx="3" className="ds-icon-box" />
         <rect x="55" y="38" width="20" height="10" rx="3" className="ds-icon-box" />
-
         {/* Edges connecting nodes */}
         <g className="ds-icon-line" fill="none">
             <line x1="75" y1="12" x2="50" y2="20" />
@@ -138,14 +137,12 @@ export const DFSIcon = () => (
             <line x1="50" y1="30" x2="35" y2="38" />
             <line x1="50" y1="30" x2="65" y2="38" />
         </g>
-
         {/* DFS Traversal Arrows */}
         <g fill="none" className="ds-icon-line" stroke="var(--accent)" strokeWidth="2">
-        {/* Arrow #1: Curved path to left child with correct arrowhead */}
+        {/* Arrow #1*/}
             <path d="M 60 5 Q 45 4, 42 14" />
             <polyline points="46 12, 43 15, 40 12" />
-            
-            {/* Arrow #2: Curved path from Left Child to its own Left Child */}
+            {/* Arrow #2 */}
             <path d="M 36 23 Q 23 23, 26 32" />
             <polyline points="29 31, 26 34, 23 31" />
         </g>

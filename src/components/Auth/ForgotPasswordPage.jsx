@@ -14,10 +14,8 @@ function ForgotPasswordPage({ onNavigateBack }) {
             setError("Please enter your email address.");
             return;
         }
-        
         setIsLoading(true);
         setError('');
-
         try {
             await sendPasswordResetEmail(auth, resetEmail);
             setView('success');
@@ -54,7 +52,6 @@ function ForgotPasswordPage({ onNavigateBack }) {
                     <p style={{ marginTop: '24px', fontSize: '14px' }}> <span onClick={onNavigateBack} style={{ color: 'var(--accent)', cursor: 'pointer', fontWeight: '600' }}> ← Back to Login </span> </p>
                 </>
             )}
-
             {view === 'success' && (
                  <>
                     <h1 className="auth-title">Check Your Inbox</h1>

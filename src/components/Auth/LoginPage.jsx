@@ -105,7 +105,7 @@ function LoginPage() {
     return (
         <div className="auth-container">
             <h1 className="auth-title">{isLoginView ? 'Sign In to Rivor Insights' : 'Create an Account'}</h1>
-<p className="auth-subtitle">{isLoginView ? 'Welcome! Please enter your details.' : 'Get started with Rivor Insights'}</p>
+            <p className="auth-subtitle">{isLoginView ? 'Welcome! Please enter your details.' : 'Get started with Rivor Insights'}</p>
             <button onClick={handleGoogleSignIn} className="auth-button" style={{ backgroundColor: '#000', color: '#FFF', border: '1px solid var(--border)', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" style={{ width: '18px', height: '18px' }} />
                 Sign in with Google
