@@ -197,7 +197,6 @@ function BinarySearchWorkspace({ onBack }) {
                     ))}
                 </div>
             </div>
-
             <div className="ds-animation-controls">
                 <div className="ds-playback-buttons">
                     <button className="ds-playback-button" onClick={handleStepBack} disabled={!animationHistory.length || currentStep === 0}>‹ Step Back</button>

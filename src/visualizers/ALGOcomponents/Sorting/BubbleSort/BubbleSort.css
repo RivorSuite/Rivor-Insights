@@ -92,7 +92,6 @@
 /* 'j' Pointer Styles */
 .pointer-j .pointer-label { background-color: #3b82f6; } /* Blue */
 .pointer-j .pointer-arrow { border-top: 8px solid #3b82f6; }
-
 /* 'j+1' Pointer Styles */
 .pointer-jplus1 .pointer-label { background-color: #ef4444; } /* Red */
 .pointer-jplus1 .pointer-arrow { border-top: 8px solid #ef4444; }

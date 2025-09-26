@@ -94,11 +94,9 @@
 /* Low Pointer Styles */
 .pointer-low .pointer-label { background-color: #3b82f6; } /* Blue */
 .pointer-low .pointer-arrow { border-top: 8px solid #3b82f6; }
-
 /* High Pointer Styles */
 .pointer-high .pointer-label { background-color: #ef4444; } /* Red */
 .pointer-high .pointer-arrow { border-top: 8px solid #ef4444; }
-
 /* Mid Pointer Styles */
 .pointer-mid .pointer-label { background-color: var(--accent); }
 .pointer-mid .pointer-arrow { border-top: 8px solid var(--accent); }

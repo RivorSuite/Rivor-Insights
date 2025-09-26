@@ -63,7 +63,8 @@ function LinearSearchWorkspace({ onBack }) {
         if (isPlaying && currentStep < animationHistory.length - 1) {
             const timer = setTimeout(() => {setCurrentStep(currentStep + 1);}, animationSpeed);
             return () => clearTimeout(timer);
-        } else if (isPlaying && currentStep === animationHistory.length - 1) {
+        }
+        else if (isPlaying && currentStep === animationHistory.length - 1) {
             setIsPlaying(false); // When animation finishes
             const finalFrame = animationHistory[animationHistory.length - 2]; // Second to last frame has the result
             if (finalFrame.type === 'found') {showToast(`Value ${finalFrame.arrayState[finalFrame.foundIndex]} found at index ${finalFrame.foundIndex}.`, 'success');}

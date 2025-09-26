@@ -137,9 +137,7 @@ function BubbleSortWorkspace({ onBack }) {
     };
 
     const handlePlayPause = () => {
-        if (!isPlaying && currentStep >= animationHistory.length - 1) {
-            setCurrentStep(0);
-        }
+        if (!isPlaying && currentStep >= animationHistory.length - 1) {setCurrentStep(0);}
         setIsPlaying(!isPlaying);
     };
 

@@ -80,15 +80,12 @@ function DFSWorkspace({ onBack }) {
         if (isPlaying && currentStep < animationHistory.length - 1) {
             const timer = setTimeout(() => setCurrentStep(currentStep + 1), animationSpeed);
             return () => clearTimeout(timer);
-        } else if (isPlaying && currentStep >= animationHistory.length - 1) {
+        }
+        else if (isPlaying && currentStep >= animationHistory.length - 1) {
             setIsPlaying(false);
-            if (currentFrame?.type === 'found') {
-                showToast(`Target found! Path: ${currentFrame.path.join(' → ')}`, "success");
-            } else if (currentFrame?.type === 'end' && targetNode) {
-                showToast(`Target ${targetNode} could not be reached.`, "error");
-            } else if (currentFrame?.type === 'end' && !targetNode) {
-                showToast("DFS Traversal Complete!", "success");
-            }
+            if (currentFrame?.type === 'found') {showToast(`Target found! Path: ${currentFrame.path.join(' → ')}`, "success");} 
+            else if (currentFrame?.type === 'end' && targetNode) {showToast(`Target ${targetNode} could not be reached.`, "error");} 
+            else if (currentFrame?.type === 'end' && !targetNode) {showToast("DFS Traversal Complete!", "success");}
         }
     }, [isPlaying, currentStep, animationHistory, animationSpeed]);
 
@@ -96,9 +93,7 @@ function DFSWorkspace({ onBack }) {
         // This uses the same longer-toast logic we implemented earlier
         clearTimeout(toastTimerRef.current);
         setToast({ show: true, message, type });
-        toastTimerRef.current = setTimeout(() => {
-            setToast(prev => ({ ...prev, show: false }));
-        }, 5000);
+        toastTimerRef.current = setTimeout(() => {setToast(prev => ({ ...prev, show: false }));}, 5000);
     };
     const toastTimerRef = useRef(null);
 
@@ -213,11 +208,8 @@ function DFSWorkspace({ onBack }) {
                                     const isTopOfStack = index === 0 && stackState.length > 0;
                                     const isPopped = currentFrame.type === 'pop' && index === 0;
                                     const itemClasses = `dfs-state-item ${isPopped ? 'popped' : ''} ${isTopOfStack ? 'top-of-stack' : ''}`;
-
                                     return (
-                                        <div key={`${nodeId}-${index}`} className={itemClasses}>
-                                            {nodeId}
-                                        </div>
+                                        <div key={`${nodeId}-${index}`} className={itemClasses}> {nodeId} </div>
                                     );
                                 })}
                             </div>
@@ -246,5 +238,4 @@ function DFSWorkspace({ onBack }) {
         </div>
     );
 }
-
 export default DFSWorkspace;

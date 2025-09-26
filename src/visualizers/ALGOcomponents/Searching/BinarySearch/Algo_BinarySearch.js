@@ -19,7 +19,6 @@ export class Algo_BinarySearch {
     run() {
         this.history = [];
         this._recordHistory('start', `Starting Binary Search for ${this.valueToFind}. Array is sorted first.`);
-
         let low = 0;
         let high = this.array.length - 1;
         while (low <= high) {

@@ -82,7 +82,8 @@ export class Algo_DFS {
                         currentNode: currentNode,
                         highlightedEdge: { from: currentNode, to: neighborId },
                     });
-                } else {
+                }
+                else {
                      this._recordHistory('skip_neighbor', `Neighbor ${neighborId} already visited. Skipping.`, {
                         stackState: stack,
                         visitedState: visited,
